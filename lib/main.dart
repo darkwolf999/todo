@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:todo/presentation/screens/all_tasks.dart';
+import 'package:todo/presentation/screens/task_detail.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: const MyHomePage(title: 'Мои дела'),
-      home: const AllTasksScreen(),
+      //home: const AllTasksScreen(),
+      home: const TaskDetailScreen(),
     );
   }
 }
