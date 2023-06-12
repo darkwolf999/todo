@@ -210,17 +210,14 @@ class AllTasksScreen extends StatelessWidget {
                                   child: Container(
                                     //color: index.isOdd ? Colors.black26 : Colors.black12,
                                     child: Padding(
-                                      padding: index == 0
-                                        ? const EdgeInsets.only(left: 16, top: 20, right: 16, bottom: 12)
-                                        : const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                                      // padding: EdgeInsets.only(
-                                      //   left: 16,
-                                      //   top: index == 0
-                                      //     ? 20
-                                      //     : 12,
-                                      //   right: 16,
-                                      //   bottom: 12
-                                      // ),
+                                      padding: EdgeInsets.only(
+                                        left: 16,
+                                        top: index == 0
+                                          ? 20
+                                          : 12,
+                                        right: 16,
+                                        bottom: 12
+                                      ),
                                       child: Row(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
