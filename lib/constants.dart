@@ -55,6 +55,7 @@ const double subheadFontHeight = 20 /subheadFontSize;
 ///Icons
 const String infoOutlined = 'lib/assets/images/info_outline.svg';
 const String checkboxUncheckedNormal = 'lib/assets/images/checkbox_unchecked_normal.svg';
+const String checkboxChecked =         'lib/assets/images/checkbox_checked.svg';
 const String check = 'lib/assets/images/check.svg';
 const String delete = 'lib/assets/images/delete.svg';
 const String close = 'lib/assets/images/close.svg';
