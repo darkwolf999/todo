@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:todo/presentation/screens/all_tasks.dart';
 import 'package:todo/presentation/screens/task_detail.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:todo/repositories/tasks_repository.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'data/api/local_tasks_api.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final tasksApi = LocalTasksApi(
+    prefs: await SharedPreferences.getInstance(),
+  );
+  final tasksRepository = TasksRepository(tasksApi: tasksApi);
+
+  runApp(RepositoryProvider<TasksRepository>(
+    lazy: false,
+    create: (context) => tasksRepository,
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -25,10 +41,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
-        const Locale('en'),
-        const Locale('ru')
-      ],
+      supportedLocales: [const Locale('en'), const Locale('ru')],
       //home: const MyHomePage(title: 'Мои дела'),
       //home: const AllTasksScreen(),
       home: const TaskDetailScreen(),

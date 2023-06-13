@@ -1,10 +1,26 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/constants.dart' as Constants;
 
 import '../widgets/svg.dart';
+
+
+// class TaskDetailScreen extends StatelessWidget {
+//   const TaskDetailScreen({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (_) => HomeCubit(),
+//       child: const HomeView(),
+//     );
+//   }
+// }
+
+
 
 class TaskDetailScreen extends StatefulWidget {
   const TaskDetailScreen({Key? key}) : super(key: key);
@@ -28,9 +44,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         backgroundColor: const Color(Constants.lightBackPrimary),
         elevation: 0,
         scrolledUnderElevation: 5,
-        leading: SVG(
-          imagePath: Constants.close,
-          color: Constants.lightLabelPrimary,
+        leading: IconButton(
+          splashRadius: 24.0,
+            onPressed: () { },
+            icon: SVG(
+              imagePath: Constants.close,
+              color: Constants.lightLabelPrimary,
+            ),
         ),
         actions: [
           Padding(
@@ -229,7 +249,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                 margin: const EdgeInsets.only(left: 16),
                 //color: Colors.indigoAccent,
                 child: InkWell(
-                  onTap: (){},
+                  onTap: () {
+
+                  },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, right: 5.0),
                     child: Row(
