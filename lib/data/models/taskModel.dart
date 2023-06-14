@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 
 part 'taskModel.g.dart';
 
@@ -12,35 +12,40 @@ enum Priority {
 
 @JsonSerializable()
 class TaskModel extends Equatable {
-  final String? uuid;
+  final String uuid;
   final String title;
   final bool isDone;
   final Priority? priority;
+  final DateTime? deadline;
 
-  const TaskModel({
-    this.uuid,
+  TaskModel({
+    String? uuid,
     required this.title,
     required this.isDone,
     this.priority,
-  });
+    this.deadline,
+  }) : uuid = uuid ?? const Uuid().v4();
 
   TaskModel copyWith({
     String? uuid,
     String? title,
     bool? isDone,
     Priority? priority,
+    DateTime? deadline,
   }) {
     return TaskModel(
       uuid: uuid ?? this.uuid,
       title: title ?? this.title,
       isDone: isDone ?? this.isDone,
       priority: priority ?? this.priority,
+      deadline: deadline ?? this.deadline,
     );
   }
 
-  static TaskModel fromJson(Map<String, dynamic>  json) => _$TaskModelFromJson(json);
+  static TaskModel fromJson(Map<String, dynamic> json) =>
+      _$TaskModelFromJson(json);
 
-  Map<String, dynamic>  toJson() => _$TaskModelToJson(this);
+  Map<String, dynamic> toJson() => _$TaskModelToJson(this);
 
   @override
   List<Object?> get props => [
@@ -48,5 +53,6 @@ class TaskModel extends Equatable {
         title ?? '',
         isDone ?? '',
         priority ?? '',
+        deadline ?? '',
       ];
 }

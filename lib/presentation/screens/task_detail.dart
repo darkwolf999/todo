@@ -1,43 +1,51 @@
-import 'dart:typed_data';
+
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/constants.dart' as Constants;
 
-import '../widgets/svg.dart';
+import 'package:todo/data/models/taskModel.dart';
+import 'package:todo/bloc/task_detail_screen/task_detail_screen_bloc.dart';
+import 'package:todo/presentation/widgets/svg.dart';
+import 'package:todo/repositories/tasks_repository.dart';
 
 
-// class TaskDetailScreen extends StatelessWidget {
-//   const TaskDetailScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (_) => HomeCubit(),
-//       child: const HomeView(),
-//     );
-//   }
-// }
+class TaskDetailScreen extends StatelessWidget {
+  final TaskModel? task;
 
-
-
-class TaskDetailScreen extends StatefulWidget {
-  const TaskDetailScreen({Key? key}) : super(key: key);
-
-  @override
-  State<TaskDetailScreen> createState() => _TaskDetailScreenState();
-}
-
-class _TaskDetailScreenState extends State<TaskDetailScreen> {
-
-  bool isEnabled = false;
-  String date = 'Дата';
-  DateTime? pickedDate;
+  const TaskDetailScreen({Key? key, required this.task,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<String> _theList = ['1','2','3'];
+    return BlocProvider<TaskDetailScreenBloc>(
+      create: (context) =>
+      TaskDetailScreenBloc(
+        context.read<TasksRepository>(),
+      ),
+      child: TaskDetailScreenContent(task: task),
+    );
+  }
+}
+
+class TaskDetailScreenContent extends StatelessWidget {
+  final TaskModel? task;
+
+  const TaskDetailScreenContent({
+    Key? key, required this.task,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<TaskDetailScreenBloc>();
+
+    final TextEditingController textController = TextEditingController();
+    textController.text = task?.title ?? '';
+    Priority priority = task?.priority ?? Priority.no;
+    DateTime? pickedDate = task?.deadline;
+    //String? lastPickedDate = 'Дата';
+
     return Scaffold(
       backgroundColor: const Color(Constants.lightBackPrimary),
       appBar: AppBar(
@@ -46,11 +54,13 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         scrolledUnderElevation: 5,
         leading: IconButton(
           splashRadius: 24.0,
-            onPressed: () { },
-            icon: SVG(
-              imagePath: Constants.close,
-              color: Constants.lightLabelPrimary,
-            ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: SVG(
+            imagePath: Constants.close,
+            color: Constants.lightLabelPrimary,
+          ),
         ),
         actions: [
           Padding(
@@ -58,7 +68,18 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
             child: Center(
               child: TextButton(
                 //style: TextButton.styleFrom(),
-                onPressed: (){},
+                onPressed: () {
+                  bloc.add(EditAcceptedEvent(
+                    TaskModel(
+                      uuid: task?.uuid,
+                      title: textController.text,
+                      isDone: false,
+                      priority: priority,
+                      deadline: pickedDate,
+                    ),
+                  ),);
+                  Navigator.pop(context);
+                },
                 child: const Text(
                   'СОХРАНИТЬ',
                   style: TextStyle(
@@ -72,7 +93,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
           ),
         ], // default is 56
       ),
-      body: SingleChildScrollView(
+      body: BlocBuilder<TaskDetailScreenBloc, TaskDetailScreenState>(
+  builder: (context, state) {
+    return SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Padding(
           //padding: const EdgeInsets.only(top: 8, left: 16.0, right: 16.0),
@@ -88,6 +111,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                   borderRadius: BorderRadius.circular(8.0),
                   elevation: 2,
                   child: TextField(
+                    controller: textController,
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         contentPadding: EdgeInsets.all(16.0),
@@ -123,6 +147,11 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                 child: ButtonTheme(
                   //alignedDropdown: true,
                   child: DropdownButtonFormField(
+                    value: priority,
+                    onChanged: (newPriority) {
+                      priority = newPriority;
+                      print(priority);
+                    },
                     style: TextStyle(
                       fontSize: 14,
                       height: 16.41 / 14,
@@ -155,12 +184,10 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                       ),
                     ),
                     items: <DropdownMenuItem>[
-                      DropdownMenuItem(child: Text("USA"),value: "USA"),
-                      DropdownMenuItem(child: Text("Canada"),value: "Canada"),
-                      DropdownMenuItem(child: Text("Brazil"),value: "Brazil"),
-                      DropdownMenuItem(child: Text("England", style: TextStyle(color: Color(Constants.lightColorRed)),),value: "England"),
+                      DropdownMenuItem(child: Text('Нет'), value: Priority.no,),
+                      DropdownMenuItem(child: Text("Низкий"), value: Priority.low),
+                      DropdownMenuItem(child: Text("!! Высокий",  style: TextStyle(color: Color(Constants.lightColorRed)),), value: Priority.high,),
                     ],
-                    onChanged: (dynamic) {},
                   ),
                 ),
               ),
@@ -182,11 +209,11 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                         ),
                         //SizedBox(height: 4.0),
                         Visibility(
-                          visible: isEnabled,
+                          visible: pickedDate != null && bloc.state.hasDeadline,
                           child: Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
+                            padding: const EdgeInsets.only(top: 4.0),
                             child: Text(
-                              date,
+                              pickedDate?.toString() ?? 'Дата',
                               style: TextStyle(
                                 fontSize: 14.0,
                                 height: 16.0 / 14.0,
@@ -198,42 +225,45 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                       ],
                     ),
                     Switch(
-                      value: isEnabled,
-                      onChanged: (bool value) async {
-                        isEnabled
-                        ? isEnabled = !isEnabled
-                        : pickedDate = await showDatePicker(
-                          helpText: DateTime.now().year.toString(),
-                          confirmText: 'ГОТОВО',
-                          locale: Locale('ru'),
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1950),
-                          //DateTime.now() - not to allow to choose before today.
-                          lastDate: DateTime(2100),
-                          builder: (context, child) {
-                            return Theme(
-                              data: Theme.of(context).copyWith(
-                                colorScheme: ColorScheme.light(
-                                  primary: Color(Constants.lightColorBlue), // header background color
-                                  //onPrimary: Colors.black, // header text color
-                                  //onSurface: Colors.green, // body text color
-                                ),
-                                textButtonTheme: TextButtonThemeData(
-                                  style: TextButton.styleFrom(
-                                    foregroundColor: Colors.red, // button text color
+                        value: bloc.state.hasDeadline,
+                        onChanged: (bool value) async {
+                          bloc.state.hasDeadline
+                              ? null
+                              : pickedDate = await showDatePicker(
+                            helpText: DateTime.now().year.toString(),
+                            confirmText: 'ГОТОВО',
+                            locale: Locale('ru'),
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1950),
+                            //DateTime.now() - not to allow to choose before today.
+                            lastDate: DateTime(2100),
+                            builder: (context, child) {
+                              return Theme(
+                                data: Theme.of(context).copyWith(
+                                  colorScheme: ColorScheme.light(
+                                    primary: Color(Constants.lightColorBlue), // header background color
+                                    //onPrimary: Colors.black, // header text color
+                                    //onSurface: Colors.green, // body text color
+                                  ),
+                                  textButtonTheme: TextButtonThemeData(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Colors.red, // button text color
+                                    ),
                                   ),
                                 ),
-                              ),
-                              child: child!,
-                            );
-                          },
-                        );
-                        setState(() {
-                          date = pickedDate?.toString() ?? 'Дата';
-                          isEnabled = value;
-                        });
-                      }
+                                child: child!,
+                              );
+                            },
+                          );
+                          //setState(() {
+                          //lastPickedDate = pickedDate?.toString();
+                          if(pickedDate != null) {
+                            bloc.add(DeadlineSwitchedEvent());
+                          }
+                            //isEnabled = value;
+                          //});
+                        }
                     )
                   ],
                 ),
@@ -277,7 +307,9 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
             ],
           ),
         ),
-      ),
+      );
+  },
+),
     );
   }
 }

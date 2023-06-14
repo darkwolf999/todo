@@ -31,10 +31,18 @@ class DeleteTaskEvent extends AllTasksScreenEvent {
 
 class CompleteTaskEvent extends AllTasksScreenEvent {
   final TaskModel task;
-  final bool isDone;
 
-  const CompleteTaskEvent(this.task, this.isDone);
+  const CompleteTaskEvent(this.task);
 
   @override
-  List<Object> get props => [task, isDone];
+  List<Object> get props => [task];
+}
+
+class ChangeFilterEvent extends AllTasksScreenEvent {
+  final TasksFilter filter;
+
+  const ChangeFilterEvent(this.filter);
+
+  @override
+  List<Object> get props => [filter];
 }

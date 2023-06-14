@@ -18,11 +18,13 @@ void main() async {
   );
   final tasksRepository = TasksRepository(tasksApi: tasksApi);
 
-  runApp(RepositoryProvider<TasksRepository>(
-    lazy: false,
-    create: (context) => tasksRepository,
-    child: MyApp(),
-  ));
+  runApp(
+    RepositoryProvider<TasksRepository>(
+      lazy: false,
+      create: (context) => tasksRepository,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,19 +34,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Мои дела',
+      title: 'To-Do!',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
       ],
-      supportedLocales: [const Locale('en'), const Locale('ru')],
-      //home: const MyHomePage(title: 'Мои дела'),
-      //home: const AllTasksScreen(),
-      home: const TaskDetailScreen(),
+      supportedLocales: const [Locale('en'), Locale('ru')],
+      home: const AllTasksScreen(),
     );
   }
 }
