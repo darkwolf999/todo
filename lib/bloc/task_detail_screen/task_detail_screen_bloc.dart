@@ -18,6 +18,7 @@ class TaskDetailScreenBloc
   TaskDetailScreenBloc(this._tasksRepository) : super(TaskDetailScreenState()) {
     on<EditAcceptedEvent>(_onEditAccepted);
     on<DeadlineSwitchedEvent>(_onDeadlineSwitched);
+    on<DeleteTaskEvent>(_onDeleteTask);
   }
 
   Future<void> _onEditAccepted(
@@ -30,6 +31,13 @@ class TaskDetailScreenBloc
     } catch (e) {
       emit(state.copyWith(status: TaskDetailScreenStatus.failure));
     }
+  }
+
+  Future<void> _onDeleteTask(
+    DeleteTaskEvent event,
+    Emitter<TaskDetailScreenState> emit,
+  ) async {
+    await _tasksRepository.deleteTask(event.uuid);
   }
 
   Future<void> _onDeadlineSwitched(
