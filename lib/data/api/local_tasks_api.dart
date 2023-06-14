@@ -20,20 +20,19 @@ class LocalTasksApi extends TasksApi {
   void _init() {
     final tasksJson = _sharedPrefs.getString("allTasks");
     if (tasksJson != null) {
-      final todos = List<Map<dynamic, dynamic>>.from(
+      final tasks = List<Map<dynamic, dynamic>>.from(
         json.decode(tasksJson) as List,
       )
           .map((jsonMap) =>
               TaskModel.fromJson(Map<String, dynamic>.from(jsonMap)))
           .toList();
-      _tasksStreamController.add(todos);
+      _tasksStreamController.add(tasks);
     } else {
       _tasksStreamController.add(const []);
     }
   }
 
   @override
-  //Stream<List<TaskModel>> getTasks() => _tasksStreamController.asBroadcastStream();
   Stream<List<TaskModel>> getTasks() => _tasksStreamController;
 
   @override
@@ -43,7 +42,7 @@ class LocalTasksApi extends TasksApi {
     if (taskIndex >= 0) {
       tasks[taskIndex] = task;
     } else {
-      tasks.add(task);
+      tasks.insert(0, task);
     }
 
     _tasksStreamController.add(tasks);
