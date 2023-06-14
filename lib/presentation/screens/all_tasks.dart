@@ -295,7 +295,7 @@ class AllTasksScreenContent extends StatelessWidget {
                                             const SizedBox(width: 12),
                                             IconButton(
                                               onPressed: () {
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => TaskDetailScreen(task: bloc.state.filteredTasks?[index])));
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => TaskDetailScreen(task: bloc.state.filteredTasks[index])));
                                               },
                                               padding: EdgeInsets.zero,
                                               constraints: const BoxConstraints(),
@@ -323,7 +323,7 @@ class AllTasksScreenContent extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 developer.log('adding new task');
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => TaskDetailScreen(task: TaskModel(title: '', isDone: false))));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => const TaskDetailScreen()));
                               },
                               child: Container(
                                 margin: EdgeInsets.only(
