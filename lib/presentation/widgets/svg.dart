@@ -8,7 +8,7 @@ class SVG extends StatelessWidget {
   const SVG({
     Key? key,
     required this.imagePath,
-    required this.color,
+    this.color,
   }) : super(key: key);
 
   @override

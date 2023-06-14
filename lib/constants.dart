@@ -63,4 +63,5 @@ const String priorityLow = 'lib/assets/images/priority_low.svg';
 const String check = 'lib/assets/images/check.svg';
 const String add = 'lib/assets/images/add.svg';
 const String delete = 'lib/assets/images/delete.svg';
+const String deleteDisabled = 'lib/assets/images/delete_disabled.svg';
 const String close = 'lib/assets/images/close.svg';
