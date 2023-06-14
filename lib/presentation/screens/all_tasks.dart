@@ -137,7 +137,7 @@ class AllTasksScreenContent extends StatelessWidget {
                                       bloc.state.filteredTasks[index].uuid,
                                     ),
                                     confirmDismiss: (direction) =>
-                                      dismissConfirmation(direction, bloc, index),
+                                      confirmDismissing(direction, bloc, index),
                                     onDismissed: (_) =>
                                       bloc.add(
                                         DeleteTaskEvent(
@@ -487,7 +487,7 @@ class AllTasksScreenContent extends StatelessWidget {
     );
   }
 
-  Future<bool> dismissConfirmation(DismissDirection direction,
+  Future<bool> confirmDismissing(DismissDirection direction,
       AllTasksScreenBloc bloc,
       int index,) async {
     print(
