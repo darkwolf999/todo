@@ -3,11 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:todo/constants.dart' as Constants;
 
 import 'package:todo/data/models/taskModel.dart';
 import 'package:todo/bloc/task_detail_screen/task_detail_screen_bloc.dart';
+import 'package:todo/presentation/widgets/delete_button/delete_button.dart';
+import 'package:todo/presentation/widgets/delete_button/inkwell_delete_button.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/repositories/tasks_repository.dart';
 
@@ -15,7 +16,7 @@ import 'package:todo/repositories/tasks_repository.dart';
 class TaskDetailScreen extends StatelessWidget {
   final TaskModel? task;
 
-  const TaskDetailScreen({Key? key, required this.task,}) : super(key: key);
+  const TaskDetailScreen({Key? key, this.task,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class TaskDetailScreenContent extends StatelessWidget {
   final TaskModel? task;
 
   const TaskDetailScreenContent({
-    Key? key, required this.task,
+    Key? key, this.task,
   }) : super(key: key);
 
   @override
@@ -268,41 +269,30 @@ class TaskDetailScreenContent extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 24.0),
-              Divider(
+              const SizedBox(height: 24.0),
+              const Divider(
                 height: 0,
                 thickness: 0.5,
                 color: Color(Constants.lightSupportSeparator),
               ),
-              SizedBox(height: 8.0),
-              Container(
-                margin: const EdgeInsets.only(left: 16),
-                //color: Colors.indigoAccent,
-                child: InkWell(
+              const SizedBox(height: 8.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: task != null
+                    ? InkWellDeleteButton(
+                  icon: Constants.delete,
+                  textColor: Constants.lightColorRed,
                   onTap: () {
-
+                    bloc.add(DeleteTaskEvent(task!.uuid));
+                    Navigator.pop(context);
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, right: 5.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SVG(imagePath: Constants.delete, color: Constants.lightColorRed),
-                        SizedBox(width: 12),
-                        Text(
-                          'Удалить',
-                          style: TextStyle(
-                            fontSize: Constants.bodyFontSize,
-                            height: Constants.bodyFontHeight,
-                            color: Color(Constants.lightColorRed),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                )
+                    : const DeleteButton(
+                  icon: Constants.deleteDisabled,
+                  textColor: Constants.lightLabelDisable,
                 ),
               ),
-              SizedBox(height: 12.0),
+              const SizedBox(height: 12.0),
               //Container(width: double.infinity, height: 1200, color: Colors.deepOrange,),
             ],
           ),
