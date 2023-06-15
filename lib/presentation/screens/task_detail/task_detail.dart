@@ -81,7 +81,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                             : 'Пустая задача',
                         isDone: false,
                         priority: priority,
-                        deadline: pickedDate,
+                        deadline: isSwitchEnabled ? pickedDate : null,
                       ),
                     ),
                   );
