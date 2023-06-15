@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/data/models/taskModel.dart';
 import 'package:rxdart/subjects.dart';
 
+import 'package:todo/constants.dart' as Constants;
 import 'tasks_api.dart';
 
 class LocalTasksApi extends TasksApi {
@@ -18,13 +19,14 @@ class LocalTasksApi extends TasksApi {
       BehaviorSubject<List<TaskModel>>.seeded(const []);
 
   void _init() {
-    final tasksJson = _sharedPrefs.getString("allTasks");
+    final tasksJson = _sharedPrefs.getString(Constants.sharedPrefsTasksKey);
     if (tasksJson != null) {
       final tasks = List<Map<dynamic, dynamic>>.from(
         json.decode(tasksJson) as List,
       )
-          .map((jsonMap) =>
-              TaskModel.fromJson(Map<String, dynamic>.from(jsonMap)))
+          .map(
+            (jsonMap) => TaskModel.fromJson(Map<String, dynamic>.from(jsonMap)),
+          )
           .toList();
       _tasksStreamController.add(tasks);
     } else {
@@ -47,7 +49,10 @@ class LocalTasksApi extends TasksApi {
 
     _tasksStreamController.add(tasks);
 
-    return _sharedPrefs.setString("allTasks", json.encode(tasks));
+    return _sharedPrefs.setString(
+      Constants.sharedPrefsTasksKey,
+      json.encode(tasks),
+    );
   }
 
   Future<void> _setValue(String key, String value) =>
@@ -62,9 +67,7 @@ class LocalTasksApi extends TasksApi {
     } else {
       tasks.removeAt(taskIndex);
       _tasksStreamController.add(tasks);
-      return _setValue("allTasks", json.encode(tasks));
-
-      //return _sharedPrefs.setString("allTasks", json.encode(tasks)) as Future<void>;
+      return _setValue(Constants.sharedPrefsTasksKey, json.encode(tasks));
     }
   }
 }

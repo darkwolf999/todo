@@ -1,3 +1,6 @@
+///Data
+const sharedPrefsTasksKey = 'allTasks';
+
 ///Colors
 ///Light
 const int lightSupportSeparator = 0x33000000;

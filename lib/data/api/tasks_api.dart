@@ -4,6 +4,8 @@ abstract class TasksApi {
   const TasksApi();
 
   Stream<List<TaskModel>> getTasks();
+
   Future<void> saveTask(TaskModel task);
+
   Future<void> deleteTask(String uuid);
 }
