@@ -121,6 +121,8 @@ class TaskDetailScreenContent extends StatelessWidget {
                       onChanged: (newPriority) {
                         if (newPriority != Priority.no) {
                           priority = newPriority;
+                        } else {
+                          priority = null;
                         }
                         log(priority.toString());
                       },
@@ -181,6 +183,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                           child: Text(
                             '!! Высокий',
                             style: TextStyle(
+                              fontSize: Constants.bodyFontSize,
                               color: Color(Constants.lightColorRed),
                             ),
                           ),
