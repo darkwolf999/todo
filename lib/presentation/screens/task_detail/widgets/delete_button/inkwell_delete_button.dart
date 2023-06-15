@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/presentation/widgets/delete_button/delete_button.dart';
+import 'package:todo/presentation/screens/task_detail//widgets/delete_button/delete_button.dart';
 
 class InkWellDeleteButton extends StatelessWidget {
   final String icon;

@@ -8,8 +8,9 @@ import 'package:todo/constants.dart' as Constants;
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo/data/models/taskModel.dart';
+import 'package:todo/helpers/format_date.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
-import 'package:todo/presentation/screens/task_detail.dart';
+import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/presentation/widgets/check_button.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'dart:developer' as developer;
@@ -197,7 +198,7 @@ class AllTasksScreenContent extends StatelessWidget {
                                                 imagePath: Constants.checkboxChecked,
                                                 color: Constants.lightColorGreen,
                                                 onTap: () {
-                                                  bloc.add(CompleteTaskEvent(bloc.state.filteredTasks![index]));
+                                                  bloc.add(CompleteTaskEvent(bloc.state.filteredTasks[index]));
                                                 },
                                               ),
                                             ] else ...[
@@ -281,10 +282,9 @@ class AllTasksScreenContent extends StatelessWidget {
                                                       child: Padding(
                                                         padding: const EdgeInsets.only(top: 4.0),
                                                         child: Text(
-                                                          bloc.state.filteredTasks?[index].deadline.toString() ?? 'Дата',
-                                                          style: TextStyle(
-                                                            decoration: (bloc.state.filteredTasks?[index].isDone ?? false) ? TextDecoration.lineThrough : TextDecoration.none,
-                                                            color: const Color(Constants.lightLabelTertiary),
+                                                          FormatDate.toDmmmmyyyy(bloc.state.filteredTasks[index].deadline ?? DateTime.now()),
+                                                          style: const TextStyle(
+                                                            color: Color(Constants.lightLabelTertiary),
                                                           ),
                                                         ),
                                                       ),
@@ -474,7 +474,7 @@ class AllTasksScreenContent extends StatelessWidget {
                 title: '111',
                 //title: '$c Купить чjkhkjhkjh-тоj',
                 isDone: false,
-                priority: Priority.low,
+                //priority: Priority.low,
                 deadline: DateTime.now(),
               ),
             ),
