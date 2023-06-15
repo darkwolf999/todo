@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo/data/models/task_model.dart';
 import 'package:todo/helpers/format_date.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
+import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/presentation/widgets/check_button.dart';
 import 'package:todo/presentation/widgets/svg.dart';
@@ -216,7 +217,6 @@ class AllTasksScreenContent extends StatelessWidget {
                                                 ),
                                               ),
                                             ),
-
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,7 +237,6 @@ class AllTasksScreenContent extends StatelessWidget {
                                                           Constants.bodyFontHeight,
                                                         ),
                                                       ),
-
                                                   ] else
                                                     ...[
                                                         Text(bloc.state.filteredTasks?[index].title ?? '-',
@@ -253,7 +252,6 @@ class AllTasksScreenContent extends StatelessWidget {
                                                             Constants.bodyFontHeight,
                                                           ),
                                                         ),
-
                                                     ],
                                                   Visibility(
                                                     visible: bloc.state.filteredTasks?[index].deadline != null,
@@ -286,46 +284,15 @@ class AllTasksScreenContent extends StatelessWidget {
                                 },
                               ),
                             ),
-                            GestureDetector(
+                            AddNewTaskButton(
+                              bloc: bloc,
                               onTap: () {
                                 developer.log('adding new task');
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => const TaskDetailScreen()));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const TaskDetailScreen(),),
+                                );
                               },
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  bottom: 8.0,
-                                  top: bloc.state.filteredTasks.isEmpty ? 8.0 : 0,
-                                ),
-                                height: 48.0,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  color: Color(Constants.lightBackSecondary),
-                                ),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 16.0),
-                                    child: Row(
-                                      children: const [
-                                        SVG(imagePath: Constants.add,
-                                            color: Constants.lightLabelTertiary
-                                        ),
-                                        SizedBox(width: 12.0),
-                                        Text(
-                                          'Новое',
-                                          style: TextStyle(
-                                            fontSize: Constants.bodyFontSize,
-                                            height: Constants.bodyFontHeight,
-                                            color: Color(
-                                              Constants.lightLabelTertiary,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
                             ),
                           ],
                         ),
