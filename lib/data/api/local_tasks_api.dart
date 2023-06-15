@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo/data/models/taskModel.dart';
+import 'package:todo/data/models/task_model.dart';
 import 'package:rxdart/subjects.dart';
 
 import 'package:todo/constants.dart' as Constants;

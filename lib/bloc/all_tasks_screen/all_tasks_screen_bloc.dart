@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:todo/data/models/taskModel.dart';
+import 'package:todo/data/models/task_model.dart';
 import 'package:todo/repositories/tasks_repository.dart';
 
 import 'package:todo/presentation/models/tasks_filter.dart';

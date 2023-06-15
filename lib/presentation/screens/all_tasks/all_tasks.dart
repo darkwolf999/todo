@@ -7,7 +7,7 @@ import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:todo/data/models/taskModel.dart';
+import 'package:todo/data/models/task_model.dart';
 import 'package:todo/helpers/format_date.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
@@ -44,93 +44,81 @@ class AllTasksScreenContent extends StatelessWidget {
       body: BlocBuilder<AllTasksScreenBloc, AllTasksScreenState>(
         builder: (context, state) {
           return CustomScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             slivers: <Widget>[
               SliverAppBar(
                 pinned: true,
                 snap: false,
                 floating: true,
+                elevation: 5.0,
                 expandedHeight: 88.0,
-                //actions: [],
-                flexibleSpace: FlexibleSpaceBar(
+                backgroundColor: Colors.greenAccent,
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        bloc.add(ChangeFilterEvent(
+                            bloc.state.filter == TasksFilter.showAll
+                                ? TasksFilter.showOnlyActive
+                                : TasksFilter.showAll,),);
+                        },
+                      icon: SVG(
+                          imagePath: bloc.state.filter != TasksFilter.showAll
+                              ? Constants.visibilityOff
+                              : Constants.visibility,
+                      ),
+                  )
+                ],
+                flexibleSpace: const FlexibleSpaceBar(
                 title: Text(
                     'Мои дела',
                     style: TextStyle(
-                      fontFamily: 'Roboto',
                       color: Color(Constants.lightLabelPrimary),
                       fontSize: Constants.titleFontSize,
                       height: Constants.titleFontHeight,
                     ),
                   ),
-                  // background: Container(
-                  //   height: 80,
-                  //   //color: Colors.redAccent,
-                  //   child: const Center(
-                  //     child:  Text(
-                  //       'Categories Page',
-                  //       style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontWeight: FontWeight.bold,
-                  //           fontSize: 20),
-                  //     ),
-                  //   ),
-                  // ),
                 ),
-                // flexibleSpace: FlexibleSpaceBar(
-                //   //titlePadding:
-                //   //EdgeInsets.only(left: 16.0, top: 48.0, bottom: 16.0),
-                //   title: Text(
-                //     'Мои дела',
-                //     style: TextStyle(
-                //       fontFamily: 'Roboto',
-                //       color: Color(Constants.lightLabelPrimary),
-                //       fontSize: Constants.titleFontSize,
-                //       height: Constants.titleFontHeight,
-                //     ),
-                //   ),
-                // ),
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 60.0, top: 2.0, bottom: 16.0),
+                  padding: const EdgeInsets.only(left: 60.0, top: 2.0, bottom: 18.0),
                   child: SizedBox(
-                    height: 24,
+                    height: 24.0,
                     child: Text(
                       'Выполнено — ${bloc.state.completedTasksCount}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(Constants.lightLabelTertiary),
+                        fontSize: Constants.bodyFontSize,
+                        height: Constants.bodyFontHeight,
                       ),
                     ),
                   ),
                 ),
               ),
               SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
                       return Card(
-                        color: Color(Constants.lightBackSecondary),
-                        //color: Colors.amberAccent,
+                        color: const Color(Constants.lightBackSecondary),
                         semanticContainer: false,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         ),
-                        elevation: 4,
+                        elevation: 4.0,
                         child: Column(
                           children: [
                             ClipRRect(
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(8.0),
                                 topRight: Radius.circular(8.0),
                               ),
                               child: ListView.builder(
-                                //padding: EdgeInsets.only(top: 8),
                                 padding: EdgeInsets.zero,
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 scrollDirection: Axis.vertical,
-                                //itemCount: _theList.length,
                                 itemCount: bloc.state.filteredTasks.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Dismissible(
@@ -142,22 +130,20 @@ class AllTasksScreenContent extends StatelessWidget {
                                     onDismissed: (_) =>
                                       bloc.add(
                                         DeleteTaskEvent(
-                                          bloc.state.filteredTasks?[index].uuid ?? '0'
+                                          bloc.state.filteredTasks?[index].uuid ?? '0',
                                         ),
                                       ),
                                     background: Container(
-                                      color: Color((bloc.state.filteredTasks?[index].isDone ?? false) ? Constants.lightColorGrayLight : Constants.lightColorGreen),
-                                      child: Padding(
-                                        padding:
-                                        const EdgeInsets.only(left: 24.0),
-                                        child: SvgPicture.asset(
-                                          Constants.check,
-                                          semanticsLabel: 'delete',
+                                      color: Color((bloc.state.filteredTasks?[index].isDone ?? false)
+                                          ? Constants.lightColorGrayLight
+                                          : Constants.lightColorGreen,),
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(left: 24.0),
+                                        child: Align(
                                           alignment: Alignment.centerLeft,
-                                          fit: BoxFit.scaleDown,
-                                          colorFilter: ColorFilter.mode(
-                                            Color(Constants.lightColorWhite),
-                                            BlendMode.srcIn,
+                                          child: SVG(
+                                            imagePath: Constants.check,
+                                            color: Constants.lightColorWhite,
                                           ),
                                         ),
                                       ),
@@ -165,28 +151,24 @@ class AllTasksScreenContent extends StatelessWidget {
                                     secondaryBackground: Container(
                                       color:
                                       const Color(Constants.lightColorRed),
-                                      child: Padding(
+                                      child: const Padding(
                                         padding:
-                                        const EdgeInsets.only(right: 24.0),
-                                        child: SvgPicture.asset(
-                                          Constants.delete,
-                                          semanticsLabel: 'check',
+                                        EdgeInsets.only(right: 24.0),
+                                        child: Align(
                                           alignment: Alignment.centerRight,
-                                          fit: BoxFit.scaleDown,
-                                          colorFilter: ColorFilter.mode(
-                                              Color(Constants.lightColorWhite),
-                                              BlendMode.srcIn),
+                                          child: SVG(
+                                            imagePath: Constants.delete,
+                                            color: Constants.lightColorWhite,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                    child: Container(
-                                      //color: index.isOdd ? Colors.black26 : Colors.black12,
-                                      child: Padding(
+                                    child: Padding(
                                         padding: EdgeInsets.only(
-                                          left: 16,
-                                          top: index == 0 ? 20 : 12,
-                                          right: 16,
-                                          bottom: 12,
+                                          left: 16.0,
+                                          top: index == 0 ? 20.0 : 12.0,
+                                          right: 16.0,
+                                          bottom: 12.0,
                                         ),
                                         child: Row(
                                           crossAxisAlignment:
@@ -225,10 +207,10 @@ class AllTasksScreenContent extends StatelessWidget {
                                               child: Padding(
                                                 padding: const EdgeInsets.only(right: 3.0),
                                                 child: bloc.state.filteredTasks?[index].priority == Priority.high
-                                                    ?  SVG(
+                                                    ?  const SVG(
                                                     imagePath: Constants.priorityHigh,
                                                   color: Constants.lightColorRed,)
-                                                    : SVG(
+                                                    : const SVG(
                                                   imagePath: Constants.priorityLow,
                                                   color: Constants.lightColorGray,
                                                 ),
@@ -241,9 +223,7 @@ class AllTasksScreenContent extends StatelessWidget {
                                                 children: [
                                                   if(bloc.state.filteredTasks?[index]
                                                       .isDone ?? false) ...[
-
-                                                      //Text('${bloc.state.filteredTasks?[index].uuid ?? 0} ${bloc.state.filteredTasks?[index].title ?? '-'}',
-                                                      Text('${bloc.state.filteredTasks?[index].title ?? '-'}',
+                                                      Text(bloc.state.filteredTasks?[index].title ?? '-',
                                                         maxLines: 3,
                                                         overflow: TextOverflow
                                                             .ellipsis,
@@ -260,9 +240,7 @@ class AllTasksScreenContent extends StatelessWidget {
 
                                                   ] else
                                                     ...[
-
-                                                        //Text('${bloc.state.filteredTasks?[index].uuid ?? 0} ${bloc.state.filteredTasks?[index].title ?? '-'}',
-                                                        Text('${bloc.state.filteredTasks?[index].title ?? '-'}',
+                                                        Text(bloc.state.filteredTasks?[index].title ?? '-',
                                                           maxLines: 3,
                                                           overflow: TextOverflow
                                                               .ellipsis,
@@ -301,21 +279,9 @@ class AllTasksScreenContent extends StatelessWidget {
                                               constraints: const BoxConstraints(),
                                               icon: const SVG(imagePath: Constants.infoOutlined, color: Constants.lightLabelTertiary),
                                             )
-                                            // SvgPicture.asset(
-                                            //   Constants.infoOutlined,
-                                            //   semanticsLabel: 'infoOutline',
-                                            //   fit: BoxFit.scaleDown,
-                                            //   colorFilter: ColorFilter.mode(
-                                            //       Color(
-                                            //         Constants
-                                            //             .lightLabelTertiary,
-                                            //       ),
-                                            //       BlendMode.srcIn),
-                                            // ),
                                           ],
                                         ),
                                       ),
-                                    ),
                                   );
                                 },
                               ),
@@ -327,10 +293,10 @@ class AllTasksScreenContent extends StatelessWidget {
                               },
                               child: Container(
                                 margin: EdgeInsets.only(
-                                  bottom: 8,
-                                  top: bloc.state.filteredTasks.isEmpty ? 8 : 0,
+                                  bottom: 8.0,
+                                  top: bloc.state.filteredTasks.isEmpty ? 8.0 : 0,
                                 ),
-                                height: 48,
+                                height: 48.0,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8.0),
                                   color: Color(Constants.lightBackSecondary),
@@ -340,93 +306,13 @@ class AllTasksScreenContent extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 16.0),
                                     child: Row(
-                                      children: [
+                                      children: const [
                                         SVG(imagePath: Constants.add,
                                             color: Constants.lightLabelTertiary
                                         ),
                                         SizedBox(width: 12.0),
                                         Text(
                                           'Новое',
-                                          style: TextStyle(
-                                            fontSize: Constants.bodyFontSize,
-                                            height: Constants.bodyFontHeight,
-                                            color: Color(
-                                              Constants.lightLabelTertiary,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                bloc.add(const ChangeFilterEvent(TasksFilter.showAll));
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  bottom: 8,
-                                  top: bloc.state.filteredTasks.isEmpty ? 8 : 0,
-                                ),
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  color: Color(Constants.lightBackSecondary),
-                                ),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 16.0),
-                                    child: Row(
-                                      children: [
-                                        SVG(imagePath: Constants.add,
-                                            color: Constants.lightLabelTertiary
-                                        ),
-                                        SizedBox(width: 12.0),
-                                        Text(
-                                          'Все',
-                                          style: TextStyle(
-                                            fontSize: Constants.bodyFontSize,
-                                            height: Constants.bodyFontHeight,
-                                            color: Color(
-                                              Constants.lightLabelTertiary,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                bloc.add(const ChangeFilterEvent(TasksFilter.showOnlyActive));
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  bottom: 8,
-                                  top: bloc.state.filteredTasks.isEmpty ? 8 : 0,
-                                ),
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  color: Color(Constants.lightBackSecondary),
-                                ),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 16.0),
-                                    child: Row(
-                                      children: [
-                                        SVG(imagePath: Constants.add,
-                                            color: Constants.lightLabelTertiary
-                                        ),
-                                        SizedBox(width: 12.0),
-                                        Text(
-                                          'Актив',
                                           style: TextStyle(
                                             fontSize: Constants.bodyFontSize,
                                             height: Constants.bodyFontHeight,
@@ -455,26 +341,17 @@ class AllTasksScreenContent extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-          // onPressed: () {
+          // onPressed: () { //раскомментить потом
           //   developer.log('adding new task');
           //   Navigator.push(context, MaterialPageRoute(builder: (context) =>
           //       TaskDetailScreen(task: TaskModel(title: '', isDone: false)),),);
           // },
         onPressed: () {
-          String r = Random().nextInt(1000).toString();
-          String c = '108';
-          developer.log(r);
           bloc.add(
             AddTaskEvent(
               TaskModel(
-                //uuid: r,
-                //uuid: c,
-                //title: '$r Купить что-то, где-то, зачем-то, но зачем не очень понятно, но точно чтобы показать как обр…',
-                //title: '${r} Купить что-то',
-                title: '111',
-                //title: '$c Купить чjkhkjhkjh-тоj',
+                title: 'Купить что-то...',
                 isDone: false,
-                //priority: Priority.low,
                 deadline: DateTime.now(),
               ),
             ),
@@ -487,9 +364,11 @@ class AllTasksScreenContent extends StatelessWidget {
     );
   }
 
-  Future<bool> confirmDismissing(DismissDirection direction,
+  Future<bool> confirmDismissing(
+      DismissDirection direction,
       AllTasksScreenBloc bloc,
-      int index,) async {
+      int index,)
+  async {
     print(
       bloc.state.filteredTasks?[index].uuid ?? '0',
     );

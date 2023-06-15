@@ -1,4 +1,4 @@
-import 'package:todo/data/models/taskModel.dart';
+import 'package:todo/data/models/task_model.dart';
 
 abstract class TasksApi {
   const TasksApi();
