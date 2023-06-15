@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
-import 'package:todo/data/models/task_model.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_sliver_appbar.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_adapter.dart';
@@ -80,13 +79,7 @@ class AllTasksScreenContent extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  TaskDetailScreen(task: TaskModel(title: '', isDone: false)),
-            ),
-          );
+          addNewTask(scrollController, context);
         },
         backgroundColor: const Color(Constants.lightColorBlue),
         tooltip: 'Добавить дело',
