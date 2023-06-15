@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
-
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/presentation/screens/all_tasks/widgets/task.dart';
 import 'package:todo/presentation/widgets/svg.dart';
-import 'dart:developer' as developer;
 
 class TasksListview extends StatelessWidget {
   const TasksListview({Key? key}) : super(key: key);
@@ -87,9 +85,6 @@ class TasksListview extends StatelessWidget {
     AllTasksScreenBloc bloc,
     int index,
   ) async {
-    developer.log(
-      bloc.state.filteredTasks[index].uuid,
-    );
 
     if (direction == DismissDirection.startToEnd) {
       bloc.add(

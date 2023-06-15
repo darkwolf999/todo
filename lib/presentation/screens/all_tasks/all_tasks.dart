@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
-
 import 'package:todo/constants.dart' as Constants;
-
 import 'package:todo/data/models/task_model.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_sliver_appbar.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_adapter.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
-import 'dart:developer' as developer;
-
 import 'package:todo/repositories/tasks_repository.dart';
 
 class AllTasksScreen extends StatelessWidget {
@@ -33,7 +30,6 @@ class AllTasksScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<AllTasksScreenBloc>();
     ScrollController scrollController = ScrollController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -83,19 +79,12 @@ class AllTasksScreenContent extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        // onPressed: () { //раскомментить потом
-        //   developer.log('adding new task');
-        //   Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        //       TaskDetailScreen(task: TaskModel(title: '', isDone: false)),),);
-        // },
         onPressed: () {
-          bloc.add(
-            AddTaskEvent(
-              TaskModel(
-                title: 'Купить что-то...',
-                isDone: false,
-                deadline: DateTime.now(),
-              ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  TaskDetailScreen(task: TaskModel(title: '', isDone: false)),
             ),
           );
         },
@@ -110,7 +99,6 @@ class AllTasksScreenContent extends StatelessWidget {
     ScrollController scrollController,
     BuildContext context,
   ) async {
-    developer.log('adding new task');
     final animateScrollTop = await Navigator.push(
       context,
       MaterialPageRoute(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/constants.dart' as Constants;
@@ -124,7 +123,6 @@ class TaskDetailScreenContent extends StatelessWidget {
                         } else {
                           priority = null;
                         }
-                        log(priority.toString());
                       },
                       style: const TextStyle(
                         fontSize: Constants.buttonFontSize,
