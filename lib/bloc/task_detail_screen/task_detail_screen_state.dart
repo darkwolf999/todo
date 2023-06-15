@@ -7,7 +7,7 @@ class TaskDetailScreenState extends Equatable {
   final TaskModel? editedTask;
   final bool hasDeadline;
 
-  TaskDetailScreenState({
+  const TaskDetailScreenState({
     this.status = TaskDetailScreenStatus.initial,
     this.editedTask,
     this.hasDeadline = false,

@@ -20,15 +20,13 @@ class DeleteButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          //SVG(imagePath: Constants.delete, color: Constants.lightColorRed),
           SVG(imagePath: icon),
-          SizedBox(width: 12.0),
+          const SizedBox(width: 12.0),
           Text(
             'Удалить',
             style: TextStyle(
               fontSize: Constants.bodyFontSize,
               height: Constants.bodyFontHeight,
-              //color: Color(Constants.lightColorRed),
               color: Color(textColor),
             ),
           ),

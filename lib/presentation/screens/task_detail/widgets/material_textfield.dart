@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:todo/constants.dart' as Constants;
 
 class MaterialTextfield extends StatelessWidget {
-
   final TextEditingController textController;
 
-  const MaterialTextfield({Key? key, required this.textController}) : super(key: key);
+  const MaterialTextfield({
+    Key? key,
+    required this.textController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,27 +20,26 @@ class MaterialTextfield extends StatelessWidget {
         controller: textController,
         decoration: InputDecoration(
           floatingLabelBehavior: FloatingLabelBehavior.never,
-          contentPadding: EdgeInsets.all(16.0),
+          contentPadding: const EdgeInsets.all(16.0),
           labelText: 'Что надо сделать…',
           alignLabelWithHint: true,
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             fontSize: Constants.bodyFontSize,
             height: 18.0 / Constants.bodyFontSize,
             color: Color(Constants.lightLabelTertiary),
           ),
           filled: true,
-          fillColor: Color(Constants.lightBackSecondary),
+          fillColor: const Color(Constants.lightBackSecondary),
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(8.0),
           ),
         ),
-        style: TextStyle(
-            fontSize: Constants.bodyFontSize,
-            height: 18.0 / Constants.bodyFontSize,
-            color: Color(Constants.lightLabelPrimary)
+        style: const TextStyle(
+          fontSize: Constants.bodyFontSize,
+          height: 18.0 / Constants.bodyFontSize,
+          color: Color(Constants.lightLabelPrimary),
         ),
-        //keyboardType: TextInputType.multiline,
         maxLines: null,
         minLines: 5,
         textInputAction: TextInputAction.done,
