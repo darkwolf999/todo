@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
-
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/data/models/task_model.dart';
 import 'package:todo/presentation/widgets/svg.dart';
-import 'dart:developer' as developer;
 
 import 'package:todo/helpers/format_date.dart';
 import 'check_button.dart';
@@ -124,8 +122,9 @@ class Task extends StatelessWidget {
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
           icon: const SVG(
-              imagePath: Constants.infoOutlined,
-              color: Constants.lightLabelTertiary),
+            imagePath: Constants.infoOutlined,
+            color: Constants.lightLabelTertiary,
+          ),
         )
       ],
     );

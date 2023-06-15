@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 
+import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 
 class CustomSliverToBoxAdapter extends StatelessWidget {
