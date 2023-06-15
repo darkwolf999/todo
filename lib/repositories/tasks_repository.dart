@@ -1,5 +1,5 @@
 import 'package:todo/data/api/tasks_api.dart';
-import 'package:todo/data/models/taskModel.dart';
+import 'package:todo/data/models/task_model.dart';
 
 class TasksRepository {
   const TasksRepository({

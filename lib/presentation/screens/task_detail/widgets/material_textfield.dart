@@ -42,7 +42,6 @@ class MaterialTextfield extends StatelessWidget {
         ),
         maxLines: null,
         minLines: 5,
-        textInputAction: TextInputAction.done,
       ),
     );
   }

@@ -68,3 +68,5 @@ const String add = 'lib/assets/images/add.svg';
 const String delete = 'lib/assets/images/delete.svg';
 const String deleteDisabled = 'lib/assets/images/delete_disabled.svg';
 const String close = 'lib/assets/images/close.svg';
+const String visibility = 'lib/assets/images/visibility.svg';
+const String visibilityOff = 'lib/assets/images/visibility_off.svg';

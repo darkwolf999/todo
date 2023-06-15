@@ -2,13 +2,9 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
-part 'taskModel.g.dart';
+part 'task_model.g.dart';
 
-enum Priority {
-  no,
-  low,
-  high,
-}
+enum Priority { no, low, high }
 
 @JsonSerializable()
 class TaskModel extends Equatable {

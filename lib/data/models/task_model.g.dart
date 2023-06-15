@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'taskModel.dart';
+part of 'task_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
