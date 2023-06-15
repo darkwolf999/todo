@@ -5,12 +5,11 @@ import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 
 import 'package:todo/data/models/task_model.dart';
-import 'package:todo/presentation/models/tasks_filter.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';
-import 'package:todo/presentation/screens/all_tasks/widgets/custom_appbar.dart';
+import 'package:todo/presentation/screens/all_tasks/widgets/custom_sliver_appbar.dart';
+import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_adapter.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
-import 'package:todo/presentation/widgets/svg.dart';
 import 'dart:developer' as developer;
 
 import 'package:todo/repositories/tasks_repository.dart';
@@ -35,71 +34,24 @@ class AllTasksScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AllTasksScreenBloc>();
+    ScrollController scrollController = ScrollController();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(Constants.lightBackPrimary),
       body: BlocBuilder<AllTasksScreenBloc, AllTasksScreenState>(
         builder: (context, state) {
           return CustomScrollView(
+            controller: scrollController,
             physics: const BouncingScrollPhysics(),
             slivers: <Widget>[
-              SliverAppBar(
-                pinned: true,
-                snap: false,
-                floating: true,
-                elevation: 5.0,
-                expandedHeight: 88.0,
-                backgroundColor: Colors.greenAccent,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      bloc.add(
-                        ChangeFilterEvent(
-                          bloc.state.filter == TasksFilter.showAll
-                              ? TasksFilter.showOnlyActive
-                              : TasksFilter.showAll,
-                        ),
-                      );
-                    },
-                    icon: SVG(
-                      imagePath: bloc.state.filter != TasksFilter.showAll
-                          ? Constants.visibilityOff
-                          : Constants.visibility,
-                    ),
-                  )
-                ],
-                flexibleSpace: const FlexibleSpaceBar(
-                  title: Text(
-                    'Мои дела',
-                    style: TextStyle(
-                      color: Color(Constants.lightLabelPrimary),
-                      fontSize: Constants.titleFontSize,
-                      height: Constants.titleFontHeight,
-                    ),
-                  ),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 60.0,
-                    top: 2.0,
-                    bottom: 18.0,
-                  ),
-                  child: SizedBox(
-                    height: 24.0,
-                    child: Text(
-                      'Выполнено — ${bloc.state.completedTasksCount}',
-                      style: const TextStyle(
-                        color: Color(Constants.lightLabelTertiary),
-                        fontSize: Constants.bodyFontSize,
-                        height: Constants.bodyFontHeight,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              CustomSliverAppbar(),
+              CustomSliverToBoxAdapter(),
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                padding: const EdgeInsets.only(
+                  left: 4.0,
+                  right: 4.0,
+                  bottom: 3.0,
+                ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
@@ -112,19 +64,10 @@ class AllTasksScreenContent extends StatelessWidget {
                         elevation: 4.0,
                         child: Column(
                           children: [
-                            //TasksListview(bloc: bloc),
-                            TasksListview(bloc: bloc),
+                            TasksListview(),
                             AddNewTaskButton(
-                              bloc: bloc,
                               onTap: () {
-                                developer.log('adding new task');
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const TaskDetailScreen(),
-                                  ),
-                                );
+                                addNewTask(scrollController, context);
                               },
                             ),
                           ],
@@ -135,7 +78,6 @@ class AllTasksScreenContent extends StatelessWidget {
                   ),
                 ),
               ),
-              const SliverPadding(padding: EdgeInsets.only(bottom: 3.0)),
             ],
           );
         },
@@ -162,5 +104,27 @@ class AllTasksScreenContent extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void addNewTask(
+    ScrollController scrollController,
+    BuildContext context,
+  ) async {
+    developer.log('adding new task');
+    final animateScrollTop = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const TaskDetailScreen(),
+      ),
+    );
+    if (animateScrollTop) {
+      scrollController.animateTo(
+        0,
+        duration: const Duration(
+          milliseconds: 500,
+        ),
+        curve: Curves.linear,
+      );
+    }
   }
 }

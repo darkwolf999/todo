@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 
 import 'package:todo/constants.dart' as Constants;
-import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'dart:developer' as developer;
 
 class AddNewTaskButton extends StatelessWidget {
-  final AllTasksScreenBloc bloc;
   final VoidCallback onTap;
 
   const AddNewTaskButton({
     Key? key,
-    required this.bloc,
     required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<AllTasksScreenBloc>();
     return GestureDetector(
       onTap: onTap,
       child: Container(

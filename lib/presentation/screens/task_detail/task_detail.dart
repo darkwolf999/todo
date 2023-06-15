@@ -59,7 +59,7 @@ class TaskDetailScreenContent extends StatelessWidget {
         leading: IconButton(
           splashRadius: 24.0,
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, false);
           },
           icon: const SVG(
             imagePath: Constants.close,
@@ -85,7 +85,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                       ),
                     ),
                   );
-                  Navigator.pop(context);
+                  Navigator.pop(context, true);
                 },
                 child: const Text(
                   'СОХРАНИТЬ',
