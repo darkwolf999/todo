@@ -27,5 +27,14 @@ ___
 + Для хранения списка дел используется shared_preferences
 + Для ведения логов используется пакет logger https://pub.dev/packages/logger
 ___
+### APK
+Ссылка для скачивания: https://github.com/darkwolf999/todo/releases/tag/1.0.0
+___
 ### Скриншоты
 
+<p float="center">
+  <img src="https://github.com/darkwolf999/todo/blob/master/screenshots/1.JPG" width="230" />
+  <img src="https://github.com/darkwolf999/todo/blob/master/screenshots/2.JPG" width="230" /> 
+  <img src="https://github.com/darkwolf999/todo/blob/master/screenshots/3.JPG" width="230" />
+  <img src="https://github.com/darkwolf999/todo/blob/master/screenshots/4.JPG" width="230" />
+</p>
