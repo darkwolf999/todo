@@ -45,7 +45,7 @@ class TaskDetailScreenContent extends StatelessWidget {
 
     final TextEditingController textController = TextEditingController();
     textController.text = task?.title ?? '';
-    Priority? priority = task?.priority;
+    Priority priority = task?.priority ?? Priority.no;
     DateTime? pickedDate = task?.deadline;
     bool isSwitchEnabled = task?.deadline != null;
 
@@ -121,7 +121,8 @@ class TaskDetailScreenContent extends StatelessWidget {
                         if (newPriority != Priority.no) {
                           priority = newPriority;
                         } else {
-                          priority = null;
+                          //priority = null;
+                          priority = Priority.no; //todo переделать
                         }
                       },
                       style: const TextStyle(

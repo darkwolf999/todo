@@ -11,14 +11,14 @@ class TaskModel extends Equatable {
   final String uuid;
   final String title;
   final bool isDone;
-  final Priority? priority;
+  final Priority priority;
   final DateTime? deadline;
 
   TaskModel({
     String? uuid,
     required this.title,
     required this.isDone,
-    this.priority,
+    required this.priority,
     this.deadline,
   }) : uuid = uuid ?? const Uuid().v4();
 
