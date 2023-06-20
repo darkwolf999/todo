@@ -1,7 +1,28 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo/my_logger.dart';
+import 'package:todo/presentation/screens/all_tasks/all_tasks.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:todo/repositories/tasks_repository.dart';
+import 'data/api/local_tasks_api.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final tasksApi = LocalTasksApi(
+    prefs: await SharedPreferences.getInstance(),
+  );
+  final tasksRepository = TasksRepository(tasksApi: tasksApi);
+
+  runApp(
+    RepositoryProvider<TasksRepository>(
+      lazy: false,
+      create: (context) => tasksRepository,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -9,38 +30,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MyLogger.infoLog('Application started');
     return MaterialApp(
-      title: 'Мои дела',
+      debugShowCheckedModeBanner: false,
+      title: 'To-Do!',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Мои дела'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){},
-        tooltip: 'Добавить дело',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
+      ],
+      supportedLocales: const [Locale('en'), Locale('ru')],
+      home: const AllTasksScreen(),
     );
   }
 }

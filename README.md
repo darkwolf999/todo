@@ -1,16 +1,40 @@
-# todo
+# To-Do!
 
-To-Do list for Yandex
+To-Do list для школы мобильной разработки Яндекса
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Домашнее задание 1
 
-A few resources to get you started if this is your first Flutter project:
+Сверстано 2 экрана:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
++ Список всех задач
++ Создание/Редактирование задачи
+___
+Реализована следующая логика:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
++ Добавить новую задачу, описав ее текстом и установив ей приоритет и дедлайн
++ Отредактировать уже добавленную задачу
++ Удалить задачу при помощи свайпа вбок, либо на странице редактирования по нажатию кнопки
++ Отметить задачу выполненной при помощи свайпа вбок, либо нажатием на чекбокс задачи
++ Отменить выполнение задачи повторным свайпом вбок
++ Показать / скрыть выполненные задачи
++ Навигация между экранами
+___
+Дополнительная информация: 
+
++ В качестве стейт менеджмента используется пакет flutter_bloc https://pub.dev/packages/flutter_bloc
++ Для хранения списка дел используется shared_preferences
++ Для ведения логов используется пакет logger https://pub.dev/packages/logger
+___
+### APK
+Ссылка для скачивания: https://github.com/darkwolf999/todo/releases/tag/1.0.0
+___
+### Скриншоты
+
+<p float="center">
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_1/screenshots/1.JPG" width="230" />
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_1/screenshots/2.JPG" width="230" /> 
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_1/screenshots/3.JPG" width="230" />
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_1/screenshots/4.JPG" width="230" />
+</p>
