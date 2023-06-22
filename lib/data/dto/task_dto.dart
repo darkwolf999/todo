@@ -31,33 +31,8 @@ class TaskDto {
     required this.lastUpdatedBy,
   });
 
-  // TaskModel copyWith({
-  //   String? uuid,
-  //   String? title,
-  //   bool? isDone,
-  //   Priority? priority,
-  //   DateTime? deadline,
-  // }) {
-  //   return TaskModel(
-  //     uuid: uuid ?? this.uuid,
-  //     title: title ?? this.title,
-  //     isDone: isDone ?? this.isDone,
-  //     priority: priority ?? this.priority,
-  //     deadline: deadline ?? this.deadline,
-  //   );
-  // }
-
   static TaskDto fromJson(Map<String, dynamic> json) =>
       _$TaskDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$TaskDtoToJson(this);
-
-  // @override
-  // List<Object?> get props => [
-  //   uuid ?? '',
-  //   title ?? '',
-  //   isDone ?? '',
-  //   priority ?? '',
-  //   deadline ?? '',
-  // ];
 }

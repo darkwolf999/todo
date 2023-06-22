@@ -1,6 +1,8 @@
 import 'package:rxdart/rxdart.dart';
+import 'package:todo/data/api/database_tasks_api.dart';
+import 'package:todo/data/mappers/db_task_mapper.dart';
 
-import 'package:todo/data/mappers/task_mapper.dart';
+import 'package:todo/data/mappers/dto_task_mapper.dart';
 import 'package:todo/data/models/task_model.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
 import 'package:todo/data/dto/task_dto.dart';
@@ -8,9 +10,12 @@ import 'package:todo/data/dto/task_dto.dart';
 class TasksRepository {
   TasksRepository({
     required NetworkTasksApi networkTasksApi,
-  }) : _networkTasksApi = networkTasksApi;
+    required DatabaseTasksApi databaseTasksApi,
+  })  : _networkTasksApi = networkTasksApi,
+        _databaseTasksApi = databaseTasksApi;
 
   final NetworkTasksApi _networkTasksApi;
+  final DatabaseTasksApi _databaseTasksApi;
 
   final _tasksStreamController =
       BehaviorSubject<List<TaskModel>>.seeded(const []);
@@ -18,13 +23,19 @@ class TasksRepository {
   Stream<List<TaskModel>> getTasks() => _tasksStreamController;
 
   Future<void> fetchTasks() async {
-    final tasksListDto = await _networkTasksApi.fetchTasks();
+    final tasksListDto = await _databaseTasksApi.fetchTasks();
     final tasks = <TaskModel>[];
-    for (final dto in tasksListDto.list) {
+    for (final dto in tasksListDto!) {
       tasks.add(dto.toDomain());
     }
-    final reversedTasks = tasks.reversed;
-    _tasksStreamController.add(reversedTasks.toList());
+    //final tasksListDto = await _networkTasksApi.fetchTasks();
+    // final tasks = <TaskModel>[];
+    // for (final dto in tasksListDto.list) {
+    //   tasks.add(dto.toDomain());
+    // }
+    // final reversedTasks = tasks.reversed;
+    // _tasksStreamController.add(reversedTasks.toList());
+    _tasksStreamController.add(tasks);
   }
 
   Future<void> saveTask(TaskModel task) async {
@@ -35,11 +46,17 @@ class TasksRepository {
     if (taskIndex >= 0) {
       tasks[taskIndex] = task;
       _tasksStreamController.add(tasks);
-      final taskResponseDto = await _networkTasksApi.editTask(taskDto);
+      final taskDB = task.toDB();
+      _databaseTasksApi.addNewTask(taskDB);
+
+      //final taskResponseDto = await _networkTasksApi.editTask(taskDto);
     } else {
       tasks.insert(0, task);
       _tasksStreamController.add(tasks);
-      final taskResponseDto = await _networkTasksApi.addNewTask(taskDto);
+      final taskDB = task.toDB();
+      _databaseTasksApi.addNewTask(taskDB);
+
+      //final taskResponseDto = await _networkTasksApi.addNewTask(taskDto);
     }
   }
 
@@ -53,7 +70,8 @@ class TasksRepository {
 
       _tasksStreamController.add(tasks);
 
-      final taskResponseDto = await _networkTasksApi.deleteTask(uuid);
+      await _databaseTasksApi.deleteTask(uuid);
+      //final taskResponseDto = await _networkTasksApi.deleteTask(uuid);
     }
   }
 
