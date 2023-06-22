@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/l10n/locale_keys.g.dart';
+import 'package:todo/presentation/screens/all_tasks/widgets/language_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/visibility_button.dart';
 
 class CustomSliverAppbar extends StatelessWidget {
@@ -17,19 +18,19 @@ class CustomSliverAppbar extends StatelessWidget {
       elevation: 5.0,
       collapsedHeight: 60.0,
       expandedHeight: 124.0,
-      backgroundColor: Color(Constants.lightBackPrimary),
-      actions: [
+      backgroundColor: const Color(Constants.lightBackPrimary),
+      actions: const [
         Padding(
           padding: EdgeInsets.only(right: 8.0),
           child: VisibilityButton(),
         )
       ],
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: EdgeInsets.only(left: 60.0, bottom: 17.0),
+        titlePadding: const EdgeInsets.only(left: 60.0, bottom: 17.0),
         expandedTitleScale: 1.6,
         title: Text(
           LocaleKeys.appTitle.tr(), //'Мои дела',
-          style: TextStyle(
+          style: const TextStyle(
             color: Color(Constants.lightLabelPrimary),
             fontSize: Constants.titleFontSize,
             height: Constants.titleFontHeight,

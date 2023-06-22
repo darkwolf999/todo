@@ -8,6 +8,7 @@ import 'package:todo/constants.dart' as Constants;
 import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_sliver_appbar.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_adapter.dart';
+import 'package:todo/presentation/screens/all_tasks/widgets/language_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/repositories/tasks_repository.dart';
@@ -79,16 +80,26 @@ class AllTasksScreenContent extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.locale == Locale('ru')
-              ? context.setLocale(Locale('en'))
-              : context.setLocale(Locale('ru'));
-          //addNewTask(scrollController, context);
-        },
-        backgroundColor: const Color(Constants.lightColorBlue),
-        tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
-        child: const Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          LanguageButton(
+            onTap: () {
+              context.locale == const Locale('ru')
+                  ? context.setLocale(const Locale('en'))
+                  : context.setLocale(const Locale('ru'));
+            },
+          ),
+          const SizedBox(width: 8),
+          FloatingActionButton(
+            onPressed: () {
+              addNewTask(scrollController, context);
+            },
+            backgroundColor: const Color(Constants.lightColorBlue),
+            tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
