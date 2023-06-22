@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
+
+import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:intl/intl.dart';
 
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/data/models/task_model.dart';
@@ -84,8 +88,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                         isDone: false,
                         priority: priority,
                         deadline: isSwitchEnabled ? pickedDate : null,
-                        createdAt:
-                            createdAt ?? dateNowStamp,
+                        createdAt: createdAt ?? dateNowStamp,
                         changedAt: dateNowStamp,
                         lastUpdatedBy: await getDeviceModel(),
                       ),
@@ -93,8 +96,9 @@ class TaskDetailScreenContent extends StatelessWidget {
                   );
                   Navigator.pop(context, true);
                 },
-                child: const Text(
-                  'СОХРАНИТЬ',
+                child: Text(
+                  //СОХРАНИТЬ
+                  LocaleKeys.SAVE.tr(),
                   style: TextStyle(
                     fontSize: Constants.buttonFontSize,
                     height: Constants.buttonFontHeight,
@@ -137,9 +141,9 @@ class TaskDetailScreenContent extends StatelessWidget {
                         height: Constants.buttonFontHeight,
                         color: Color(Constants.lightLabelTertiary),
                       ),
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         enabled: false,
-                        disabledBorder: UnderlineInputBorder(
+                        disabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(Constants.lightSupportSeparator),
                             width: 0.5,
@@ -147,28 +151,31 @@ class TaskDetailScreenContent extends StatelessWidget {
                           ),
                         ),
                         contentPadding:
-                            EdgeInsets.only(bottom: 16.0, top: 16.0),
-                        labelText: 'Важность',
-                        labelStyle: TextStyle(
+                            const EdgeInsets.only(bottom: 16.0, top: 16.0),
+                        //Важность
+                        labelText: LocaleKeys.importance.tr(),
+                        labelStyle: const TextStyle(
                           fontSize: 22.0,
                           color: Color(Constants.lightLabelPrimary),
                         ),
                       ),
                       iconSize: 0,
-                      hint: const Text(
-                        'Нет',
-                        style: TextStyle(
+                      hint: Text(
+                        //Нет
+                        LocaleKeys.no.tr(),
+                        style: const TextStyle(
                           fontSize: Constants.buttonFontSize,
                           height: Constants.buttonFontHeight,
                           color: Color(Constants.lightLabelTertiary),
                         ),
                       ),
-                      items: const <DropdownMenuItem>[
+                      items: <DropdownMenuItem>[
                         DropdownMenuItem(
                           value: Priority.no,
                           child: Text(
-                            'Нет',
-                            style: TextStyle(
+                            //Нет
+                            LocaleKeys.no.tr(),
+                            style: const TextStyle(
                               fontSize: Constants.bodyFontSize,
                               color: Color(Constants.lightLabelPrimary),
                             ),
@@ -177,8 +184,9 @@ class TaskDetailScreenContent extends StatelessWidget {
                         DropdownMenuItem(
                           value: Priority.low,
                           child: Text(
-                            'Низкий',
-                            style: TextStyle(
+                            //Низкий
+                            LocaleKeys.low.tr(),
+                            style: const TextStyle(
                               fontSize: Constants.bodyFontSize,
                               color: Color(Constants.lightLabelPrimary),
                             ),
@@ -187,8 +195,9 @@ class TaskDetailScreenContent extends StatelessWidget {
                         DropdownMenuItem(
                           value: Priority.high,
                           child: Text(
-                            '!! Высокий',
-                            style: TextStyle(
+                            //!! Высокий
+                            '!! ${LocaleKeys.high.tr()}',
+                            style: const TextStyle(
                               fontSize: Constants.bodyFontSize,
                               color: Color(Constants.lightColorRed),
                             ),
@@ -206,9 +215,10 @@ class TaskDetailScreenContent extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Сделать до',
-                            style: TextStyle(
+                          Text(
+                            //Сделать до
+                            LocaleKeys.deadline.tr(),
+                            style: const TextStyle(
                               fontSize: Constants.bodyFontSize,
                               height: Constants.bodyFontHeight,
                               color: Color(Constants.lightLabelPrimary),
@@ -220,8 +230,12 @@ class TaskDetailScreenContent extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
                                 pickedDate != null
-                                    ? FormatDate.toDmmmmyyyy(pickedDate!)
-                                    : 'дата',
+                                    ? FormatDate.toDmmmmyyyy(
+                                        pickedDate!,
+                                        Localizations.localeOf(context)
+                                            .toString(),
+                                      )
+                                    : '',
                                 style: const TextStyle(
                                   fontSize: Constants.buttonFontSize,
                                   color: Color(Constants.lightColorBlue),
@@ -288,8 +302,9 @@ Future<String> getDeviceModel() async {
 Future<DateTime?> pickDeadlineDate(BuildContext context) {
   return showDatePicker(
     helpText: DateTime.now().year.toString(),
-    confirmText: 'ГОТОВО',
-    locale: const Locale('ru'),
+    //ГОТОВО
+    confirmText: LocaleKeys.DONE.tr(),
+    locale: Localizations.localeOf(context),
     context: context,
     initialDate: DateTime.now(),
     firstDate: DateTime(1950),

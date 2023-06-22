@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
+import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/constants.dart' as Constants;
 
 class MaterialTextfield extends StatelessWidget {
@@ -21,7 +23,8 @@ class MaterialTextfield extends StatelessWidget {
         decoration: InputDecoration(
           floatingLabelBehavior: FloatingLabelBehavior.never,
           contentPadding: const EdgeInsets.all(16.0),
-          labelText: 'Что надо сделать…',
+          //Что надо сделать…
+          labelText: LocaleKeys.whatToDo.tr(),
           alignLabelWithHint: true,
           labelStyle: const TextStyle(
             fontSize: Constants.bodyFontSize,

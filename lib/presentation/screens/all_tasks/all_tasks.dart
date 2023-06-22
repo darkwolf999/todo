@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';
@@ -79,10 +81,13 @@ class AllTasksScreenContent extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          addNewTask(scrollController, context);
+          context.locale == Locale('ru')
+              ? context.setLocale(Locale('en'))
+              : context.setLocale(Locale('ru'));
+          //addNewTask(scrollController, context);
         },
         backgroundColor: const Color(Constants.lightColorBlue),
-        tooltip: 'Добавить дело',
+        tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
         child: const Icon(Icons.add),
       ),
     );

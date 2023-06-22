@@ -1,0 +1,15 @@
+{
+  "appTitle": "My tasks",
+  "completed": "Completed",
+  "newTask": "New",
+  "addTask": "Add task",
+  "SAVE": "SAVE",
+  "whatToDo": "What need to do...",
+  "importance": "Importance",
+  "no": "No",
+  "low": "Low",
+  "high": "High",
+  "deadline": "Deadline",
+  "delete": "Delete",
+  "DONE": "DONE"
+}

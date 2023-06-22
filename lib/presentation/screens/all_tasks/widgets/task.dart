@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
@@ -99,7 +102,10 @@ class Task extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: Text(
-                    FormatDate.toDmmmmyyyy(task.deadline ?? DateTime.now()),
+                    FormatDate.toDmmmmyyyy(
+                      task.deadline ?? DateTime.now(),
+                      Localizations.localeOf(context).toString(),
+                    ),
                     style: const TextStyle(
                       color: Color(Constants.lightLabelTertiary),
                     ),
