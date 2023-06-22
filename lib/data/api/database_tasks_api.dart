@@ -13,7 +13,6 @@ import '../db/task_db.dart';
 import '../dto/task_dto.dart';
 import '../dto/tasks_list_dto.dart';
 import 'constants/api_constants.dart';
-import 'tasks_api.dart';
 
 class DatabaseTasksApi {
   final Directory _dir;
@@ -25,8 +24,6 @@ class DatabaseTasksApi {
   })  : _dir = dir,
         _isar = isar;
 
-
-
   Future<List<TaskDB>?> fetchTasks() async {
     List<TaskDB>? tasksDB;
 
@@ -34,13 +31,12 @@ class DatabaseTasksApi {
       tasksDB = await _isar.taskDBs.where().findAll();
     });
 
-    //final tasksDB = await _isar.taskDBs.(isarId); // get
     return tasksDB;
   }
 
   Future<TaskDB?> fetchSingleTask(String uuid) async {
     int isarId = FastHash.generate(uuid);
-    final taskDB = await _isar.taskDBs.get(isarId); // get
+    final taskDB = await _isar.taskDBs.get(isarId);
     return taskDB;
   }
 
@@ -61,15 +57,12 @@ class DatabaseTasksApi {
         await _isar.taskDBs.put(task);
       },
     );
-    // await _isar.writeTxn(() async {
-    //   await _isar.taskDBs.delete(id); // delete
-    // });
   }
 
   Future<void> deleteTask(String uuid) async {
     int isarId = FastHash.generate(uuid);
     await _isar.writeTxn(() async {
-      await _isar.taskDBs.delete(isarId); // delete
+      await _isar.taskDBs.delete(isarId);
     });
   }
 
