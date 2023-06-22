@@ -84,7 +84,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                         uuid: task?.uuid,
                         title: textController.text.isNotEmpty
                             ? textController.text
-                            : 'Пустая задача',
+                            : LocaleKeys.emptyTask.tr(),
                         isDone: false,
                         priority: priority,
                         deadline: isSwitchEnabled ? pickedDate : null,

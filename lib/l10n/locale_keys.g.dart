@@ -14,5 +14,6 @@ abstract class  LocaleKeys {
   static const deadline = 'deadline';
   static const delete = 'delete';
   static const DONE = 'DONE';
+  static const emptyTask = 'emptyTask';
 
 }

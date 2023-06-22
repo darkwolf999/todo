@@ -11,5 +11,6 @@
   "high": "High",
   "deadline": "Deadline",
   "delete": "Delete",
-  "DONE": "DONE"
+  "DONE": "DONE",
+  "emptyTask": "Empty task"
 }

@@ -23,11 +23,13 @@ void main() async {
 
   final tasksRepository = await initRepo();
 
+  MyLogger.infoLog('Starting application!');
+
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ru')],
       path: 'lib/assets/translations',
-      fallbackLocale: Locale('en'),
+      fallbackLocale: Locale('ru'),
       assetLoader: CodegenLoader(),
       child: RepositoryProvider<TasksRepository>(
         lazy: false,
@@ -43,7 +45,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MyLogger.infoLog('Application started');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'To-Do!',

@@ -27,7 +27,8 @@ class CodegenLoader extends AssetLoader{
   "high": "High",
   "deadline": "Deadline",
   "delete": "Delete",
-  "DONE": "DONE"
+  "DONE": "DONE",
+  "emptyTask": "Empty task"
 };
 static const Map<String,dynamic> ru = {
   "appTitle": "Мои дела",
@@ -42,7 +43,8 @@ static const Map<String,dynamic> ru = {
   "high": "Высокий",
   "deadline": "Сделать до",
   "delete": "Удалить",
-  "DONE": "ГОТОВО"
+  "DONE": "ГОТОВО",
+  "emptyTask": "Пустая задача"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "ru": ru};
 }
