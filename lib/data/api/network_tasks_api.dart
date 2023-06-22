@@ -8,9 +8,8 @@ import '../../my_logger.dart';
 import '../dto/task_dto.dart';
 import '../dto/tasks_list_dto.dart';
 import 'constants/api_constants.dart';
-import 'tasks_api.dart';
 
-class NetworkTasksApi extends TasksApi {
+class NetworkTasksApi {
   final Dio _dio;
   final SharedPreferences _prefs;
 
@@ -158,17 +157,5 @@ class NetworkTasksApi extends TasksApi {
     MyLogger.log('revision = ${_prefs.getInt('revision')}');
 
     return tasksListDto;
-  }
-
-  @override
-  Stream<List<TaskModel>> getTasks() {
-    // TODO: implement getTasks
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> saveTask(TaskModel task) {
-    // TODO: implement saveTask
-    throw UnimplementedError();
   }
 }

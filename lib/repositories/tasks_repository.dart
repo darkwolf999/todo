@@ -1,4 +1,5 @@
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/data/api/database_tasks_api.dart';
 import 'package:todo/data/mappers/db_task_mapper.dart';
 
@@ -9,11 +10,14 @@ import 'package:todo/data/dto/task_dto.dart';
 
 class TasksRepository {
   TasksRepository({
+    required SharedPreferences prefs,
     required NetworkTasksApi networkTasksApi,
     required DatabaseTasksApi databaseTasksApi,
-  })  : _networkTasksApi = networkTasksApi,
+  })  : _prefs = prefs,
+        _networkTasksApi = networkTasksApi,
         _databaseTasksApi = databaseTasksApi;
 
+  final SharedPreferences _prefs;
   final NetworkTasksApi _networkTasksApi;
   final DatabaseTasksApi _databaseTasksApi;
 
@@ -23,9 +27,9 @@ class TasksRepository {
   Stream<List<TaskModel>> getTasks() => _tasksStreamController;
 
   Future<void> fetchTasks() async {
-    final tasksListDto = await _databaseTasksApi.fetchTasks();
+    final tasksListDB = await _databaseTasksApi.fetchTasks();
     final tasks = <TaskModel>[];
-    for (final dto in tasksListDto!) {
+    for (final dto in tasksListDB!) {
       tasks.add(dto.toDomain());
     }
     //final tasksListDto = await _networkTasksApi.fetchTasks();

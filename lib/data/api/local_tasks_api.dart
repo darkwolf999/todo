@@ -4,9 +4,8 @@ import 'package:todo/data/models/task_model.dart';
 import 'package:rxdart/subjects.dart';
 
 import 'package:todo/constants.dart' as Constants;
-import 'tasks_api.dart';
 
-class LocalTasksApi extends TasksApi {
+class LocalTasksApi {
   LocalTasksApi({
     required SharedPreferences prefs,
   }) : _sharedPrefs = prefs {
@@ -34,10 +33,8 @@ class LocalTasksApi extends TasksApi {
     }
   }
 
-  @override
   Stream<List<TaskModel>> getTasks() => _tasksStreamController;
 
-  @override
   Future<void> saveTask(TaskModel task) {
     final tasks = [..._tasksStreamController.value];
     final taskIndex = tasks.indexWhere((t) => t.uuid == task.uuid);
@@ -58,7 +55,6 @@ class LocalTasksApi extends TasksApi {
   Future<void> _setValue(String key, String value) =>
       _sharedPrefs.setString(key, value);
 
-  @override
   Future<void> deleteTask(String uuid) async {
     final tasks = [..._tasksStreamController.value];
     final taskIndex = tasks.indexWhere((t) => t.uuid == uuid);

@@ -88,6 +88,7 @@ Future<TasksRepository> initRepo() async {
   );
 
   final tasksRepository = TasksRepository(
+    prefs: prefs,
     networkTasksApi: networkTasksApi,
     databaseTasksApi: databaseTasksApi,
   );
