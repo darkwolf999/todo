@@ -13,6 +13,10 @@ class TaskModel extends Equatable {
   final bool isDone;
   final Priority priority;
   final DateTime? deadline;
+  final String? color;
+  final int createdAt;
+  final int changedAt;
+  final String lastUpdatedBy;
 
   TaskModel({
     String? uuid,
@@ -20,6 +24,10 @@ class TaskModel extends Equatable {
     required this.isDone,
     required this.priority,
     this.deadline,
+    this.color,
+    required this.createdAt,
+    required this.changedAt,
+    required this.lastUpdatedBy,
   }) : uuid = uuid ?? const Uuid().v4();
 
   TaskModel copyWith({
@@ -28,6 +36,10 @@ class TaskModel extends Equatable {
     bool? isDone,
     Priority? priority,
     DateTime? deadline,
+    String? color,
+    int? createdAt,
+    int? changedAt,
+    String? lastUpdatedBy,
   }) {
     return TaskModel(
       uuid: uuid ?? this.uuid,
@@ -35,6 +47,10 @@ class TaskModel extends Equatable {
       isDone: isDone ?? this.isDone,
       priority: priority ?? this.priority,
       deadline: deadline ?? this.deadline,
+      color: color ?? this.color,
+      createdAt: createdAt ?? this.createdAt,
+      changedAt: changedAt ?? this.changedAt,
+      lastUpdatedBy: lastUpdatedBy ?? this.lastUpdatedBy,
     );
   }
 
@@ -50,5 +66,9 @@ class TaskModel extends Equatable {
         isDone ?? '',
         priority ?? '',
         deadline ?? '',
+        color ?? '',
+        createdAt ?? '',
+        changedAt ?? '',
+        lastUpdatedBy ?? '',
       ];
 }

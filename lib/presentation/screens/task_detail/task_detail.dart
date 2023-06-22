@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/data/models/task_model.dart';
@@ -47,6 +48,7 @@ class TaskDetailScreenContent extends StatelessWidget {
     textController.text = task?.title ?? '';
     Priority priority = task?.priority ?? Priority.no;
     DateTime? pickedDate = task?.deadline;
+    int? createdAt = task?.createdAt;
     bool isSwitchEnabled = task?.deadline != null;
 
     return Scaffold(
@@ -70,7 +72,8 @@ class TaskDetailScreenContent extends StatelessWidget {
             padding: const EdgeInsets.only(right: 8.0),
             child: Center(
               child: TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  int dateNowStamp = DateTime.now().millisecondsSinceEpoch;
                   bloc.add(
                     EditAcceptedEvent(
                       TaskModel(
@@ -81,6 +84,10 @@ class TaskDetailScreenContent extends StatelessWidget {
                         isDone: false,
                         priority: priority,
                         deadline: isSwitchEnabled ? pickedDate : null,
+                        createdAt:
+                            createdAt ?? dateNowStamp,
+                        changedAt: dateNowStamp,
+                        lastUpdatedBy: await getDeviceModel(),
                       ),
                     ),
                   );
@@ -270,6 +277,12 @@ class TaskDetailScreenContent extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<String> getDeviceModel() async {
+  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+  return androidInfo.model;
 }
 
 Future<DateTime?> pickDeadlineDate(BuildContext context) {

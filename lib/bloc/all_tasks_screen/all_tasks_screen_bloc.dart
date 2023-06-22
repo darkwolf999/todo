@@ -29,6 +29,8 @@ class AllTasksScreenBloc
   ) async {
     emit(state.copyWith(status: AllTasksScreenStatus.initial));
 
+    await _tasksRepository.fetchTasks();
+
     await emit.forEach<List<TaskModel>>(
       _tasksRepository.getTasks(),
       onData: (tasks) => state.copyWith(
