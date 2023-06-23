@@ -27,7 +27,7 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    await _prefs.setInt(
+    _prefs.setInt(
       Constants.shPrefsRevisionKey,
       tasksListDto.revision,
     );
@@ -55,7 +55,7 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    await _prefs.setInt(
+    _prefs.setInt(
       Constants.shPrefsRevisionKey,
       tasksResponseDto.revision,
     );
@@ -81,7 +81,7 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    await _prefs.setInt(
+    _prefs.setInt(
       Constants.shPrefsRevisionKey,
       tasksResponseDto.revision,
     );
@@ -105,7 +105,7 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    await _prefs.setInt(
+    _prefs.setInt(
       Constants.shPrefsRevisionKey,
       tasksResponseDto.revision,
     );
@@ -123,7 +123,7 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    await _prefs.setInt(
+    _prefs.setInt(
       Constants.shPrefsRevisionKey,
       tasksResponseDto.revision,
     );
@@ -149,7 +149,7 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    await _prefs.setInt(
+    _prefs.setInt(
       Constants.shPrefsRevisionKey,
       tasksListDto.revision,
     );
