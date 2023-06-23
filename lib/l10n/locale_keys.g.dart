@@ -15,5 +15,7 @@ abstract class  LocaleKeys {
   static const delete = 'delete';
   static const DONE = 'DONE';
   static const emptyTask = 'emptyTask';
+  static const smthgWentWrong = 'smthgWentWrong';
+  static const refreshPage = 'refreshPage';
 
 }

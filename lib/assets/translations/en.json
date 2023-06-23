@@ -12,5 +12,7 @@
   "deadline": "Deadline",
   "delete": "Delete",
   "DONE": "DONE",
-  "emptyTask": "Empty task"
+  "emptyTask": "Empty task",
+  "smthgWentWrong": "Something went wrong...",
+  "refreshPage": "Refresh screen"
 }

@@ -12,5 +12,7 @@
   "deadline": "Сделать до",
   "delete": "Удалить",
   "DONE": "ГОТОВО",
-  "emptyTask": "Пустая задача"
+  "emptyTask": "Пустая задача",
+  "smthgWentWrong": "Что-то пошло не так...",
+  "refreshPage": "Обновить страницу"
 }
