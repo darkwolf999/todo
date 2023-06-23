@@ -29,20 +29,24 @@ class AllTasksScreenBloc
   ) async {
     emit(state.copyWith(status: AllTasksScreenStatus.initial));
 
-    await _tasksRepository.fetchTasks();
-
-    await emit.forEach<List<TaskModel>>(
-      _tasksRepository.getTasks(),
-      onData: (tasks) => state.copyWith(
-        status: AllTasksScreenStatus.success,
-        tasks: tasks,
-        completedTasksCount: tasks.isNotEmpty
-            ? tasks
-                .map((element) => element.isDone ? 1 : 0)
-                .reduce((value, element) => value + element)
-            : 0,
-      ),
-    );
+    try {
+      await _tasksRepository.fetchTasks();
+      await emit.forEach<List<TaskModel>>(
+        _tasksRepository.getTasks(),
+        onData: (tasks) => state.copyWith(
+          status: AllTasksScreenStatus.success,
+          tasks: tasks,
+          completedTasksCount: tasks.isNotEmpty
+              ? tasks
+                  .map((element) => element.isDone ? 1 : 0)
+                  .reduce((value, element) => value + element)
+              : 0,
+        ),
+      );
+    } catch (e) {
+      MyLogger.errorLog('tasks fetch error', e);
+      emit(state.copyWith(status: AllTasksScreenStatus.failure));
+    }
   }
 
   Future<void> _onAddTask(
