@@ -116,6 +116,15 @@ class AllTasksScreenContent extends StatelessWidget {
             tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
             child: const Icon(Icons.add),
           ),
+          const SizedBox(width: 8),
+          FloatingActionButton(
+            onPressed: () {
+              bloc.add(SubscribeStreamEvent());
+            },
+            backgroundColor: const Color(Constants.lightColorBlue),
+            tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
+            child: const Icon(Icons.refresh),
+          ),
         ],
       ),
     );

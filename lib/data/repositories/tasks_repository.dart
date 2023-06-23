@@ -30,25 +30,41 @@ class TasksRepository {
 
   Future<void> fetchTasks() async {
     final tasks = <TaskModel>[];
-    final tasksDB = <TaskDB>[];
+    final DBTasksFromNetwork = <DBTask>[];
 
     int? localRevision = _prefs.getInt('revision');
     MyLogger.infoLog('Local revision - $localRevision');
 
-    final tasksListDto = await _networkTasksApi.fetchTasks();
+    final networkTasks = await _networkTasksApi.fetchTasks();
 
     int? networkRevision = _prefs.getInt('revision');
     MyLogger.infoLog('Network revision - $networkRevision');
 
+    final DBTasks = await _databaseTasksApi.fetchTasks();
+
     if (localRevision != networkRevision) {
-      for (final dto in tasksListDto.list) {
+      for (final dto in networkTasks.list) {
         tasks.add(dto.toDomain());
       }
       for (final task in tasks) {
-        tasksDB.add(task.toDB());
+        DBTasksFromNetwork.add(task.toDB());
       }
 
-      await _databaseTasksApi.refreshTasks(tasksDB);
+      //на удаление из локальной
+      List<int> DBTasksToDeleteIds = [];
+      DBTasks?.forEach((element) {
+        if(networkTasks.list.where((t) => t.id == element.uuid).isEmpty) {
+          DBTasksToDeleteIds.add(element.isarId);
+        }
+      });
+
+      networkTasks.list.forEach((element) {print('Из сети - ${element.text}'); });
+      print('');
+      DBTasks?.forEach((element) {print('Из локальной - ${element.title}'); });
+      print('');
+      DBTasksToDeleteIds.forEach((element) {print('На удаление в локальной - ${element}'); });
+
+      await _databaseTasksApi.refreshTasks(DBTasksFromNetwork, DBTasksToDeleteIds);
 
       tasks.clear();
     }
