@@ -28,7 +28,8 @@ class CustomSliverAppbar extends StatelessWidget {
         titlePadding: const EdgeInsets.only(left: 60.0, bottom: 17.0),
         expandedTitleScale: 1.6,
         title: Text(
-          LocaleKeys.appTitle.tr(), //'Мои дела',
+          //Мои дела
+          LocaleKeys.appTitle.tr(),
           style: const TextStyle(
             color: Color(Constants.lightLabelPrimary),
             fontSize: Constants.titleFontSize,
