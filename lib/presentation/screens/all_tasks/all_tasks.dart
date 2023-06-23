@@ -50,47 +50,56 @@ class AllTasksScreenContent extends StatelessWidget {
                 },
               );
             case AllTasksScreenStatus.success:
-              return CustomScrollView(
-                controller: scrollController,
-                physics: const BouncingScrollPhysics(),
-                slivers: <Widget>[
-                  CustomSliverAppbar(),
-                  CustomSliverToBoxAdapter(),
-                  SliverPadding(
-                    padding: const EdgeInsets.only(
-                      left: 4.0,
-                      right: 4.0,
-                      bottom: 3.0,
-                    ),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return Card(
-                            color: const Color(Constants.lightBackSecondary),
-                            semanticContainer: false,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8.0),
-                              ),
-                            ),
-                            elevation: 4.0,
-                            child: Column(
-                              children: [
-                                TasksListview(),
-                                AddNewTaskButton(
-                                  onTap: () {
-                                    addNewTask(scrollController, context);
-                                  },
+              return RefreshIndicator(
+                color: const Color(Constants.lightColorBlue),
+                edgeOffset: 150,
+                onRefresh: () async {
+                  bloc.add(const SubscribeStreamEvent());
+                },
+                child: CustomScrollView(
+                  controller: scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics(),
+                  ),
+                  slivers: <Widget>[
+                    CustomSliverAppbar(),
+                    CustomSliverToBoxAdapter(),
+                    SliverPadding(
+                      padding: const EdgeInsets.only(
+                        left: 4.0,
+                        right: 4.0,
+                        bottom: 3.0,
+                      ),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return Card(
+                              color: const Color(Constants.lightBackSecondary),
+                              semanticContainer: false,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8.0),
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                        childCount: 1,
+                              ),
+                              elevation: 4.0,
+                              child: Column(
+                                children: [
+                                  TasksListview(),
+                                  AddNewTaskButton(
+                                    onTap: () {
+                                      addNewTask(scrollController, context);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          childCount: 1,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             default:
               return const SizedBox();
@@ -117,14 +126,6 @@ class AllTasksScreenContent extends StatelessWidget {
             child: const Icon(Icons.add),
           ),
           const SizedBox(width: 8),
-          FloatingActionButton(
-            onPressed: () {
-              bloc.add(SubscribeStreamEvent());
-            },
-            backgroundColor: const Color(Constants.lightColorBlue),
-            tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
-            child: const Icon(Icons.refresh),
-          ),
         ],
       ),
     );
