@@ -11,7 +11,7 @@ import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_a
 import 'package:todo/presentation/screens/all_tasks/widgets/language_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
-import 'package:todo/repositories/tasks_repository.dart';
+import 'package:todo/data/repositories/tasks_repository.dart';
 import 'package:todo/presentation/widgets/something_went_wrong.dart';
 
 class AllTasksScreen extends StatelessWidget {

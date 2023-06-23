@@ -12,7 +12,7 @@ import 'package:todo/l10n/codegen_loader.g.dart';
 import 'package:todo/my_logger.dart';
 import 'package:todo/presentation/screens/all_tasks/all_tasks.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:todo/repositories/tasks_repository.dart';
+import 'package:todo/data/repositories/tasks_repository.dart';
 import 'data/api/network_tasks_api.dart';
 import 'data/db/task_db.dart';
 

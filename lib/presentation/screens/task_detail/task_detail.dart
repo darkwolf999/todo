@@ -12,7 +12,7 @@ import 'package:todo/presentation/screens/task_detail/widgets/material_textfield
 import 'package:todo/presentation/screens/task_detail/widgets/delete_button/delete_button.dart';
 import 'package:todo/presentation/screens/task_detail//widgets/delete_button/inkwell_delete_button.dart';
 import 'package:todo/presentation/widgets/svg.dart';
-import 'package:todo/repositories/tasks_repository.dart';
+import 'package:todo/data/repositories/tasks_repository.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final TaskModel? task;

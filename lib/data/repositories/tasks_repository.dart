@@ -8,8 +8,7 @@ import 'package:todo/data/models/task_model.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
 import 'package:todo/data/dto/task_dto.dart';
 import 'package:todo/my_logger.dart';
-
-import '../data/db/task_db.dart';
+import 'package:todo/data/db/task_db.dart';
 
 class TasksRepository {
   TasksRepository({
