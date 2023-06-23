@@ -13,6 +13,8 @@ import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart'
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/repositories/tasks_repository.dart';
 
+import '../../widgets/something_went_wrong.dart';
+
 class AllTasksScreen extends StatelessWidget {
   const AllTasksScreen({Key? key}) : super(key: key);
 
@@ -32,52 +34,65 @@ class AllTasksScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<AllTasksScreenBloc>();
     ScrollController scrollController = ScrollController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(Constants.lightBackPrimary),
       body: BlocBuilder<AllTasksScreenBloc, AllTasksScreenState>(
-        builder: (context, state) {
-          return CustomScrollView(
-            controller: scrollController,
-            physics: const BouncingScrollPhysics(),
-            slivers: <Widget>[
-              CustomSliverAppbar(),
-              CustomSliverToBoxAdapter(),
-              SliverPadding(
-                padding: const EdgeInsets.only(
-                  left: 4.0,
-                  right: 4.0,
-                  bottom: 3.0,
-                ),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return Card(
-                        color: const Color(Constants.lightBackSecondary),
-                        semanticContainer: false,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        ),
-                        elevation: 4.0,
-                        child: Column(
-                          children: [
-                            TasksListview(),
-                            AddNewTaskButton(
-                              onTap: () {
-                                addNewTask(scrollController, context);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    childCount: 1,
+        builder: (context, state){
+          switch(state.status) {
+          case AllTasksScreenStatus.initial:
+            return Center(child: CircularProgressIndicator());
+          case AllTasksScreenStatus.failure:
+            return SomethingWentWrong(
+              onPressed: () {
+                bloc.add(const SubscribeStreamEvent());
+                },
+            );
+          case AllTasksScreenStatus.success:
+            return CustomScrollView(
+              controller: scrollController,
+              physics: const BouncingScrollPhysics(),
+              slivers: <Widget>[
+                CustomSliverAppbar(),
+                CustomSliverToBoxAdapter(),
+                SliverPadding(
+                  padding: const EdgeInsets.only(
+                    left: 4.0,
+                    right: 4.0,
+                    bottom: 3.0,
+                  ),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                        return Card(
+                          color: const Color(Constants.lightBackSecondary),
+                          semanticContainer: false,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(8.0),),
+                          ),
+                          elevation: 4.0,
+                          child: Column(
+                            children: [
+                              TasksListview(),
+                              AddNewTaskButton(
+                                onTap: () {
+                                  addNewTask(scrollController, context);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      childCount: 1,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
+              ],
+            );
+            default: return SizedBox();
+          }
         },
       ),
       floatingActionButton: Row(

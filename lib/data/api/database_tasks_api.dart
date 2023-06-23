@@ -40,21 +40,18 @@ class DatabaseTasksApi {
     return taskDB;
   }
 
-  Future<void> addNewTask(TaskDB task) async {
-    // final task = db.TaskDB(
-    //   uuid: '574e7956-cf90-49af-812c-c3f1ca80f8d9',
-    //   title: 'Пустая задача',
-    //   isDone: false,
-    //   priority: db.Priority.no,
-    //   deadline: DateTime.now(),
-    //   createdAt: DateTime.now().millisecondsSinceEpoch,
-    //   changedAt: DateTime.now().millisecondsSinceEpoch,
-    //   lastUpdatedBy: '123',
-    // );
-
+  Future<void> putTask(TaskDB task) async {
     await _isar.writeTxn(
       () async {
         await _isar.taskDBs.put(task);
+      },
+    );
+  }
+
+  Future<void> refreshTasks(List<TaskDB> tasks) async {
+    await _isar.writeTxn(
+          () async {
+        await _isar.taskDBs.putAll(tasks);
       },
     );
   }

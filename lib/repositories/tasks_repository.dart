@@ -7,6 +7,9 @@ import 'package:todo/data/mappers/dto_task_mapper.dart';
 import 'package:todo/data/models/task_model.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
 import 'package:todo/data/dto/task_dto.dart';
+import 'package:todo/my_logger.dart';
+
+import '../data/db/task_db.dart';
 
 class TasksRepository {
   TasksRepository({
@@ -27,41 +30,58 @@ class TasksRepository {
   Stream<List<TaskModel>> getTasks() => _tasksStreamController;
 
   Future<void> fetchTasks() async {
-    final tasksListDB = await _databaseTasksApi.fetchTasks();
+
     final tasks = <TaskModel>[];
-    for (final dto in tasksListDB!) {
-      tasks.add(dto.toDomain());
+    final tasksDB = <TaskDB>[];
+
+    int? localRevision = _prefs.getInt('revision');
+    MyLogger.infoLog('Local revision - $localRevision');
+
+    final tasksListDto = await _networkTasksApi.fetchTasks();
+
+    int? networkRevision = _prefs.getInt('revision');
+    MyLogger.infoLog('Network revision - $networkRevision');
+
+
+    if(localRevision != networkRevision) {
+      for (final dto in tasksListDto.list) {
+        tasks.add(dto.toDomain());
+      }
+      for (final task in tasks) {
+        tasksDB.add(task.toDB());
+      }
+
+      await _databaseTasksApi.refreshTasks(tasksDB);
+
+      tasks.clear();
     }
-    //final tasksListDto = await _networkTasksApi.fetchTasks();
-    // final tasks = <TaskModel>[];
-    // for (final dto in tasksListDto.list) {
-    //   tasks.add(dto.toDomain());
-    // }
-    // final reversedTasks = tasks.reversed;
-    // _tasksStreamController.add(reversedTasks.toList());
+
+    final tasksDBtoModel = await _databaseTasksApi.fetchTasks();
+    for (final taskDB in tasksDBtoModel!) {
+      tasks.add(taskDB.toDomain());
+    }
+
+    //Задачи на экране всегда отсортированы по времени создания. Самая верхняя - самая новая
+    tasks.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
     _tasksStreamController.add(tasks);
   }
 
   Future<void> saveTask(TaskModel task) async {
     final taskDto = task.toDto();
-
+    final taskDB = task.toDB();
     final tasks = [..._tasksStreamController.value];
     final taskIndex = tasks.indexWhere((t) => t.uuid == task.uuid);
     if (taskIndex >= 0) {
       tasks[taskIndex] = task;
       _tasksStreamController.add(tasks);
-      final taskDB = task.toDB();
-      _databaseTasksApi.addNewTask(taskDB);
-
-      //final taskResponseDto = await _networkTasksApi.editTask(taskDto);
+      _networkTasksApi.editTask(taskDto);
     } else {
       tasks.insert(0, task);
       _tasksStreamController.add(tasks);
-      final taskDB = task.toDB();
-      _databaseTasksApi.addNewTask(taskDB);
-
-      //final taskResponseDto = await _networkTasksApi.addNewTask(taskDto);
+      _networkTasksApi.addNewTask(taskDto);
     }
+    _databaseTasksApi.putTask(taskDB);
   }
 
   Future<void> deleteTask(String uuid) async {
@@ -71,24 +91,25 @@ class TasksRepository {
       throw Exception();
     } else {
       tasks.removeAt(taskIndex);
-
       _tasksStreamController.add(tasks);
-
       await _databaseTasksApi.deleteTask(uuid);
-      //final taskResponseDto = await _networkTasksApi.deleteTask(uuid);
+      await _networkTasksApi.deleteTask(uuid);
     }
   }
 
-  Future<void> fetchSingleTask(String uuid) async {
+  Future<void> fetchSingleTaskFromNetwork(String uuid) async {
     final taskResponseDto = await _networkTasksApi.fetchSingleTask(uuid);
   }
 
-  Future<void> refreshTasks(List<TaskModel> tasks) async {
+  Future<void> fetchSingleTaskFromDB(String uuid) async {
+    final taskResponseDto = await _databaseTasksApi.fetchSingleTask(uuid);
+  }
+
+  Future<void> refreshNetworkTasks(List<TaskModel> tasks) async {
     final tasksDto = <TaskDto>[];
     for (final task in tasks) {
       tasksDto.add(task.toDto());
     }
-
     final tasksListDto = await _networkTasksApi.refreshTasks(tasksDto);
   }
 }
