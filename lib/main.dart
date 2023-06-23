@@ -60,7 +60,12 @@ class MyApp extends StatelessWidget {
 }
 
 Future<TasksRepository> initRepo() async {
-  Dio dio = Dio();
+  BaseOptions options = BaseOptions(
+    connectTimeout: Duration(seconds: 10),
+    receiveTimeout: Duration(seconds: 10),
+  );
+
+  Dio dio = Dio(options);
   dio.interceptors.addAll([
     PrettyDioLogger(
       requestHeader: true,
