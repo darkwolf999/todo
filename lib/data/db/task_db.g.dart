@@ -9,13 +9,13 @@ part of 'task_db.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetTaskDBCollection on Isar {
-  IsarCollection<TaskDB> get taskDBs => this.collection();
+extension GetDBTaskCollection on Isar {
+  IsarCollection<DBTask> get dBTasks => this.collection();
 }
 
-const TaskDBSchema = CollectionSchema(
-  name: r'TaskDB',
-  id: -7821041742389151516,
+const DBTaskSchema = CollectionSchema(
+  name: r'DBTask',
+  id: -491189126411619885,
   properties: {
     r'changedAt': PropertySchema(
       id: 0,
@@ -51,7 +51,7 @@ const TaskDBSchema = CollectionSchema(
       id: 6,
       name: r'priority',
       type: IsarType.byte,
-      enumMap: _TaskDBpriorityEnumValueMap,
+      enumMap: _DBTaskpriorityEnumValueMap,
     ),
     r'title': PropertySchema(
       id: 7,
@@ -64,22 +64,22 @@ const TaskDBSchema = CollectionSchema(
       type: IsarType.string,
     )
   },
-  estimateSize: _taskDBEstimateSize,
-  serialize: _taskDBSerialize,
-  deserialize: _taskDBDeserialize,
-  deserializeProp: _taskDBDeserializeProp,
+  estimateSize: _dBTaskEstimateSize,
+  serialize: _dBTaskSerialize,
+  deserialize: _dBTaskDeserialize,
+  deserializeProp: _dBTaskDeserializeProp,
   idName: r'isarId',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _taskDBGetId,
-  getLinks: _taskDBGetLinks,
-  attach: _taskDBAttach,
+  getId: _dBTaskGetId,
+  getLinks: _dBTaskGetLinks,
+  attach: _dBTaskAttach,
   version: '3.1.0+1',
 );
 
-int _taskDBEstimateSize(
-  TaskDB object,
+int _dBTaskEstimateSize(
+  DBTask object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -96,8 +96,8 @@ int _taskDBEstimateSize(
   return bytesCount;
 }
 
-void _taskDBSerialize(
-  TaskDB object,
+void _dBTaskSerialize(
+  DBTask object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -113,20 +113,20 @@ void _taskDBSerialize(
   writer.writeString(offsets[8], object.uuid);
 }
 
-TaskDB _taskDBDeserialize(
+DBTask _dBTaskDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = TaskDB(
+  final object = DBTask(
     changedAt: reader.readLong(offsets[0]),
     color: reader.readStringOrNull(offsets[1]),
     createdAt: reader.readLong(offsets[2]),
     deadline: reader.readDateTimeOrNull(offsets[3]),
     isDone: reader.readBool(offsets[4]),
     lastUpdatedBy: reader.readString(offsets[5]),
-    priority: _TaskDBpriorityValueEnumMap[reader.readByteOrNull(offsets[6])] ??
+    priority: _DBTaskpriorityValueEnumMap[reader.readByteOrNull(offsets[6])] ??
         Priority.no,
     title: reader.readString(offsets[7]),
     uuid: reader.readString(offsets[8]),
@@ -134,7 +134,7 @@ TaskDB _taskDBDeserialize(
   return object;
 }
 
-P _taskDBDeserializeProp<P>(
+P _dBTaskDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -154,7 +154,7 @@ P _taskDBDeserializeProp<P>(
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
-      return (_TaskDBpriorityValueEnumMap[reader.readByteOrNull(offset)] ??
+      return (_DBTaskpriorityValueEnumMap[reader.readByteOrNull(offset)] ??
           Priority.no) as P;
     case 7:
       return (reader.readString(offset)) as P;
@@ -165,37 +165,37 @@ P _taskDBDeserializeProp<P>(
   }
 }
 
-const _TaskDBpriorityEnumValueMap = {
+const _DBTaskpriorityEnumValueMap = {
   'no': 0,
   'low': 1,
   'high': 2,
 };
-const _TaskDBpriorityValueEnumMap = {
+const _DBTaskpriorityValueEnumMap = {
   0: Priority.no,
   1: Priority.low,
   2: Priority.high,
 };
 
-Id _taskDBGetId(TaskDB object) {
+Id _dBTaskGetId(DBTask object) {
   return object.isarId;
 }
 
-List<IsarLinkBase<dynamic>> _taskDBGetLinks(TaskDB object) {
+List<IsarLinkBase<dynamic>> _dBTaskGetLinks(DBTask object) {
   return [];
 }
 
-void _taskDBAttach(IsarCollection<dynamic> col, Id id, TaskDB object) {}
+void _dBTaskAttach(IsarCollection<dynamic> col, Id id, DBTask object) {}
 
-extension TaskDBQueryWhereSort on QueryBuilder<TaskDB, TaskDB, QWhere> {
-  QueryBuilder<TaskDB, TaskDB, QAfterWhere> anyIsarId() {
+extension DBTaskQueryWhereSort on QueryBuilder<DBTask, DBTask, QWhere> {
+  QueryBuilder<DBTask, DBTask, QAfterWhere> anyIsarId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension TaskDBQueryWhere on QueryBuilder<TaskDB, TaskDB, QWhereClause> {
-  QueryBuilder<TaskDB, TaskDB, QAfterWhereClause> isarIdEqualTo(Id isarId) {
+extension DBTaskQueryWhere on QueryBuilder<DBTask, DBTask, QWhereClause> {
+  QueryBuilder<DBTask, DBTask, QAfterWhereClause> isarIdEqualTo(Id isarId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: isarId,
@@ -204,7 +204,7 @@ extension TaskDBQueryWhere on QueryBuilder<TaskDB, TaskDB, QWhereClause> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterWhereClause> isarIdNotEqualTo(Id isarId) {
+  QueryBuilder<DBTask, DBTask, QAfterWhereClause> isarIdNotEqualTo(Id isarId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -226,7 +226,7 @@ extension TaskDBQueryWhere on QueryBuilder<TaskDB, TaskDB, QWhereClause> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterWhereClause> isarIdGreaterThan(Id isarId,
+  QueryBuilder<DBTask, DBTask, QAfterWhereClause> isarIdGreaterThan(Id isarId,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -235,7 +235,7 @@ extension TaskDBQueryWhere on QueryBuilder<TaskDB, TaskDB, QWhereClause> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterWhereClause> isarIdLessThan(Id isarId,
+  QueryBuilder<DBTask, DBTask, QAfterWhereClause> isarIdLessThan(Id isarId,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -244,7 +244,7 @@ extension TaskDBQueryWhere on QueryBuilder<TaskDB, TaskDB, QWhereClause> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterWhereClause> isarIdBetween(
+  QueryBuilder<DBTask, DBTask, QAfterWhereClause> isarIdBetween(
     Id lowerIsarId,
     Id upperIsarId, {
     bool includeLower = true,
@@ -261,8 +261,8 @@ extension TaskDBQueryWhere on QueryBuilder<TaskDB, TaskDB, QWhereClause> {
   }
 }
 
-extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> changedAtEqualTo(
+extension DBTaskQueryFilter on QueryBuilder<DBTask, DBTask, QFilterCondition> {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> changedAtEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -272,7 +272,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> changedAtGreaterThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> changedAtGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -285,7 +285,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> changedAtLessThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> changedAtLessThan(
     int value, {
     bool include = false,
   }) {
@@ -298,7 +298,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> changedAtBetween(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> changedAtBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -315,7 +315,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorIsNull() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'color',
@@ -323,7 +323,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorIsNotNull() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'color',
@@ -331,7 +331,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorEqualTo(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -344,7 +344,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorGreaterThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -359,7 +359,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorLessThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -374,7 +374,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorBetween(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -393,7 +393,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorStartsWith(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -406,7 +406,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorEndsWith(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -419,7 +419,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorContains(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -431,7 +431,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorMatches(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -443,7 +443,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorIsEmpty() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'color',
@@ -452,7 +452,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> colorIsNotEmpty() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> colorIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'color',
@@ -461,7 +461,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> createdAtEqualTo(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> createdAtEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -471,7 +471,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> createdAtGreaterThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> createdAtGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -484,7 +484,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> createdAtLessThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> createdAtLessThan(
     int value, {
     bool include = false,
   }) {
@@ -497,7 +497,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> createdAtBetween(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> createdAtBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -514,7 +514,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> deadlineIsNull() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'deadline',
@@ -522,7 +522,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> deadlineIsNotNull() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'deadline',
@@ -530,7 +530,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> deadlineEqualTo(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineEqualTo(
       DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -540,7 +540,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> deadlineGreaterThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineGreaterThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -553,7 +553,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> deadlineLessThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineLessThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -566,7 +566,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> deadlineBetween(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
@@ -583,7 +583,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> isDoneEqualTo(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> isDoneEqualTo(
       bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -593,7 +593,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> isarIdEqualTo(Id value) {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> isarIdEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isarId',
@@ -602,7 +602,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> isarIdGreaterThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> isarIdGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -615,7 +615,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> isarIdLessThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> isarIdLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -628,7 +628,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> isarIdBetween(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> isarIdBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -645,7 +645,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> lastUpdatedByEqualTo(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> lastUpdatedByEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -658,7 +658,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> lastUpdatedByGreaterThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> lastUpdatedByGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -673,7 +673,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> lastUpdatedByLessThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> lastUpdatedByLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -688,7 +688,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> lastUpdatedByBetween(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> lastUpdatedByBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -707,7 +707,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> lastUpdatedByStartsWith(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> lastUpdatedByStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -720,7 +720,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> lastUpdatedByEndsWith(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> lastUpdatedByEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -733,7 +733,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> lastUpdatedByContains(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> lastUpdatedByContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -745,7 +745,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> lastUpdatedByMatches(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> lastUpdatedByMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -757,7 +757,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> lastUpdatedByIsEmpty() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> lastUpdatedByIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'lastUpdatedBy',
@@ -766,7 +766,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition>
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition>
       lastUpdatedByIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -776,7 +776,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> priorityEqualTo(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> priorityEqualTo(
       Priority value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -786,7 +786,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> priorityGreaterThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> priorityGreaterThan(
     Priority value, {
     bool include = false,
   }) {
@@ -799,7 +799,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> priorityLessThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> priorityLessThan(
     Priority value, {
     bool include = false,
   }) {
@@ -812,7 +812,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> priorityBetween(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> priorityBetween(
     Priority lower,
     Priority upper, {
     bool includeLower = true,
@@ -829,7 +829,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleEqualTo(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -842,7 +842,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleGreaterThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -857,7 +857,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleLessThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -872,7 +872,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleBetween(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -891,7 +891,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleStartsWith(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -904,7 +904,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleEndsWith(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -917,7 +917,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleContains(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -929,7 +929,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleMatches(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -941,7 +941,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleIsEmpty() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'title',
@@ -950,7 +950,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> titleIsNotEmpty() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> titleIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'title',
@@ -959,7 +959,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidEqualTo(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -972,7 +972,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidGreaterThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -987,7 +987,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidLessThan(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidLessThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1002,7 +1002,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidBetween(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1021,7 +1021,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidStartsWith(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1034,7 +1034,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidEndsWith(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1047,7 +1047,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidContains(String value,
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidContains(String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1058,7 +1058,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidMatches(
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1070,7 +1070,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidIsEmpty() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'uuid',
@@ -1079,7 +1079,7 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterFilterCondition> uuidIsNotEmpty() {
+  QueryBuilder<DBTask, DBTask, QAfterFilterCondition> uuidIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'uuid',
@@ -1089,275 +1089,275 @@ extension TaskDBQueryFilter on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {
   }
 }
 
-extension TaskDBQueryObject on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {}
+extension DBTaskQueryObject on QueryBuilder<DBTask, DBTask, QFilterCondition> {}
 
-extension TaskDBQueryLinks on QueryBuilder<TaskDB, TaskDB, QFilterCondition> {}
+extension DBTaskQueryLinks on QueryBuilder<DBTask, DBTask, QFilterCondition> {}
 
-extension TaskDBQuerySortBy on QueryBuilder<TaskDB, TaskDB, QSortBy> {
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByChangedAt() {
+extension DBTaskQuerySortBy on QueryBuilder<DBTask, DBTask, QSortBy> {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByChangedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'changedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByChangedAtDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByChangedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'changedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByColor() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByColor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'color', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByColorDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByColorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'color', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByCreatedAt() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByCreatedAtDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByDeadline() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByDeadline() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deadline', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByDeadlineDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByDeadlineDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deadline', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByIsDone() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByIsDone() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDone', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByIsDoneDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByIsDoneDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDone', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByLastUpdatedBy() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByLastUpdatedBy() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastUpdatedBy', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByLastUpdatedByDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByLastUpdatedByDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastUpdatedBy', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByPriority() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByPriorityDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByPriorityDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByTitle() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByTitleDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByTitleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByUuid() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByUuid() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'uuid', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> sortByUuidDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> sortByUuidDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'uuid', Sort.desc);
     });
   }
 }
 
-extension TaskDBQuerySortThenBy on QueryBuilder<TaskDB, TaskDB, QSortThenBy> {
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByChangedAt() {
+extension DBTaskQuerySortThenBy on QueryBuilder<DBTask, DBTask, QSortThenBy> {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByChangedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'changedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByChangedAtDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByChangedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'changedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByColor() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByColor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'color', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByColorDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByColorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'color', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByCreatedAt() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByCreatedAtDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByDeadline() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByDeadline() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deadline', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByDeadlineDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByDeadlineDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deadline', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByIsDone() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByIsDone() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDone', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByIsDoneDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByIsDoneDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDone', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByIsarId() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByIsarId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isarId', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByIsarIdDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByIsarIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isarId', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByLastUpdatedBy() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByLastUpdatedBy() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastUpdatedBy', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByLastUpdatedByDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByLastUpdatedByDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'lastUpdatedBy', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByPriority() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByPriorityDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByPriorityDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByTitle() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByTitleDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByTitleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.desc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByUuid() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByUuid() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'uuid', Sort.asc);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QAfterSortBy> thenByUuidDesc() {
+  QueryBuilder<DBTask, DBTask, QAfterSortBy> thenByUuidDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'uuid', Sort.desc);
     });
   }
 }
 
-extension TaskDBQueryWhereDistinct on QueryBuilder<TaskDB, TaskDB, QDistinct> {
-  QueryBuilder<TaskDB, TaskDB, QDistinct> distinctByChangedAt() {
+extension DBTaskQueryWhereDistinct on QueryBuilder<DBTask, DBTask, QDistinct> {
+  QueryBuilder<DBTask, DBTask, QDistinct> distinctByChangedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'changedAt');
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QDistinct> distinctByColor(
+  QueryBuilder<DBTask, DBTask, QDistinct> distinctByColor(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'color', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QDistinct> distinctByCreatedAt() {
+  QueryBuilder<DBTask, DBTask, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QDistinct> distinctByDeadline() {
+  QueryBuilder<DBTask, DBTask, QDistinct> distinctByDeadline() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'deadline');
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QDistinct> distinctByIsDone() {
+  QueryBuilder<DBTask, DBTask, QDistinct> distinctByIsDone() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isDone');
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QDistinct> distinctByLastUpdatedBy(
+  QueryBuilder<DBTask, DBTask, QDistinct> distinctByLastUpdatedBy(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'lastUpdatedBy',
@@ -1365,20 +1365,20 @@ extension TaskDBQueryWhereDistinct on QueryBuilder<TaskDB, TaskDB, QDistinct> {
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QDistinct> distinctByPriority() {
+  QueryBuilder<DBTask, DBTask, QDistinct> distinctByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'priority');
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QDistinct> distinctByTitle(
+  QueryBuilder<DBTask, DBTask, QDistinct> distinctByTitle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<TaskDB, TaskDB, QDistinct> distinctByUuid(
+  QueryBuilder<DBTask, DBTask, QDistinct> distinctByUuid(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'uuid', caseSensitive: caseSensitive);
@@ -1386,62 +1386,62 @@ extension TaskDBQueryWhereDistinct on QueryBuilder<TaskDB, TaskDB, QDistinct> {
   }
 }
 
-extension TaskDBQueryProperty on QueryBuilder<TaskDB, TaskDB, QQueryProperty> {
-  QueryBuilder<TaskDB, int, QQueryOperations> isarIdProperty() {
+extension DBTaskQueryProperty on QueryBuilder<DBTask, DBTask, QQueryProperty> {
+  QueryBuilder<DBTask, int, QQueryOperations> isarIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isarId');
     });
   }
 
-  QueryBuilder<TaskDB, int, QQueryOperations> changedAtProperty() {
+  QueryBuilder<DBTask, int, QQueryOperations> changedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'changedAt');
     });
   }
 
-  QueryBuilder<TaskDB, String?, QQueryOperations> colorProperty() {
+  QueryBuilder<DBTask, String?, QQueryOperations> colorProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'color');
     });
   }
 
-  QueryBuilder<TaskDB, int, QQueryOperations> createdAtProperty() {
+  QueryBuilder<DBTask, int, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
     });
   }
 
-  QueryBuilder<TaskDB, DateTime?, QQueryOperations> deadlineProperty() {
+  QueryBuilder<DBTask, DateTime?, QQueryOperations> deadlineProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'deadline');
     });
   }
 
-  QueryBuilder<TaskDB, bool, QQueryOperations> isDoneProperty() {
+  QueryBuilder<DBTask, bool, QQueryOperations> isDoneProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isDone');
     });
   }
 
-  QueryBuilder<TaskDB, String, QQueryOperations> lastUpdatedByProperty() {
+  QueryBuilder<DBTask, String, QQueryOperations> lastUpdatedByProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'lastUpdatedBy');
     });
   }
 
-  QueryBuilder<TaskDB, Priority, QQueryOperations> priorityProperty() {
+  QueryBuilder<DBTask, Priority, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
     });
   }
 
-  QueryBuilder<TaskDB, String, QQueryOperations> titleProperty() {
+  QueryBuilder<DBTask, String, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
     });
   }
 
-  QueryBuilder<TaskDB, String, QQueryOperations> uuidProperty() {
+  QueryBuilder<DBTask, String, QQueryOperations> uuidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'uuid');
     });

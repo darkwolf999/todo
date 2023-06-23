@@ -6,7 +6,7 @@ part 'task_db.g.dart';
 enum Priority { no, low, high }
 
 @collection
-class TaskDB {
+class DBTask {
   Id get isarId => FastHash.generate(uuid);
   String uuid;
   final String title;
@@ -19,7 +19,7 @@ class TaskDB {
   final int changedAt;
   final String lastUpdatedBy;
 
-  TaskDB({
+  DBTask({
     required this.uuid,
     required this.title,
     required this.isDone,

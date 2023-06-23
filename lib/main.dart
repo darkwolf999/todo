@@ -83,7 +83,7 @@ Future<TasksRepository> initRepo() async {
 
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
-    [TaskDBSchema],
+    [DBTaskSchema],
     directory: dir.path,
   );
 

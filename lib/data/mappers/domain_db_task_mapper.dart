@@ -2,7 +2,7 @@ import 'package:todo/data/db/task_db.dart' as db;
 import 'package:todo/data/models/task_model.dart';
 
 /// Преобразовываем [TaskDB] в [TaskModel]
-extension TaskFromDBToDomain on db.TaskDB {
+extension TaskFromDBToDomain on db.DBTask {
   TaskModel toDomain() {
     return TaskModel(
       uuid: uuid,
@@ -31,8 +31,8 @@ Priority toDomainPriority(db.Priority priority) {
 
 /// Преобразовываем [TaskModel] в [TaskDB]
 extension TaskFromDomainToDB on TaskModel {
-  db.TaskDB toDB() {
-    return db.TaskDB(
+  db.DBTask toDB() {
+    return db.DBTask(
       uuid: uuid,
       title: title,
       isDone: isDone,
