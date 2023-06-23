@@ -40,58 +40,61 @@ class AllTasksScreenContent extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(Constants.lightBackPrimary),
       body: BlocBuilder<AllTasksScreenBloc, AllTasksScreenState>(
-        builder: (context, state){
-          switch(state.status) {
-          case AllTasksScreenStatus.initial:
-            return Center(child: CircularProgressIndicator());
-          case AllTasksScreenStatus.failure:
-            return SomethingWentWrong(
-              onPressed: () {
-                bloc.add(const SubscribeStreamEvent());
+        builder: (context, state) {
+          switch (state.status) {
+            case AllTasksScreenStatus.initial:
+              return Center(child: CircularProgressIndicator());
+            case AllTasksScreenStatus.failure:
+              return SomethingWentWrong(
+                onPressed: () {
+                  bloc.add(const SubscribeStreamEvent());
                 },
-            );
-          case AllTasksScreenStatus.success:
-            return CustomScrollView(
-              controller: scrollController,
-              physics: const BouncingScrollPhysics(),
-              slivers: <Widget>[
-                CustomSliverAppbar(),
-                CustomSliverToBoxAdapter(),
-                SliverPadding(
-                  padding: const EdgeInsets.only(
-                    left: 4.0,
-                    right: 4.0,
-                    bottom: 3.0,
-                  ),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                        return Card(
-                          color: const Color(Constants.lightBackSecondary),
-                          semanticContainer: false,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0),),
-                          ),
-                          elevation: 4.0,
-                          child: Column(
-                            children: [
-                              TasksListview(),
-                              AddNewTaskButton(
-                                onTap: () {
-                                  addNewTask(scrollController, context);
-                                },
+              );
+            case AllTasksScreenStatus.success:
+              return CustomScrollView(
+                controller: scrollController,
+                physics: const BouncingScrollPhysics(),
+                slivers: <Widget>[
+                  CustomSliverAppbar(),
+                  CustomSliverToBoxAdapter(),
+                  SliverPadding(
+                    padding: const EdgeInsets.only(
+                      left: 4.0,
+                      right: 4.0,
+                      bottom: 3.0,
+                    ),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          return Card(
+                            color: const Color(Constants.lightBackSecondary),
+                            semanticContainer: false,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8.0),
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                      childCount: 1,
+                            ),
+                            elevation: 4.0,
+                            child: Column(
+                              children: [
+                                TasksListview(),
+                                AddNewTaskButton(
+                                  onTap: () {
+                                    addNewTask(scrollController, context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        childCount: 1,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
-            default: return SizedBox();
+                ],
+              );
+            default:
+              return const SizedBox();
           }
         },
       ),
