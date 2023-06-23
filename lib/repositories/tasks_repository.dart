@@ -30,7 +30,6 @@ class TasksRepository {
   Stream<List<TaskModel>> getTasks() => _tasksStreamController;
 
   Future<void> fetchTasks() async {
-
     final tasks = <TaskModel>[];
     final tasksDB = <TaskDB>[];
 
@@ -42,8 +41,7 @@ class TasksRepository {
     int? networkRevision = _prefs.getInt('revision');
     MyLogger.infoLog('Network revision - $networkRevision');
 
-
-    if(localRevision != networkRevision) {
+    if (localRevision != networkRevision) {
       for (final dto in tasksListDto.list) {
         tasks.add(dto.toDomain());
       }

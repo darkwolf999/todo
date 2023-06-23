@@ -50,7 +50,7 @@ class DatabaseTasksApi {
 
   Future<void> refreshTasks(List<TaskDB> tasks) async {
     await _isar.writeTxn(
-          () async {
+      () async {
         await _isar.taskDBs.putAll(tasks);
       },
     );
@@ -62,5 +62,4 @@ class DatabaseTasksApi {
       await _isar.taskDBs.delete(isarId);
     });
   }
-
 }
