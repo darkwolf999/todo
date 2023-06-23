@@ -9,7 +9,9 @@ extension TaskFromDBToDomain on db.DBTask {
       title: title,
       isDone: isDone,
       priority: toDomainPriority(priority),
-      deadline: deadline,
+      deadline: deadline != null
+          ? DateTime.fromMillisecondsSinceEpoch(deadline!)
+          : null,
       color: color,
       createdAt: createdAt,
       changedAt: changedAt,
@@ -37,7 +39,7 @@ extension TaskFromDomainToDB on TaskModel {
       title: title,
       isDone: isDone,
       priority: toDBPriority(priority),
-      deadline: deadline,
+      deadline: deadline?.millisecondsSinceEpoch,
       color: color,
       createdAt: createdAt,
       changedAt: changedAt,

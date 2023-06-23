@@ -4,13 +4,13 @@ import 'package:todo/data/db/task_db.dart';
 
 /// Преобразовываем [DBTask] в [TaskDto]
 extension TaskFromDBToDto on db.DBTask {
-  TaskDto toDomain() {
+  TaskDto toDto() {
     return TaskDto(
       id: uuid,
       text: title,
       done: isDone,
       importance: toDtoImportance(priority),
-      deadline: deadline?.millisecondsSinceEpoch,
+      deadline: deadline,
       color: color,
       createdAt: createdAt,
       changedAt: changedAt,
@@ -38,9 +38,7 @@ extension TaskFromDtoToDB on TaskDto {
       title: text,
       isDone: done,
       priority: toDBPriority(importance),
-      deadline: deadline != null
-          ? DateTime.fromMillisecondsSinceEpoch(deadline!)
-          : null,
+      deadline: deadline,
       color: color,
       createdAt: createdAt,
       changedAt: changedAt,

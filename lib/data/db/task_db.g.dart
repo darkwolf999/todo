@@ -35,7 +35,7 @@ const DBTaskSchema = CollectionSchema(
     r'deadline': PropertySchema(
       id: 3,
       name: r'deadline',
-      type: IsarType.dateTime,
+      type: IsarType.long,
     ),
     r'isDone': PropertySchema(
       id: 4,
@@ -105,7 +105,7 @@ void _dBTaskSerialize(
   writer.writeLong(offsets[0], object.changedAt);
   writer.writeString(offsets[1], object.color);
   writer.writeLong(offsets[2], object.createdAt);
-  writer.writeDateTime(offsets[3], object.deadline);
+  writer.writeLong(offsets[3], object.deadline);
   writer.writeBool(offsets[4], object.isDone);
   writer.writeString(offsets[5], object.lastUpdatedBy);
   writer.writeByte(offsets[6], object.priority.index);
@@ -123,7 +123,7 @@ DBTask _dBTaskDeserialize(
     changedAt: reader.readLong(offsets[0]),
     color: reader.readStringOrNull(offsets[1]),
     createdAt: reader.readLong(offsets[2]),
-    deadline: reader.readDateTimeOrNull(offsets[3]),
+    deadline: reader.readLongOrNull(offsets[3]),
     isDone: reader.readBool(offsets[4]),
     lastUpdatedBy: reader.readString(offsets[5]),
     priority: _DBTaskpriorityValueEnumMap[reader.readByteOrNull(offsets[6])] ??
@@ -148,7 +148,7 @@ P _dBTaskDeserializeProp<P>(
     case 2:
       return (reader.readLong(offset)) as P;
     case 3:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 4:
       return (reader.readBool(offset)) as P;
     case 5:
@@ -531,7 +531,7 @@ extension DBTaskQueryFilter on QueryBuilder<DBTask, DBTask, QFilterCondition> {
   }
 
   QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineEqualTo(
-      DateTime? value) {
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'deadline',
@@ -541,7 +541,7 @@ extension DBTaskQueryFilter on QueryBuilder<DBTask, DBTask, QFilterCondition> {
   }
 
   QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineGreaterThan(
-    DateTime? value, {
+    int? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -554,7 +554,7 @@ extension DBTaskQueryFilter on QueryBuilder<DBTask, DBTask, QFilterCondition> {
   }
 
   QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineLessThan(
-    DateTime? value, {
+    int? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -567,8 +567,8 @@ extension DBTaskQueryFilter on QueryBuilder<DBTask, DBTask, QFilterCondition> {
   }
 
   QueryBuilder<DBTask, DBTask, QAfterFilterCondition> deadlineBetween(
-    DateTime? lower,
-    DateTime? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -1411,7 +1411,7 @@ extension DBTaskQueryProperty on QueryBuilder<DBTask, DBTask, QQueryProperty> {
     });
   }
 
-  QueryBuilder<DBTask, DateTime?, QQueryOperations> deadlineProperty() {
+  QueryBuilder<DBTask, int?, QQueryOperations> deadlineProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'deadline');
     });

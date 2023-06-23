@@ -13,7 +13,7 @@ class DBTask {
   final bool isDone;
   @enumerated
   final Priority priority;
-  final DateTime? deadline;
+  final int? deadline;
   final String? color;
   final int createdAt;
   final int changedAt;

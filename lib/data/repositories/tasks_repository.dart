@@ -1,9 +1,10 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/data/api/database_tasks_api.dart';
-import 'package:todo/data/mappers/db_task_mapper.dart';
+import 'package:todo/data/mappers/db_dto_task_mapper.dart';
+import 'package:todo/data/mappers/domain_db_task_mapper.dart';
 
-import 'package:todo/data/mappers/dto_task_mapper.dart';
+import 'package:todo/data/mappers/domain_dto_task_mapper.dart';
 import 'package:todo/data/models/task_model.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
 import 'package:todo/data/dto/task_dto.dart';
@@ -29,55 +30,59 @@ class TasksRepository {
   Stream<List<TaskModel>> getTasks() => _tasksStreamController;
 
   Future<void> fetchTasks() async {
-    final tasks = <TaskModel>[];
-    final DBTasksFromNetwork = <DBTask>[];
-
     int? localRevision = _prefs.getInt('revision');
     MyLogger.infoLog('Local revision - $localRevision');
 
-    final networkTasks = await _networkTasksApi.fetchTasks();
+    final dtoTasks = await _networkTasksApi.fetchTasks();
+    final dBTasks = await _databaseTasksApi.fetchTasks();
 
     int? networkRevision = _prefs.getInt('revision');
     MyLogger.infoLog('Network revision - $networkRevision');
 
-    final DBTasks = await _databaseTasksApi.fetchTasks();
+    final dBTasksFromDto = <DBTask>[];
 
+    final tasksToView = <TaskModel>[];
     if (localRevision != networkRevision) {
-      for (final dto in networkTasks.list) {
-        tasks.add(dto.toDomain());
+      for (final dto in dtoTasks.list) {
+        tasksToView.add(dto.toDomain());
       }
-      for (final task in tasks) {
-        DBTasksFromNetwork.add(task.toDB());
+
+      for (final task in tasksToView) {
+        dBTasksFromDto.add(task.toDB());
       }
+
+      // for (final dto in dtoTasks.list) {
+      //   dBTasksFromDto.add(dto.toDB());
+      // }
 
       //на удаление из локальной
-      List<int> DBTasksToDeleteIds = [];
-      DBTasks?.forEach((element) {
-        if(networkTasks.list.where((t) => t.id == element.uuid).isEmpty) {
-          DBTasksToDeleteIds.add(element.isarId);
+      List<int> dBTasksToDeleteIds = [];
+      dBTasks?.forEach((element) {
+        if(dtoTasks.list.where((t) => t.id == element.uuid).isEmpty) {
+          dBTasksToDeleteIds.add(element.isarId);
         }
       });
 
-      networkTasks.list.forEach((element) {print('Из сети - ${element.text}'); });
+      dtoTasks.list.forEach((element) {print('Из сети - ${element.text}'); });
       print('');
-      DBTasks?.forEach((element) {print('Из локальной - ${element.title}'); });
+      dBTasks?.forEach((element) {print('Из локальной - ${element.title}'); });
       print('');
-      DBTasksToDeleteIds.forEach((element) {print('На удаление в локальной - ${element}'); });
+      dBTasksToDeleteIds.forEach((element) {print('На удаление в локальной - ${element}'); });
 
-      await _databaseTasksApi.refreshTasks(DBTasksFromNetwork, DBTasksToDeleteIds);
+      await _databaseTasksApi.refreshTasks(dBTasksFromDto, dBTasksToDeleteIds);
 
-      tasks.clear();
+      tasksToView.clear();
     }
 
     final tasksDBtoModel = await _databaseTasksApi.fetchTasks();
     for (final taskDB in tasksDBtoModel!) {
-      tasks.add(taskDB.toDomain());
+      tasksToView.add(taskDB.toDomain());
     }
 
     //Задачи на экране всегда отсортированы по времени создания. Самая верхняя - самая новая
-    tasks.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    tasksToView.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-    _tasksStreamController.add(tasks);
+    _tasksStreamController.add(tasksToView);
   }
 
   Future<void> saveTask(TaskModel task) async {
