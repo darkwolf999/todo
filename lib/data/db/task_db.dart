@@ -1,7 +1,5 @@
 import 'package:isar/isar.dart';
 import 'package:todo/helpers/fast_hash.dart';
-//import 'package:isar_generator/isar_generator.dart';
-//import 'package:json_annotation/json_annotation.dart';
 
 part 'task_db.g.dart';
 

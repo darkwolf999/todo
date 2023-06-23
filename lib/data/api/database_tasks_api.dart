@@ -1,18 +1,8 @@
 import 'dart:io';
-
 import 'package:isar/isar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo/data/dto/task_response_dto.dart';
-import 'package:todo/data/models/task_model.dart';
-import 'package:path_provider/path_provider.dart';
 
-import 'package:todo/constants.dart' as Constants;
 import 'package:todo/helpers/fast_hash.dart';
-import '../../my_logger.dart';
-import '../db/task_db.dart';
-import '../dto/task_dto.dart';
-import '../dto/tasks_list_dto.dart';
-import 'constants/api_constants.dart';
+import 'package:todo/data/db/task_db.dart';
 
 class DatabaseTasksApi {
   final Directory _dir;

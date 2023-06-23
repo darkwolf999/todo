@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import '../../my_logger.dart';
-import '../api/constants/api_constants.dart';
+import 'package:todo/my_logger.dart';
+import 'package:todo/data/api/constants/api_constants.dart';
 
 class DioInterceptor extends InterceptorsWrapper {
   @override

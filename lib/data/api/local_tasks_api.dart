@@ -5,6 +5,7 @@ import 'package:rxdart/subjects.dart';
 
 import 'package:todo/constants.dart' as Constants;
 
+//Легаси
 class LocalTasksApi {
   LocalTasksApi({
     required SharedPreferences prefs,
