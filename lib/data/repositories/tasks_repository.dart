@@ -41,45 +41,33 @@ class TasksRepository {
 
     final dBTasksFromDto = <DBTask>[];
 
-    final tasksToView = <TaskModel>[];
     if (localRevision != networkRevision) {
       for (final dto in dtoTasks.list) {
-        tasksToView.add(dto.toDomain());
+        dBTasksFromDto.add(dto.toDB());
       }
 
-      for (final task in tasksToView) {
-        dBTasksFromDto.add(task.toDB());
-      }
-
-      // for (final dto in dtoTasks.list) {
-      //   dBTasksFromDto.add(dto.toDB());
-      // }
-
-      //на удаление из локальной
+      //Если таски нет на сервере, но есть в локальной бд,
+      //то ее надо удалить из локальной бд
       List<int> dBTasksToDeleteIds = [];
+
       dBTasks?.forEach((element) {
-        if(dtoTasks.list.where((t) => t.id == element.uuid).isEmpty) {
+        if (dtoTasks.list.where((t) => t.id == element.uuid).isEmpty) {
           dBTasksToDeleteIds.add(element.isarId);
         }
       });
 
-      dtoTasks.list.forEach((element) {print('Из сети - ${element.text}'); });
-      print('');
-      dBTasks?.forEach((element) {print('Из локальной - ${element.title}'); });
-      print('');
-      dBTasksToDeleteIds.forEach((element) {print('На удаление в локальной - ${element}'); });
-
       await _databaseTasksApi.refreshTasks(dBTasksFromDto, dBTasksToDeleteIds);
-
-      tasksToView.clear();
     }
+
+    final tasksToView = <TaskModel>[];
 
     final tasksDBtoModel = await _databaseTasksApi.fetchTasks();
     for (final taskDB in tasksDBtoModel!) {
       tasksToView.add(taskDB.toDomain());
     }
 
-    //Задачи на экране всегда отсортированы по времени создания. Самая верхняя - самая новая
+    //Задачи на экране всегда отсортированы по времени создания.
+    //Самая верхняя - самая новая
     tasksToView.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     _tasksStreamController.add(tasksToView);
