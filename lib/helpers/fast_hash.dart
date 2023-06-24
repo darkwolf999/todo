@@ -1,4 +1,4 @@
-class FastHash{
+class FastHash {
   static int generate(String string) {
     var hash = 0xcbf29ce484222325;
 

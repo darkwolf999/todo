@@ -88,7 +88,6 @@ Future<TasksRepository> initRepo() async {
   );
 
   final databaseTasksApi = DatabaseTasksApi(
-    dir: dir,
     isar: isar,
   );
 

@@ -30,6 +30,4 @@ class DBTask {
     required this.changedAt,
     required this.lastUpdatedBy,
   });
-
 }
-

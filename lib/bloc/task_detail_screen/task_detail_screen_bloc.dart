@@ -13,7 +13,8 @@ class TaskDetailScreenBloc
     extends Bloc<TaskDetailScreenEvent, TaskDetailScreenState> {
   final TasksRepository _tasksRepository;
 
-  TaskDetailScreenBloc(this._tasksRepository) : super(TaskDetailScreenState()) {
+  TaskDetailScreenBloc(this._tasksRepository)
+      : super(const TaskDetailScreenState()) {
     on<EditAcceptedEvent>(_onEditAccepted);
     on<DeadlineSwitchedEvent>(_onDeadlineSwitched);
     on<DeleteTaskEvent>(_onDeleteTask);

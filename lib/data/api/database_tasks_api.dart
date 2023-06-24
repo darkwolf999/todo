@@ -5,14 +5,11 @@ import 'package:todo/helpers/fast_hash.dart';
 import 'package:todo/data/db/task_db.dart';
 
 class DatabaseTasksApi {
-  final Directory _dir;
   final Isar _isar;
 
   DatabaseTasksApi({
-    required Directory dir,
     required Isar isar,
-  })  : _dir = dir,
-        _isar = isar;
+  }) : _isar = isar;
 
   Future<List<DBTask>?> fetchTasks() async {
     List<DBTask>? tasksDB;

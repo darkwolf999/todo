@@ -20,5 +20,4 @@ class TaskResponseDto {
       _$TaskResponseDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$TaskResponseDtoToJson(this);
-
 }

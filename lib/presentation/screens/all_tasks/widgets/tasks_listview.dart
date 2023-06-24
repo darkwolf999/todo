@@ -85,7 +85,6 @@ class TasksListview extends StatelessWidget {
     AllTasksScreenBloc bloc,
     int index,
   ) async {
-
     if (direction == DismissDirection.startToEnd) {
       bloc.add(
         CompleteTaskEvent(

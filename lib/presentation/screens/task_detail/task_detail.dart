@@ -96,7 +96,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                 child: Text(
                   //СОХРАНИТЬ
                   LocaleKeys.SAVE.tr(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: Constants.buttonFontSize,
                     height: Constants.buttonFontHeight,
                     color: Color(Constants.lightColorBlue),

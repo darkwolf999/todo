@@ -31,8 +31,7 @@ class TaskDto {
     required this.lastUpdatedBy,
   });
 
-  static TaskDto fromJson(Map<String, dynamic> json) =>
-      _$TaskDtoFromJson(json);
+  static TaskDto fromJson(Map<String, dynamic> json) => _$TaskDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$TaskDtoToJson(this);
 }

@@ -19,5 +19,4 @@ class TasksListDto {
       _$TasksListDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$TasksListDtoToJson(this);
-
 }

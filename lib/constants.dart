@@ -54,7 +54,7 @@ const double largeTitleFontHeight = 38 / largeTitleFontSize;
 const double titleFontHeight = 32 / titleFontSize;
 const double buttonFontHeight = 24 / buttonFontSize;
 const double bodyFontHeight = 20 / bodyFontSize;
-const double subheadFontHeight = 20 /subheadFontSize;
+const double subheadFontHeight = 20 / subheadFontSize;
 
 ///Icons
 const String infoOutlined = 'lib/assets/images/info_outline.svg';

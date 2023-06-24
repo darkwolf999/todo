@@ -15,7 +15,8 @@ class AllTasksScreenBloc
   final TasksRepository _tasksRepository;
   bool isCompletedTasksShown = false;
 
-  AllTasksScreenBloc(this._tasksRepository) : super(AllTasksScreenState()) {
+  AllTasksScreenBloc(this._tasksRepository)
+      : super(const AllTasksScreenState()) {
     on<SubscribeStreamEvent>(_onSubscribeStream);
     on<AddTaskEvent>(_onAddTask);
     on<DeleteTaskEvent>(_onDeleteTask);

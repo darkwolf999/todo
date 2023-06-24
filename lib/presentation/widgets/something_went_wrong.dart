@@ -5,9 +5,9 @@ import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/constants.dart' as Constants;
 
 class SomethingWentWrong extends StatelessWidget {
-  VoidCallback onPressed;
+  final VoidCallback onPressed;
 
-  SomethingWentWrong({
+  const SomethingWentWrong({
     Key? key,
     required this.onPressed,
   }) : super(key: key);
@@ -21,7 +21,7 @@ class SomethingWentWrong extends StatelessWidget {
           Text(
             //Что-то пошло не так
             LocaleKeys.smthgWentWrong.tr(),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: Constants.bodyFontSize,
             ),
           ),
@@ -30,7 +30,7 @@ class SomethingWentWrong extends StatelessWidget {
             child: Text(
               //Обновить страницу
               LocaleKeys.refreshPage.tr(),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(Constants.lightColorBlue),
               ),
             ),

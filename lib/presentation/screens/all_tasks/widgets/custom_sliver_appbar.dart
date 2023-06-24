@@ -18,9 +18,9 @@ class CustomSliverAppbar extends StatelessWidget {
       collapsedHeight: 60.0,
       expandedHeight: 124.0,
       backgroundColor: const Color(Constants.lightBackPrimary),
-      actions: const [
+      actions: [
         Padding(
-          padding: EdgeInsets.only(right: 8.0),
+          padding: const EdgeInsets.only(right: 8.0),
           child: VisibilityButton(),
         )
       ],

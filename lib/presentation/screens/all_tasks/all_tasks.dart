@@ -42,7 +42,7 @@ class AllTasksScreenContent extends StatelessWidget {
         builder: (context, state) {
           switch (state.status) {
             case AllTasksScreenStatus.initial:
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             case AllTasksScreenStatus.failure:
               return SomethingWentWrong(
                 onPressed: () {
