@@ -38,7 +38,7 @@ ___
 ### Скриншоты
 
 <p float="center">
-  <img src="https://github.com/darkwolf999/todo/blob/home_work_2/screenshots/1.JPG" width="230" />
-  <img src="https://github.com/darkwolf999/todo/blob/home_work_2/screenshots/2.JPG" width="230" /> 
-  <img src="https://github.com/darkwolf999/todo/blob/home_work_2/screenshots/3.JPG" width="230" />
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_2/screenshots/1.JPG" width="300" />
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_2/screenshots/2.JPG" width="300" /> 
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_2/screenshots/3.JPG" width="300" />
 </p>
