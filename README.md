@@ -33,6 +33,16 @@ ___
 + Интернационализация Easy Localization https://pub.dev/packages/easy_localization  
 ___
 ### APK
+:warning::warning::warning::warning::warning::warning::warning::warning::warning:
+
+### Супер важная информация!!!
+
+Если хочешь запустить релизную сборку на эмуляторе Android, нужно обязательно поставить эмулятор **x86-x64** 
+
+Иначе приложение будет вылетать при запуске :t-rex: :skull_and_crossbones: :skull_and_crossbones: :skull_and_crossbones:
+
+:warning::warning::warning::warning::warning::warning::warning::warning::warning:
+
 Ссылка для скачивания: https://github.com/darkwolf999/todo/releases/tag/2.0.0
 ___
 ### Скриншоты
