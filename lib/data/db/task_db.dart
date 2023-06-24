@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+
 import 'package:todo/helpers/fast_hash.dart';
 
 part 'task_db.g.dart';

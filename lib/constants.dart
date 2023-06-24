@@ -58,9 +58,12 @@ const double subheadFontHeight = 20 / subheadFontSize;
 
 ///Icons
 const String infoOutlined = 'lib/assets/images/info_outline.svg';
-const String checkboxUncheckedNormal = 'lib/assets/images/checkbox_unchecked_normal.svg';
-const String checkboxUncheckedHigh = 'lib/assets/images/checkbox_unchecked_high.svg';
-const String checkboxUncheckedLow = 'lib/assets/images/checkbox_unchecked_low.svg';
+const String checkboxUncheckedNormal =
+    'lib/assets/images/checkbox_unchecked_normal.svg';
+const String checkboxUncheckedHigh =
+    'lib/assets/images/checkbox_unchecked_high.svg';
+const String checkboxUncheckedLow =
+    'lib/assets/images/checkbox_unchecked_low.svg';
 const String checkboxChecked = 'lib/assets/images/checkbox_checked.svg';
 const String priorityHigh = 'lib/assets/images/priority_high.svg';
 const String priorityLow = 'lib/assets/images/priority_low.svg';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/presentation/widgets/svg.dart';

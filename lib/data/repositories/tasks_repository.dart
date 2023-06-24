@@ -1,9 +1,9 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:todo/data/api/database_tasks_api.dart';
 import 'package:todo/data/mappers/db_dto_task_mapper.dart';
 import 'package:todo/data/mappers/domain_db_task_mapper.dart';
-
 import 'package:todo/data/mappers/domain_dto_task_mapper.dart';
 import 'package:todo/data/models/task_model.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
