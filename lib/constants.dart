@@ -57,20 +57,18 @@ const double bodyFontHeight = 20 / bodyFontSize;
 const double subheadFontHeight = 20 / subheadFontSize;
 
 ///Icons
-const String infoOutlined = 'lib/assets/images/info_outline.svg';
-const String checkboxUncheckedNormal =
-    'lib/assets/images/checkbox_unchecked_normal.svg';
-const String checkboxUncheckedHigh =
-    'lib/assets/images/checkbox_unchecked_high.svg';
-const String checkboxUncheckedLow =
-    'lib/assets/images/checkbox_unchecked_low.svg';
-const String checkboxChecked = 'lib/assets/images/checkbox_checked.svg';
-const String priorityHigh = 'lib/assets/images/priority_high.svg';
-const String priorityLow = 'lib/assets/images/priority_low.svg';
-const String check = 'lib/assets/images/check.svg';
-const String add = 'lib/assets/images/add.svg';
-const String delete = 'lib/assets/images/delete.svg';
-const String deleteDisabled = 'lib/assets/images/delete_disabled.svg';
-const String close = 'lib/assets/images/close.svg';
-const String visibility = 'lib/assets/images/visibility.svg';
-const String visibilityOff = 'lib/assets/images/visibility_off.svg';
+const String imagesPath = 'assets/images';
+const String infoOutlined = '$imagesPath/info_outline.svg';
+const String checkboxUncheckedNormal = '$imagesPath/checkbox_unchecked_normal.svg';
+const String checkboxUncheckedHigh = '$imagesPath/checkbox_unchecked_high.svg';
+const String checkboxUncheckedLow = '$imagesPath/checkbox_unchecked_low.svg';
+const String checkboxChecked = '$imagesPath/checkbox_checked.svg';
+const String priorityHigh = '$imagesPath/priority_high.svg';
+const String priorityLow = '$imagesPath/priority_low.svg';
+const String check = '$imagesPath/check.svg';
+const String add = '$imagesPath/add.svg';
+const String delete = '$imagesPath/delete.svg';
+const String deleteDisabled = '$imagesPath/delete_disabled.svg';
+const String close = '$imagesPath/close.svg';
+const String visibility = '$imagesPath/visibility.svg';
+const String visibilityOff = '$imagesPath/visibility_off.svg';
