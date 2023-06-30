@@ -5,10 +5,9 @@ import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/data/models/task_model.dart';
 import 'package:todo/presentation/widgets/svg.dart';
-
 import 'package:todo/helpers/format_date.dart';
-import 'check_button.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
+import 'check_button.dart';
 
 class Task extends StatelessWidget {
   final TaskModel task;
@@ -99,7 +98,10 @@ class Task extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: Text(
-                    FormatDate.toDmmmmyyyy(task.deadline ?? DateTime.now()),
+                    FormatDate.toDmmmmyyyy(
+                      task.deadline ?? DateTime.now(),
+                      Localizations.localeOf(context).toString(),
+                    ),
                     style: const TextStyle(
                       color: Color(Constants.lightLabelTertiary),
                     ),

@@ -1,5 +1,6 @@
 ///Data
 const sharedPrefsTasksKey = 'allTasks';
+const shPrefsRevisionKey = 'revision';
 
 ///Colors
 ///Light
@@ -53,13 +54,16 @@ const double largeTitleFontHeight = 38 / largeTitleFontSize;
 const double titleFontHeight = 32 / titleFontSize;
 const double buttonFontHeight = 24 / buttonFontSize;
 const double bodyFontHeight = 20 / bodyFontSize;
-const double subheadFontHeight = 20 /subheadFontSize;
+const double subheadFontHeight = 20 / subheadFontSize;
 
 ///Icons
 const String infoOutlined = 'lib/assets/images/info_outline.svg';
-const String checkboxUncheckedNormal = 'lib/assets/images/checkbox_unchecked_normal.svg';
-const String checkboxUncheckedHigh = 'lib/assets/images/checkbox_unchecked_high.svg';
-const String checkboxUncheckedLow = 'lib/assets/images/checkbox_unchecked_low.svg';
+const String checkboxUncheckedNormal =
+    'lib/assets/images/checkbox_unchecked_normal.svg';
+const String checkboxUncheckedHigh =
+    'lib/assets/images/checkbox_unchecked_high.svg';
+const String checkboxUncheckedLow =
+    'lib/assets/images/checkbox_unchecked_low.svg';
 const String checkboxChecked = 'lib/assets/images/checkbox_checked.svg';
 const String priorityHigh = 'lib/assets/images/priority_high.svg';
 const String priorityLow = 'lib/assets/images/priority_low.svg';

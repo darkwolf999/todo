@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/presentation/widgets/svg.dart';
@@ -33,15 +35,16 @@ class AddNewTaskButton extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Row(
-              children: const [
-                SVG(
+              children: [
+                const SVG(
                   imagePath: Constants.add,
                   color: Constants.lightLabelTertiary,
                 ),
-                SizedBox(width: 12.0),
+                const SizedBox(width: 12.0),
                 Text(
-                  'Новое',
-                  style: TextStyle(
+                  //Новое
+                  LocaleKeys.newTask.tr(),
+                  style: const TextStyle(
                     fontSize: Constants.bodyFontSize,
                     height: Constants.bodyFontHeight,
                     color: Color(

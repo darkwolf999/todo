@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/presentation/screens/all_tasks/widgets/task.dart';
@@ -85,7 +85,6 @@ class TasksListview extends StatelessWidget {
     AllTasksScreenBloc bloc,
     int index,
   ) async {
-
     if (direction == DismissDirection.startToEnd) {
       bloc.add(
         CompleteTaskEvent(

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:todo/data/models/task_model.dart';
-import 'package:todo/repositories/tasks_repository.dart';
+import 'package:todo/data/repositories/tasks_repository.dart';
 import 'package:todo/my_logger.dart';
 
 part 'task_detail_screen_event.dart';
@@ -13,7 +13,8 @@ class TaskDetailScreenBloc
     extends Bloc<TaskDetailScreenEvent, TaskDetailScreenState> {
   final TasksRepository _tasksRepository;
 
-  TaskDetailScreenBloc(this._tasksRepository) : super(TaskDetailScreenState()) {
+  TaskDetailScreenBloc(this._tasksRepository)
+      : super(const TaskDetailScreenState()) {
     on<EditAcceptedEvent>(_onEditAccepted);
     on<DeadlineSwitchedEvent>(_onDeadlineSwitched);
     on<DeleteTaskEvent>(_onDeleteTask);
