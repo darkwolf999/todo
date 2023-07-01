@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
@@ -19,12 +20,13 @@ class AllTasksScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AllTasksScreenBloc>(
-      create: (context) => AllTasksScreenBloc(
-        context.read<TasksRepository>(),
-      )..add(const SubscribeStreamEvent()),
-      child: const AllTasksScreenContent(),
-    );
+    return MultiBlocProvider(providers: [
+      BlocProvider<AllTasksScreenBloc>(
+        create: (context) => AllTasksScreenBloc(
+          context.read<TasksRepository>(),
+        )..add(const SubscribeStreamEvent()),
+      ),
+    ], child: const AllTasksScreenContent());
   }
 }
 
@@ -135,12 +137,14 @@ class AllTasksScreenContent extends StatelessWidget {
     ScrollController scrollController,
     BuildContext context,
   ) async {
-    final animateScrollTop = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const TaskDetailScreen(),
-      ),
-    );
+    final animateScrollTop = true;
+    context.read<TaskDetailScreenBloc>().add(StartEditingTaskEvent());
+    // await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => const TaskDetailScreen(),
+    //   ),
+    // );
     if (animateScrollTop) {
       scrollController.animateTo(
         0,

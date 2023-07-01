@@ -7,6 +7,7 @@ import 'package:todo/data/models/task_model.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/helpers/format_date.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
+import '../../../../bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'check_button.dart';
 
 class Task extends StatelessWidget {
@@ -114,12 +115,13 @@ class Task extends StatelessWidget {
         const SizedBox(width: 12.0),
         IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TaskDetailScreen(task: task),
-              ),
-            );
+            context.read<TaskDetailScreenBloc>().add(StartEditingTaskEvent(task: task));
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => TaskDetailScreen(task: task),
+            //   ),
+            // );
           },
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
@@ -35,7 +36,8 @@ class TaskModel extends Equatable {
     String? title,
     bool? isDone,
     Priority? priority,
-    DateTime? deadline,
+    //DateTime? deadline,
+    ValueGetter<DateTime?>? deadline,
     String? color,
     int? createdAt,
     int? changedAt,
@@ -46,7 +48,8 @@ class TaskModel extends Equatable {
       title: title ?? this.title,
       isDone: isDone ?? this.isDone,
       priority: priority ?? this.priority,
-      deadline: deadline ?? this.deadline,
+      //deadline: deadline ?? this.deadline,
+      deadline: deadline != null ? deadline() : this.deadline,
       color: color ?? this.color,
       createdAt: createdAt ?? this.createdAt,
       changedAt: changedAt ?? this.changedAt,

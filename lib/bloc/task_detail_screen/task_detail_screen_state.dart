@@ -5,29 +5,44 @@ enum TaskDetailScreenStatus { initial, success, failure }
 class TaskDetailScreenState extends Equatable {
   final TaskDetailScreenStatus status;
   final TaskModel? editedTask;
-  final bool hasDeadline;
+  final String? title;
+  final Priority? priority;
+  final DateTime? deadline;
+  final int? createdAt;
 
   const TaskDetailScreenState({
     this.status = TaskDetailScreenStatus.initial,
     this.editedTask,
-    this.hasDeadline = false,
+    this.title,
+    this.priority,
+    this.deadline,
+    this.createdAt,
   });
 
   TaskDetailScreenState copyWith({
     TaskDetailScreenStatus? status,
-    TaskModel? editedTask,
-    bool? hasDeadline,
+    ValueGetter<TaskModel?>? editedTask,
+    ValueGetter<String?>? title,
+    ValueGetter<Priority?>? priority,
+    ValueGetter<DateTime?>? deadline,
+    ValueGetter<int?>? createdAt,
   }) =>
       TaskDetailScreenState(
         status: status ?? this.status,
-        editedTask: editedTask ?? this.editedTask,
-        hasDeadline: hasDeadline ?? this.hasDeadline,
+        editedTask: editedTask != null ? editedTask() : this.editedTask,
+        title: title != null ? title() : this.title,
+        priority: priority != null ? priority() : this.priority,
+        deadline: deadline != null ? deadline() : this.deadline,
+        createdAt: createdAt != null ? createdAt() : this.createdAt,
       );
 
   @override
   List<Object> get props => [
         status ?? '',
         editedTask ?? '',
-        hasDeadline ?? '',
+        title ?? '',
+        priority ?? '',
+        deadline ?? '',
+        createdAt ?? '',
       ];
 }

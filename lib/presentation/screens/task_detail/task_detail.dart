@@ -24,12 +24,13 @@ class TaskDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<TaskDetailScreenBloc>(
-      create: (context) => TaskDetailScreenBloc(
-        context.read<TasksRepository>(),
-      ),
-      child: TaskDetailScreenContent(task: task),
-    );
+    // return BlocProvider<TaskDetailScreenBloc>(
+    //   create: (context) => TaskDetailScreenBloc(
+    //     context.read<TasksRepository>(),
+    //   ),
+    //   child: TaskDetailScreenContent(task: task),
+    // );
+    return TaskDetailScreenContent(task: task);
   }
 }
 
@@ -45,12 +46,9 @@ class TaskDetailScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<TaskDetailScreenBloc>();
 
-    final TextEditingController textController = TextEditingController();
-    textController.text = task?.title ?? '';
-    Priority priority = task?.priority ?? Priority.no;
-    DateTime? pickedDate = task?.deadline;
-    int? createdAt = task?.createdAt;
-    bool isSwitchEnabled = task?.deadline != null;
+    Priority? priority = bloc.state.priority;
+    DateTime? deadline = bloc.state.deadline;
+    bool isSwitchEnabled = bloc.state.deadline != null;
 
     return Scaffold(
       backgroundColor: const Color(Constants.lightBackPrimary),
@@ -61,7 +59,7 @@ class TaskDetailScreenContent extends StatelessWidget {
         leading: IconButton(
           splashRadius: 24.0,
           onPressed: () {
-            Navigator.pop(context, false);
+            Navigator.pop(context);
           },
           icon: const SVG(
             imagePath: Constants.close,
@@ -74,24 +72,8 @@ class TaskDetailScreenContent extends StatelessWidget {
             child: Center(
               child: TextButton(
                 onPressed: () async {
-                  int dateNowStamp = DateTime.now().millisecondsSinceEpoch;
-                  bloc.add(
-                    EditAcceptedEvent(
-                      TaskModel(
-                        uuid: task?.uuid,
-                        title: textController.text.isNotEmpty
-                            ? textController.text
-                            : LocaleKeys.emptyTask.tr(),
-                        isDone: false,
-                        priority: priority,
-                        deadline: isSwitchEnabled ? pickedDate : null,
-                        createdAt: createdAt ?? dateNowStamp,
-                        changedAt: dateNowStamp,
-                        lastUpdatedBy: await getDeviceModel(),
-                      ),
-                    ),
-                  );
-                  Navigator.pop(context, true);
+                  bloc.add(const EditAcceptedEvent());
+                  Navigator.pop(context);
                 },
                 child: Text(
                   //СОХРАНИТЬ
@@ -117,7 +99,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                 const SizedBox(height: 8.0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: MaterialTextfield(textController: textController),
+                  child: MaterialTextfield(),
                 ),
                 const SizedBox(height: 12.0),
                 Padding(
@@ -126,12 +108,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                     child: DropdownButtonFormField(
                       value: priority,
                       onChanged: (newPriority) {
-                        if (newPriority != Priority.no) {
-                          priority = newPriority;
-                        } else {
-                          //priority = null;
-                          priority = Priority.no; //todo переделать
-                        }
+                        bloc.add(PriorityChangedEvent(newPriority));
                       },
                       style: const TextStyle(
                         fontSize: Constants.buttonFontSize,
@@ -226,9 +203,9 @@ class TaskDetailScreenContent extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
-                                pickedDate != null
+                                deadline != null
                                     ? FormatDate.toDmmmmyyyy(
-                                        pickedDate!,
+                                        deadline!,
                                         Localizations.localeOf(context)
                                             .toString(),
                                       )
@@ -243,15 +220,17 @@ class TaskDetailScreenContent extends StatelessWidget {
                         ],
                       ),
                       Switch(
-                        value: isSwitchEnabled != false,
+                        value: bloc.state.deadline != null,
                         onChanged: (bool value) async {
-                          isSwitchEnabled != false
-                              ? null
-                              : pickedDate = await pickDeadlineDate(context);
-                          if (pickedDate != null) {
-                            isSwitchEnabled = !isSwitchEnabled;
-                            bloc.add(const DeadlineSwitchedEvent());
-                          }
+                          bloc.state.deadline != null
+                              ? {
+                                  deadline = null,
+                                  bloc.add(const DeadlineChangedEvent(null))
+                                }
+                              : {
+                                  deadline = await pickDeadlineDate(context),
+                                  bloc.add(DeadlineChangedEvent(deadline))
+                                };
                         },
                       )
                     ],

@@ -10,9 +10,12 @@ import 'package:todo/data/api/database_tasks_api.dart';
 import 'package:todo/data/interceptors/dio_interceptor.dart';
 import 'package:todo/l10n/codegen_loader.g.dart';
 import 'package:todo/my_logger.dart';
+import 'package:todo/navigation.dart';
 import 'package:todo/presentation/screens/all_tasks/all_tasks.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:todo/data/repositories/tasks_repository.dart';
+import 'package:todo/presentation/screens/task_detail/task_detail.dart';
+import 'bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'data/api/network_tasks_api.dart';
 import 'data/db/task_db.dart';
 
@@ -34,7 +37,12 @@ void main() async {
       child: RepositoryProvider<TasksRepository>(
         lazy: false,
         create: (context) => tasksRepository,
-        child: const MyApp(),
+        child: BlocProvider<TaskDetailScreenBloc>(
+          create: (context) => TaskDetailScreenBloc(
+            context.read<TasksRepository>(),
+          ),
+          child: const MyApp(),
+        ),
       ),
     ),
   );
@@ -54,7 +62,8 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: const [Locale('en'), Locale('ru')],
       locale: context.locale,
-      home: const AllTasksScreen(),
+      home: const Navigation(),
+      //home: const AllTasksScreen(),
     );
   }
 }
