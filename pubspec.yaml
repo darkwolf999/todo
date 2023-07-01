@@ -31,6 +31,7 @@ environment:
 isar_version: &isar_version ^3.1.0+1
 
 dependencies:
+  provider: ^6.0.5
   easy_localization: ^3.0.2
   isar: *isar_version
   isar_flutter_libs: *isar_version

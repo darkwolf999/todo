@@ -12,7 +12,7 @@ import 'package:todo/presentation/screens/task_detail/widgets/material_textfield
 import 'package:todo/presentation/screens/task_detail/widgets/delete_button/delete_button.dart';
 import 'package:todo/presentation/screens/task_detail//widgets/delete_button/inkwell_delete_button.dart';
 import 'package:todo/presentation/widgets/svg.dart';
-import 'package:todo/data/repositories/tasks_repository.dart';
+import 'package:todo/navigation/tasks_router_delegate.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   const TaskDetailScreen({
@@ -56,7 +56,8 @@ class TaskDetailScreenContent extends StatelessWidget {
         leading: IconButton(
           splashRadius: 24.0,
           onPressed: () {
-            Navigator.pop(context);
+            (Router.of(context).routerDelegate as TasksRouterDelegate)
+                .pop(true);
           },
           icon: const SVG(
             imagePath: Constants.close,

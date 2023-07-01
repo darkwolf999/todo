@@ -15,6 +15,8 @@ import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/data/repositories/tasks_repository.dart';
 import 'package:todo/presentation/widgets/something_went_wrong.dart';
 
+import '../../../navigation/tasks_router_delegate.dart';
+
 class AllTasksScreen extends StatelessWidget {
   const AllTasksScreen({Key? key}) : super(key: key);
 
@@ -139,12 +141,7 @@ class AllTasksScreenContent extends StatelessWidget {
   ) async {
     final animateScrollTop = true;
     context.read<TaskDetailScreenBloc>().add(StartEditingTaskEvent());
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => const TaskDetailScreen(),
-    //   ),
-    // );
+    (Router.of(context).routerDelegate as TasksRouterDelegate).gotoTask();
     if (animateScrollTop) {
       scrollController.animateTo(
         0,

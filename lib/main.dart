@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/data/api/database_tasks_api.dart';
 import 'package:todo/data/interceptors/dio_interceptor.dart';
@@ -18,6 +19,8 @@ import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'data/api/network_tasks_api.dart';
 import 'data/db/task_db.dart';
+import 'navigation/parser.dart';
+import 'navigation/tasks_router_delegate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,20 +53,29 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'To-Do!',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    final routeObserver = RouteObserver();
+    return Provider<RouteObserver>.value(
+      value: routeObserver,
+      child: Builder(
+        builder: (context) {
+          return  MaterialApp.router(
+            routerDelegate: TasksRouterDelegate(),
+            routeInformationParser: TasksRouteInformationParser(),
+            debugShowCheckedModeBanner: false,
+            title: 'To-Do!',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: const [Locale('en'), Locale('ru')],
+            locale: context.locale,
+            //home: const Navigation(),
+            //home: const AllTasksScreen(),
+          );
+        },
       ),
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: const [Locale('en'), Locale('ru')],
-      locale: context.locale,
-      home: const Navigation(),
-      //home: const AllTasksScreen(),
     );
   }
 }

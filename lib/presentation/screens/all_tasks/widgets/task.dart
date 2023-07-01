@@ -8,6 +8,7 @@ import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/helpers/format_date.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import '../../../../bloc/task_detail_screen/task_detail_screen_bloc.dart';
+import '../../../../navigation/tasks_router_delegate.dart';
 import 'check_button.dart';
 
 class Task extends StatelessWidget {
@@ -116,6 +117,7 @@ class Task extends StatelessWidget {
         IconButton(
           onPressed: () {
             context.read<TaskDetailScreenBloc>().add(StartEditingTaskEvent(task: task));
+            (Router.of(context).routerDelegate as TasksRouterDelegate).gotoTask();
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(
