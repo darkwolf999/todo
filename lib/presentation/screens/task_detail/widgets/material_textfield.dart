@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/constants.dart' as Constants;
 
-import '../../../../bloc/task_detail_screen/task_detail_screen_bloc.dart';
+import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 
 class MaterialTextfield extends StatelessWidget {
   const MaterialTextfield({

@@ -1,17 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
-import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
+import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
+import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_sliver_appbar.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_adapter.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/language_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
-import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/data/repositories/tasks_repository.dart';
 import 'package:todo/presentation/widgets/something_went_wrong.dart';
 

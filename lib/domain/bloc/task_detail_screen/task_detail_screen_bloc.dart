@@ -8,7 +8,7 @@ import 'package:todo/data/models/task_model.dart';
 import 'package:todo/data/repositories/tasks_repository.dart';
 import 'package:todo/helpers/device_info.dart';
 import 'package:todo/my_logger.dart';
-import '../../l10n/locale_keys.g.dart';
+import 'package:todo/l10n/locale_keys.g.dart';
 
 part 'task_detail_screen_event.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:todo/presentation/screens/all_tasks/all_tasks.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
-
-import 'bloc/task_detail_screen/task_detail_screen_bloc.dart';
+import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'my_logger.dart';
 
 class Navigation extends StatelessWidget {

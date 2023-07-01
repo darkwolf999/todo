@@ -16,7 +16,7 @@ import 'package:todo/presentation/screens/all_tasks/all_tasks.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:todo/data/repositories/tasks_repository.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
-import 'bloc/task_detail_screen/task_detail_screen_bloc.dart';
+import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'data/api/network_tasks_api.dart';
 import 'data/db/task_db.dart';
 import 'navigation/parser.dart';
