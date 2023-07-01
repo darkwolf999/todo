@@ -18,7 +18,7 @@ class Navigation extends StatelessWidget {
           pages: [
             const MaterialPage(child: AllTasksScreen()),
             if (state.editedTask != null)
-              MaterialPage(child: TaskDetailScreen(task: state.editedTask,))
+              const MaterialPage(child: TaskDetailScreen())
           ],
           onPopPage: (route, result) {
             MyLogger.log('onPopPage');
