@@ -15,11 +15,8 @@ import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/data/repositories/tasks_repository.dart';
 
 class TaskDetailScreen extends StatelessWidget {
-  final TaskModel? task;
-
   const TaskDetailScreen({
     Key? key,
-    this.task,
   }) : super(key: key);
 
   @override
@@ -30,7 +27,7 @@ class TaskDetailScreen extends StatelessWidget {
     //   ),
     //   child: TaskDetailScreenContent(task: task),
     // );
-    return TaskDetailScreenContent(task: task);
+    return TaskDetailScreenContent();
   }
 }
 
