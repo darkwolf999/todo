@@ -28,8 +28,10 @@ class TasksRepositoryImpl implements TasksRepository{
   final _tasksStreamController =
       BehaviorSubject<List<TaskModel>>.seeded(const []);
 
+  @override
   Stream<List<TaskModel>> getTasks() => _tasksStreamController;
 
+  @override
   Future<void> fetchTasks() async {
     int? localRevision = _prefs.getInt('revision');
     MyLogger.infoLog('Local revision - $localRevision');
@@ -74,6 +76,7 @@ class TasksRepositoryImpl implements TasksRepository{
     _tasksStreamController.add(tasksToView);
   }
 
+  @override
   Future<void> saveTask(TaskModel task) async {
     final taskDto = task.toDto();
     final taskDB = task.toDB();
@@ -90,6 +93,7 @@ class TasksRepositoryImpl implements TasksRepository{
     _tasksStreamController.add(tasks);
   }
 
+  @override
   Future<void> deleteTask(String uuid) async {
     final tasks = [..._tasksStreamController.value];
     final taskIndex = tasks.indexWhere((t) => t.uuid == uuid);
@@ -103,14 +107,17 @@ class TasksRepositoryImpl implements TasksRepository{
     }
   }
 
+  @override
   Future<void> fetchSingleTaskFromNetwork(String uuid) async {
     final taskResponseDto = await _networkTasksApi.fetchSingleTask(uuid);
   }
 
+  @override
   Future<void> fetchSingleTaskFromDB(String uuid) async {
     final taskResponseDto = await _databaseTasksApi.fetchSingleTask(uuid);
   }
 
+  @override
   Future<void> refreshNetworkTasks(List<TaskModel> tasks) async {
     final tasksDto = <TaskDto>[];
     for (final task in tasks) {

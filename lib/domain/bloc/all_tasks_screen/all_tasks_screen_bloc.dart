@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:todo/data/models/task_model.dart';
-import 'package:todo/data/repositories/tasks_repository.dart';
+import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
 import 'package:todo/my_logger.dart';
 

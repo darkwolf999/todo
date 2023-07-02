@@ -14,7 +14,7 @@ import 'package:todo/presentation/screens/task_detail//widgets/delete_button/ink
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/navigation/tasks_router_delegate.dart';
 
-import '../../../data/repositories/tasks_repository.dart';
+import '../../../data/repositories/tasks_repository_impl.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final TaskModel? task;

@@ -11,7 +11,7 @@ import 'package:todo/presentation/screens/all_tasks/widgets/custom_sliver_appbar
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_adapter.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/language_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
-import 'package:todo/data/repositories/tasks_repository.dart';
+import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/presentation/widgets/something_went_wrong.dart';
 
 import '../../../navigation/tasks_router_delegate.dart';
