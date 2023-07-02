@@ -18,7 +18,7 @@ import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'data/api/network_tasks_api.dart';
-import 'data/db/task_db.dart';
+import 'data/models/db/task_db.dart';
 import 'navigation/parser.dart';
 import 'navigation/tasks_router_delegate.dart';
 

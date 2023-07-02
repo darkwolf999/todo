@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/data/models/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 
 import 'package:todo/navigation/paths.dart';
 import 'navigation_state_dto.dart';

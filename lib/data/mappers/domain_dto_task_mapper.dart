@@ -1,5 +1,5 @@
-import 'package:todo/data/dto/task_dto.dart';
-import 'package:todo/data/models/task_model.dart';
+import 'package:todo/data/models/dto/task_dto.dart';
+import 'package:todo/domain/models/task_model.dart';
 
 /// Преобразовываем [TaskDto] в [TaskModel]
 extension TaskFromDtoToDomain on TaskDto {

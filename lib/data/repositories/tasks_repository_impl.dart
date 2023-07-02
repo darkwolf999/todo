@@ -5,12 +5,12 @@ import 'package:todo/data/api/database_tasks_api.dart';
 import 'package:todo/data/mappers/db_dto_task_mapper.dart';
 import 'package:todo/data/mappers/domain_db_task_mapper.dart';
 import 'package:todo/data/mappers/domain_dto_task_mapper.dart';
-import 'package:todo/data/models/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
-import 'package:todo/data/dto/task_dto.dart';
+import 'package:todo/data/models/dto/task_dto.dart';
 import 'package:todo/domain/repository/tasks_repository.dart';
 import 'package:todo/my_logger.dart';
-import 'package:todo/data/db/task_db.dart';
+import 'package:todo/data/models/db/task_db.dart';
 
 class TasksRepositoryImpl implements TasksRepository{
   TasksRepositoryImpl({

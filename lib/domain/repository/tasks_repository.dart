@@ -1,4 +1,4 @@
-import 'package:todo/data/models/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 
 abstract class TasksRepository {
 

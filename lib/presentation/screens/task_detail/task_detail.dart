@@ -5,7 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/constants.dart' as Constants;
-import 'package:todo/data/models/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'package:todo/helpers/format_date.dart';
 import 'package:todo/presentation/screens/task_detail/widgets/material_textfield.dart';

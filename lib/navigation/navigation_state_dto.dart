@@ -1,4 +1,4 @@
-import '../data/models/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 
 class NavigationStateDTO {
   bool allTasksPage;

@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:todo/data/models/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/helpers/device_info.dart';
 import 'package:todo/my_logger.dart';

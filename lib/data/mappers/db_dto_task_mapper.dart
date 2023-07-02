@@ -1,6 +1,6 @@
-import 'package:todo/data/db/task_db.dart' as db;
-import 'package:todo/data/dto/task_dto.dart';
-import 'package:todo/data/db/task_db.dart';
+import 'package:todo/data/models/db/task_db.dart' as db;
+import 'package:todo/data/models/dto/task_dto.dart';
+import 'package:todo/data/models/db/task_db.dart';
 
 /// Преобразовываем [DBTask] в [TaskDto]
 extension TaskFromDBToDto on db.DBTask {

@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
 
 import 'package:todo/helpers/fast_hash.dart';
-import 'package:todo/data/db/task_db.dart';
+import 'package:todo/data/models/db/task_db.dart';
 
 class DatabaseTasksApi {
   final Isar _isar;

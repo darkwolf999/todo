@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:todo/data/models/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 
 class NavigationState with ChangeNotifier {
   bool _isAllTasksPage;

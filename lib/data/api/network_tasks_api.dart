@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:todo/data/dto/task_response_dto.dart';
+import 'package:todo/data/models/dto/task_response_dto.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/my_logger.dart';
-import 'package:todo/data/dto/task_dto.dart';
-import 'package:todo/data/dto/tasks_list_dto.dart';
+import 'package:todo/data/models/dto/task_dto.dart';
+import 'package:todo/data/models/dto/tasks_list_dto.dart';
 import 'constants/api_constants.dart';
 
 class NetworkTasksApi {

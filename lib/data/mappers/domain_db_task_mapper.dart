@@ -1,5 +1,5 @@
-import 'package:todo/data/db/task_db.dart' as db;
-import 'package:todo/data/models/task_model.dart';
+import 'package:todo/data/models/db/task_db.dart' as db;
+import 'package:todo/domain/models/task_model.dart';
 
 /// Преобразовываем [TaskDB] в [TaskModel]
 extension TaskFromDBToDomain on db.DBTask {
