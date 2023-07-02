@@ -43,7 +43,6 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
       },
       key: navigatorKey,
       pages: [
-        if (state.isAllTasksPage)
           const MaterialPage(child: AllTasksScreen()),
         if (!state.isAllTasksPage)
           MaterialPage(child: TaskDetailScreen(task: state.task)),
