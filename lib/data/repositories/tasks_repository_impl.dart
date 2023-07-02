@@ -82,15 +82,18 @@ class TasksRepositoryImpl implements TasksRepository{
     final taskDB = task.toDB();
     final tasks = [..._tasksStreamController.value];
     final taskIndex = tasks.indexWhere((t) => t.uuid == task.uuid);
+    //Кладу таски в стрим в первую очередь
+    //чтобы они сразу появились на экране без задержек
     if (taskIndex >= 0) {
       tasks[taskIndex] = task;
+      _tasksStreamController.add(tasks);
       await _networkTasksApi.editTask(taskDto);
     } else {
       tasks.insert(0, task);
+      _tasksStreamController.add(tasks);
       await _networkTasksApi.addNewTask(taskDto);
     }
     await _databaseTasksApi.putTask(taskDB);
-    _tasksStreamController.add(tasks);
   }
 
   @override
