@@ -37,12 +37,12 @@ void main() async {
       path: 'lib/assets/translations',
       fallbackLocale: Locale('ru'),
       assetLoader: CodegenLoader(),
-      child: RepositoryProvider<TasksRepository>(
+      child: RepositoryProvider<TasksRepositoryImpl>(
         lazy: false,
         create: (context) => tasksRepository,
         child: BlocProvider<TaskDetailScreenBloc>(
           create: (context) => TaskDetailScreenBloc(
-            context.read<TasksRepository>(),
+            context.read<TasksRepositoryImpl>(),
           ),
           child: const MyApp(),
         ),
@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<TasksRepository> initRepo() async {
+Future<TasksRepositoryImpl> initRepo() async {
   BaseOptions options = BaseOptions(
     connectTimeout: Duration(seconds: 10),
     receiveTimeout: Duration(seconds: 10),
@@ -112,7 +112,7 @@ Future<TasksRepository> initRepo() async {
     isar: isar,
   );
 
-  final tasksRepository = TasksRepository(
+  final tasksRepository = TasksRepositoryImpl(
     prefs: prefs,
     networkTasksApi: networkTasksApi,
     databaseTasksApi: databaseTasksApi,

@@ -16,7 +16,7 @@ part 'task_detail_screen_state.dart';
 
 class TaskDetailScreenBloc
     extends Bloc<TaskDetailScreenEvent, TaskDetailScreenState> {
-  final TasksRepository _tasksRepository;
+  final TasksRepositoryImpl _tasksRepository;
 
   TaskDetailScreenBloc(this._tasksRepository)
       : super(const TaskDetailScreenState()) {

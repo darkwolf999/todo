@@ -12,7 +12,7 @@ part 'all_tasks_screen_state.dart';
 
 class AllTasksScreenBloc
     extends Bloc<AllTasksScreenEvent, AllTasksScreenState> {
-  final TasksRepository _tasksRepository;
+  final TasksRepositoryImpl _tasksRepository;
   bool isCompletedTasksShown = false;
 
   AllTasksScreenBloc(this._tasksRepository)

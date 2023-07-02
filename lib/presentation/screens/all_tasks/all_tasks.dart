@@ -24,7 +24,7 @@ class AllTasksScreen extends StatelessWidget {
     return MultiBlocProvider(providers: [
       BlocProvider<AllTasksScreenBloc>(
         create: (context) => AllTasksScreenBloc(
-          context.read<TasksRepository>(),
+          context.read<TasksRepositoryImpl>(),
         )..add(const SubscribeStreamEvent()),
       ),
     ], child: const AllTasksScreenContent());

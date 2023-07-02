@@ -8,11 +8,12 @@ import 'package:todo/data/mappers/domain_dto_task_mapper.dart';
 import 'package:todo/data/models/task_model.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
 import 'package:todo/data/dto/task_dto.dart';
+import 'package:todo/domain/repository/tasks_repository.dart';
 import 'package:todo/my_logger.dart';
 import 'package:todo/data/db/task_db.dart';
 
-class TasksRepository {
-  TasksRepository({
+class TasksRepositoryImpl implements TasksRepository{
+  TasksRepositoryImpl({
     required SharedPreferences prefs,
     required NetworkTasksApi networkTasksApi,
     required DatabaseTasksApi databaseTasksApi,
