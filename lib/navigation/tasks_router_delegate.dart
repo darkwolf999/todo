@@ -36,7 +36,7 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
         if (!route.didPop(result)) {
           return false;
         }
-        if (state.isAllTasksPage == false) {
+        if (!state.isAllTasksPage) {
           gotoTasks();
         }
         return true;
