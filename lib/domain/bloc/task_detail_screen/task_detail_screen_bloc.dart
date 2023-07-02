@@ -24,8 +24,8 @@ class TaskDetailScreenBloc
     on<TitleChangedEvent>(_onTitleChanged);
     on<PriorityChangedEvent>(_onPriorityChanged);
     on<DeadlineChangedEvent>(_onDeadlineChanged);
-    on<FinishEditingEvent>(_onFinishEditing);
     on<EditAcceptedEvent>(_onEditAccepted);
+    on<FinishEditingEvent>(_onFinishEditing);
     on<DeleteTaskEvent>(_onDeleteTask);
   }
 
@@ -81,23 +81,6 @@ class TaskDetailScreenBloc
     emit(state.copyWith(deadline: () => event.deadline));
   }
 
-  void _onFinishEditing(
-    FinishEditingEvent event,
-    Emitter<TaskDetailScreenState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        editedTask: () => null,
-        title: () => null,
-        priority: () => null,
-        deadline: () => null,
-        createdAt: () => null,
-        isNewTask: () => null,
-      ),
-    );
-    MyLogger.infoLog('edit finish');
-  }
-
   Future<void> _onEditAccepted(
     EditAcceptedEvent event,
     Emitter<TaskDetailScreenState> emit,
@@ -120,6 +103,23 @@ class TaskDetailScreenBloc
       emit(state.copyWith(status: TaskDetailScreenStatus.failure));
       MyLogger.errorLog('edit error', e);
     }
+  }
+
+  void _onFinishEditing(
+      FinishEditingEvent event,
+      Emitter<TaskDetailScreenState> emit,
+      ) {
+    emit(
+      state.copyWith(
+        editedTask: () => null,
+        title: () => null,
+        priority: () => null,
+        deadline: () => null,
+        createdAt: () => null,
+        isNewTask: () => null,
+      ),
+    );
+    MyLogger.infoLog('edit finish');
   }
 
   Future<void> _onDeleteTask(
