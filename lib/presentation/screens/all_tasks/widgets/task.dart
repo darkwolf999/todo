@@ -117,7 +117,7 @@ class Task extends StatelessWidget {
         IconButton(
           onPressed: () {
             context.read<TaskDetailScreenBloc>().add(StartEditingTaskEvent(task: task));
-            (Router.of(context).routerDelegate as TasksRouterDelegate).gotoTask();
+            (Router.of(context).routerDelegate as TasksRouterDelegate).gotoTask(task);
             // Navigator.push(
             //   context,
             //   MaterialPageRoute(

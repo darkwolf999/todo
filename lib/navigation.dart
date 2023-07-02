@@ -22,7 +22,7 @@ class Navigation extends StatelessWidget {
           ],
           onPopPage: (route, result) {
             MyLogger.log('onPopPage');
-            bloc.add(const FinishEditingEvent());
+            //bloc.add(const FinishEditingEvent());
             return route.didPop(result);
           },
         );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:todo/presentation/screens/all_tasks/all_tasks.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
+import 'package:todo/data/models/task_model.dart';
 import 'navigation_state_dto.dart';
 import 'navigaton_state.dart';
 
@@ -11,15 +12,16 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
 
   bool get isAllTasksPage => state.isAllTasksPage;
 
-  bool get isTaskDetails => !state.isAllTasksPage && state.taskId != null;
+  bool get isTaskDetails => !state.isAllTasksPage && state.task != null;
 
   void gotoTasks() {
     state.isAllTasksPage = true;
     notifyListeners();
   }
 
-  void gotoTask() {
+  void gotoTask(TaskModel? task) {
     state.isAllTasksPage = false;
+    state.task = task;
     notifyListeners();
   }
 
@@ -44,14 +46,14 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
         if (state.isAllTasksPage)
           const MaterialPage(child: AllTasksScreen()),
         if (!state.isAllTasksPage)
-          const MaterialPage(child: TaskDetailScreen()),
+          MaterialPage(child: TaskDetailScreen(task: state.task)),
       ],
     );
   }
 
   @override
   NavigationStateDTO? get currentConfiguration {
-    return NavigationStateDTO(state.isAllTasksPage, state.taskId);
+    return NavigationStateDTO(state.isAllTasksPage, state.task);
   }
 
   @override
@@ -59,7 +61,7 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
 
   @override
   Future<void> setNewRoutePath(NavigationStateDTO configuration) {
-    state.taskId = configuration.taskId;
+    state.task = configuration.task;
     state.isAllTasksPage = configuration.allTasksPage;
     return Future.value();
   }

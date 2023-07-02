@@ -14,20 +14,25 @@ import 'package:todo/presentation/screens/task_detail//widgets/delete_button/ink
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/navigation/tasks_router_delegate.dart';
 
+import '../../../data/repositories/tasks_repository.dart';
+
 class TaskDetailScreen extends StatelessWidget {
+  final TaskModel? task;
+
   const TaskDetailScreen({
     Key? key,
+    this.task,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // return BlocProvider<TaskDetailScreenBloc>(
     //   create: (context) => TaskDetailScreenBloc(
-    //     context.read<TasksRepository>(),
-    //   ),
+    //     context.read<TasksRepositoryImpl>(),
+    //   )..add(StartEditingTaskEvent(task: task)),
     //   child: TaskDetailScreenContent(task: task),
     // );
-    return TaskDetailScreenContent();
+    return TaskDetailScreenContent(task: task);
   }
 }
 
@@ -56,6 +61,7 @@ class TaskDetailScreenContent extends StatelessWidget {
         leading: IconButton(
           splashRadius: 24.0,
           onPressed: () {
+            bloc.add(FinishEditingEvent());
             (Router.of(context).routerDelegate as TasksRouterDelegate)
                 .pop(true);
           },
@@ -243,18 +249,20 @@ class TaskDetailScreenContent extends StatelessWidget {
                 const SizedBox(height: 8.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
-                  child: task != null
-                      ? InkWellDeleteButton(
+                  child: bloc.state.isNewTask ?? false
+                      ? const DeleteButton(
+                          icon: Constants.deleteDisabled,
+                          textColor: Constants.lightLabelDisable,
+                        )
+                      : InkWellDeleteButton(
                           icon: Constants.delete,
                           textColor: Constants.lightColorRed,
                           onTap: () {
-                            bloc.add(DeleteTaskEvent(task!.uuid));
+                            bloc.add(
+                              DeleteTaskEvent(bloc.state.editedTask!.uuid),
+                            );
                             Navigator.pop(context);
                           },
-                        )
-                      : const DeleteButton(
-                          icon: Constants.deleteDisabled,
-                          textColor: Constants.lightLabelDisable,
                         ),
                 ),
                 const SizedBox(height: 12.0),

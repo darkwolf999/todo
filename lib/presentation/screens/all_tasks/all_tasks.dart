@@ -140,7 +140,7 @@ class AllTasksScreenContent extends StatelessWidget {
   ) async {
     final animateScrollTop = true;
     context.read<TaskDetailScreenBloc>().add(StartEditingTaskEvent());
-    (Router.of(context).routerDelegate as TasksRouterDelegate).gotoTask();
+    (Router.of(context).routerDelegate as TasksRouterDelegate).gotoTask(null);
     if (animateScrollTop) {
       scrollController.animateTo(
         0,

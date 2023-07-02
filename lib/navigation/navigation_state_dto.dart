@@ -1,14 +1,15 @@
+import '../data/models/task_model.dart';
+
 class NavigationStateDTO {
   bool allTasksPage;
-  int? taskId;
+  TaskModel? task;
 
-  NavigationStateDTO(this.allTasksPage, this.taskId);
+  NavigationStateDTO(this.allTasksPage, this.task);
 
   NavigationStateDTO.allTasksPage()
       : allTasksPage = true,
-        taskId = null;
+        task = null;
 
-  NavigationStateDTO.task(int id)
-      : allTasksPage = false,
-        taskId = id;
+  NavigationStateDTO.task(TaskModel this.task)
+      : allTasksPage = false;
 }

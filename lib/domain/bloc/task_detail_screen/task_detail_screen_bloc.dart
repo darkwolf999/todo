@@ -51,6 +51,9 @@ class TaskDetailScreenBloc
         priority: () => event.task?.priority,
         deadline: () => event.task?.deadline,
         createdAt: () => event.task?.createdAt,
+        isNewTask: () => event.task == null
+            ? true
+            : false,
       ),
     );
     deviceModel = await DeviceInfo.getDeviceModel();
@@ -89,6 +92,7 @@ class TaskDetailScreenBloc
         priority: () => null,
         deadline: () => null,
         createdAt: () => null,
+        isNewTask: () => null,
       ),
     );
     MyLogger.infoLog('edit finish');
@@ -109,6 +113,7 @@ class TaskDetailScreenBloc
         lastUpdatedBy: deviceModel,
       );
       await _tasksRepository.saveTask(taskToSave!);
+      add(FinishEditingEvent());
       emit(state.copyWith(status: TaskDetailScreenStatus.success));
       MyLogger.infoLog('edit accepted');
     } catch (e) {

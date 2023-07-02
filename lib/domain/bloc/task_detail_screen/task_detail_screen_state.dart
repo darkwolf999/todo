@@ -9,6 +9,7 @@ class TaskDetailScreenState extends Equatable {
   final Priority? priority;
   final DateTime? deadline;
   final int? createdAt;
+  final bool? isNewTask;
 
   const TaskDetailScreenState({
     this.status = TaskDetailScreenStatus.initial,
@@ -17,6 +18,7 @@ class TaskDetailScreenState extends Equatable {
     this.priority,
     this.deadline,
     this.createdAt,
+    this.isNewTask,
   });
 
   TaskDetailScreenState copyWith({
@@ -26,6 +28,7 @@ class TaskDetailScreenState extends Equatable {
     ValueGetter<Priority?>? priority,
     ValueGetter<DateTime?>? deadline,
     ValueGetter<int?>? createdAt,
+    ValueGetter<bool?>? isNewTask,
   }) =>
       TaskDetailScreenState(
         status: status ?? this.status,
@@ -34,6 +37,7 @@ class TaskDetailScreenState extends Equatable {
         priority: priority != null ? priority() : this.priority,
         deadline: deadline != null ? deadline() : this.deadline,
         createdAt: createdAt != null ? createdAt() : this.createdAt,
+        isNewTask: isNewTask != null ? isNewTask() : this.isNewTask,
       );
 
   @override
@@ -44,5 +48,6 @@ class TaskDetailScreenState extends Equatable {
         priority ?? '',
         deadline ?? '',
         createdAt ?? '',
+        isNewTask ?? '',
       ];
 }
