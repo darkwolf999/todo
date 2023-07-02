@@ -47,6 +47,7 @@ class TaskDetailScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<TaskDetailScreenBloc>();
+    final router = Router.of(context).routerDelegate as TasksRouterDelegate;
 
     Priority? priority = bloc.state.priority;
     DateTime? deadline = bloc.state.deadline;
@@ -62,8 +63,7 @@ class TaskDetailScreenContent extends StatelessWidget {
           splashRadius: 24.0,
           onPressed: () {
             bloc.add(FinishEditingEvent());
-            (Router.of(context).routerDelegate as TasksRouterDelegate)
-                .pop(true);
+            router.pop(true);
           },
           icon: const SVG(
             imagePath: Constants.close,
@@ -77,7 +77,7 @@ class TaskDetailScreenContent extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   bloc.add(const EditAcceptedEvent());
-                  Navigator.pop(context);
+                  router.pop(true);
                 },
                 child: Text(
                   //СОХРАНИТЬ
