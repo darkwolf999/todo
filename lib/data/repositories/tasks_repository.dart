@@ -81,14 +81,13 @@ class TasksRepositoryImpl implements TasksRepository{
     final taskIndex = tasks.indexWhere((t) => t.uuid == task.uuid);
     if (taskIndex >= 0) {
       tasks[taskIndex] = task;
-      _tasksStreamController.add(tasks);
-      _networkTasksApi.editTask(taskDto);
+      await _networkTasksApi.editTask(taskDto);
     } else {
       tasks.insert(0, task);
-      _tasksStreamController.add(tasks);
-      _networkTasksApi.addNewTask(taskDto);
+      await _networkTasksApi.addNewTask(taskDto);
     }
-    _databaseTasksApi.putTask(taskDB);
+    await _databaseTasksApi.putTask(taskDB);
+    _tasksStreamController.add(tasks);
   }
 
   Future<void> deleteTask(String uuid) async {
