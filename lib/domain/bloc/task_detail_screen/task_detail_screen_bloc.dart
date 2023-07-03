@@ -18,47 +18,36 @@ class TaskDetailScreenBloc
     extends Bloc<TaskDetailScreenEvent, TaskDetailScreenState> {
   final TasksRepositoryImpl _tasksRepository;
 
-  TaskDetailScreenBloc(this._tasksRepository)
-      : super(const TaskDetailScreenState()) {
-    on<StartEditingTaskEvent>(_onStartEditingTask);
+  TaskDetailScreenBloc({
+    required TasksRepositoryImpl tasksRepository,
+    required TaskModel? editedTask,
+  })  : _tasksRepository = tasksRepository,
+        super(
+          TaskDetailScreenState(
+            editedTask: editedTask ??
+                TaskModel(
+                  title: LocaleKeys.emptyTask.tr(),
+                  isDone: false,
+                  priority: Priority.no,
+                  createdAt: 0,
+                  changedAt: 0,
+                  lastUpdatedBy: '',
+                ),
+            title: editedTask?.title,
+            priority: editedTask?.priority,
+            deadline: editedTask?.deadline,
+            createdAt: editedTask?.createdAt,
+            isNewTask: editedTask == null ? true : false,
+          ),
+        ) {
     on<TitleChangedEvent>(_onTitleChanged);
     on<PriorityChangedEvent>(_onPriorityChanged);
     on<DeadlineChangedEvent>(_onDeadlineChanged);
     on<EditAcceptedEvent>(_onEditAccepted);
-    on<FinishEditingEvent>(_onFinishEditing);
     on<DeleteTaskEvent>(_onDeleteTask);
   }
 
   String deviceModel = '';
-
-  Future<void> _onStartEditingTask(
-    StartEditingTaskEvent event,
-    Emitter<TaskDetailScreenState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        editedTask: () =>
-            event.task ??
-            TaskModel(
-              title: LocaleKeys.emptyTask.tr(),
-              isDone: false,
-              priority: Priority.no,
-              createdAt: 0,
-              changedAt: 0,
-              lastUpdatedBy: '',
-            ),
-        title: () => event.task?.title,
-        priority: () => event.task?.priority,
-        deadline: () => event.task?.deadline,
-        createdAt: () => event.task?.createdAt,
-        isNewTask: () => event.task == null
-            ? true
-            : false,
-      ),
-    );
-    deviceModel = await DeviceInfo.getDeviceModel();
-    MyLogger.infoLog('start editing task');
-  }
 
   void _onTitleChanged(
     TitleChangedEvent event,
@@ -85,6 +74,7 @@ class TaskDetailScreenBloc
     EditAcceptedEvent event,
     Emitter<TaskDetailScreenState> emit,
   ) async {
+    deviceModel = await DeviceInfo.getDeviceModel(); //todo убрать в di
     int dateNowStamp = DateTime.now().millisecondsSinceEpoch;
     try {
       final taskToSave = (state.editedTask)?.copyWith(
@@ -96,30 +86,12 @@ class TaskDetailScreenBloc
         lastUpdatedBy: deviceModel,
       );
       await _tasksRepository.saveTask(taskToSave!);
-      add(FinishEditingEvent());
       emit(state.copyWith(status: TaskDetailScreenStatus.success));
       MyLogger.infoLog('edit accepted');
     } catch (e) {
       emit(state.copyWith(status: TaskDetailScreenStatus.failure));
       MyLogger.errorLog('edit error', e);
     }
-  }
-
-  void _onFinishEditing(
-      FinishEditingEvent event,
-      Emitter<TaskDetailScreenState> emit,
-      ) {
-    emit(
-      state.copyWith(
-        editedTask: () => null,
-        title: () => null,
-        priority: () => null,
-        deadline: () => null,
-        createdAt: () => null,
-        isNewTask: () => null,
-      ),
-    );
-    MyLogger.infoLog('edit finish');
   }
 
   Future<void> _onDeleteTask(

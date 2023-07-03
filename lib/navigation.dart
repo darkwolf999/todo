@@ -11,7 +11,7 @@ class Navigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<TaskDetailScreenBloc>();
+    //final bloc = context.read<TaskDetailScreenBloc>();
     return BlocBuilder<TaskDetailScreenBloc, TaskDetailScreenState>(
       builder: (context, state) {
         return Navigator(

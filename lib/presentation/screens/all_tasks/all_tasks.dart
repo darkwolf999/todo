@@ -37,6 +37,7 @@ class AllTasksScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AllTasksScreenBloc>();
+    final router = Router.of(context).routerDelegate as TasksRouterDelegate;
     ScrollController scrollController = ScrollController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -90,7 +91,7 @@ class AllTasksScreenContent extends StatelessWidget {
                                   TasksListview(),
                                   AddNewTaskButton(
                                     onTap: () {
-                                      addNewTask(scrollController, context);
+                                      addNewTask(scrollController, router);
                                     },
                                   ),
                                 ],
@@ -122,7 +123,7 @@ class AllTasksScreenContent extends StatelessWidget {
           const SizedBox(width: 8),
           FloatingActionButton(
             onPressed: () {
-              addNewTask(scrollController, context);
+              addNewTask(scrollController, router);
             },
             backgroundColor: const Color(Constants.lightColorBlue),
             tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
@@ -136,11 +137,12 @@ class AllTasksScreenContent extends StatelessWidget {
 
   void addNewTask(
     ScrollController scrollController,
-    BuildContext context,
+    TasksRouterDelegate router,
   ) async {
     final animateScrollTop = true;
-    context.read<TaskDetailScreenBloc>().add(StartEditingTaskEvent());
-    (Router.of(context).routerDelegate as TasksRouterDelegate).gotoTask(null);
+
+    router.gotoTask(null);
+
     if (animateScrollTop) {
       scrollController.animateTo(
         0,

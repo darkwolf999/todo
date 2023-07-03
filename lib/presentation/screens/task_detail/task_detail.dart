@@ -26,13 +26,14 @@ class TaskDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return BlocProvider<TaskDetailScreenBloc>(
-    //   create: (context) => TaskDetailScreenBloc(
-    //     context.read<TasksRepositoryImpl>(),
-    //   )..add(StartEditingTaskEvent(task: task)),
-    //   child: TaskDetailScreenContent(task: task),
-    // );
-    return TaskDetailScreenContent(task: task);
+    return BlocProvider<TaskDetailScreenBloc>(
+      create: (context) => TaskDetailScreenBloc(
+        tasksRepository: context.read<TasksRepositoryImpl>(),
+        editedTask: task,
+      ),
+      child: const TaskDetailScreenContent(),
+    );
+    //return TaskDetailScreenContent(task: task);
   }
 }
 
@@ -62,7 +63,6 @@ class TaskDetailScreenContent extends StatelessWidget {
         leading: IconButton(
           splashRadius: 24.0,
           onPressed: () {
-            bloc.add(FinishEditingEvent());
             router.pop(true);
           },
           icon: const SVG(
@@ -261,7 +261,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                             bloc.add(
                               DeleteTaskEvent(bloc.state.editedTask!.uuid),
                             );
-                            Navigator.pop(context);
+                            router.pop(true);
                           },
                         ),
                 ),

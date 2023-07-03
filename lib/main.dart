@@ -40,12 +40,7 @@ void main() async {
       child: RepositoryProvider<TasksRepositoryImpl>(
         lazy: false,
         create: (context) => tasksRepository,
-        child: BlocProvider<TaskDetailScreenBloc>(
-          create: (context) => TaskDetailScreenBloc(
-            context.read<TasksRepositoryImpl>(),
-          ),
-          child: const MyApp(),
-        ),
+        child: const MyApp(),
       ),
     ),
   );

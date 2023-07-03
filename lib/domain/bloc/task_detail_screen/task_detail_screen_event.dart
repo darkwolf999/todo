@@ -43,9 +43,9 @@ class DeadlineChangedEvent extends TaskDetailScreenEvent {
   List<Object> get props => [deadline ?? ''];
 }
 
-class FinishEditingEvent extends TaskDetailScreenEvent {
-  const FinishEditingEvent();
-}
+// class FinishEditingEvent extends TaskDetailScreenEvent {
+//   const FinishEditingEvent();
+// }
 
 // class EditAcceptedEvent extends TaskDetailScreenEvent {
 //   final TaskModel task;

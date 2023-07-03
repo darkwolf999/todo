@@ -22,6 +22,7 @@ class Task extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AllTasksScreenBloc>();
+    final router = Router.of(context).routerDelegate as TasksRouterDelegate;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -116,14 +117,7 @@ class Task extends StatelessWidget {
         const SizedBox(width: 12.0),
         IconButton(
           onPressed: () {
-            context.read<TaskDetailScreenBloc>().add(StartEditingTaskEvent(task: task));
-            (Router.of(context).routerDelegate as TasksRouterDelegate).gotoTask(task);
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => TaskDetailScreen(task: task),
-            //   ),
-            // );
+            router.gotoTask(task);
           },
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
