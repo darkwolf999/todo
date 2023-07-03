@@ -29,7 +29,7 @@ void main() async {
 
   await EasyLocalization.ensureInitialized();
 
-  DepInj.inject();
+  await DepInj.inject();
   final tasksRepository = await initRepo();
 
   MyLogger.infoLog('Starting application!');
