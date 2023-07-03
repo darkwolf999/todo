@@ -20,28 +20,10 @@ class TasksRouteInformationParser
         return Future.value(NavigationStateDTO.allTasksPage());
       case Paths.task:
         return Future.value(
-          NavigationStateDTO.task(
-            TaskModel(
-              uuid: Uuid().v4(),
-              title: '',
-              isDone: false,
-              priority: Priority.no,
-              createdAt: 0,
-              changedAt: 0,
-              lastUpdatedBy: '',
-            ),
-          ),
+          NavigationStateDTO.task(null),
         );
       default:
         return Future.value(NavigationStateDTO.allTasksPage());
     }
-  }
-
-  @override
-  RouteInformation? restoreRouteInformation(NavigationStateDTO configuration) {
-    if (configuration.allTasksPage) {
-      return const RouteInformation(location: Paths.allTasksPage);
-    }
-    return const RouteInformation(location: '/${Paths.task}');
   }
 }

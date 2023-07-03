@@ -6,13 +6,15 @@ import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
 import 'package:todo/my_logger.dart';
 
+import '../../repository/tasks_repository.dart';
+
 part 'all_tasks_screen_event.dart';
 
 part 'all_tasks_screen_state.dart';
 
 class AllTasksScreenBloc
     extends Bloc<AllTasksScreenEvent, AllTasksScreenState> {
-  final TasksRepositoryImpl _tasksRepository;
+  final TasksRepository _tasksRepository;
   bool isCompletedTasksShown = false;
 
   AllTasksScreenBloc(this._tasksRepository)

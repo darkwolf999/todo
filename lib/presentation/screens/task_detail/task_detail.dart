@@ -15,6 +15,7 @@ import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/navigation/tasks_router_delegate.dart';
 
 import '../../../data/repositories/tasks_repository_impl.dart';
+import '../../../domain/repository/tasks_repository.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final TaskModel? task;
@@ -28,7 +29,7 @@ class TaskDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<TaskDetailScreenBloc>(
       create: (context) => TaskDetailScreenBloc(
-        tasksRepository: context.read<TasksRepositoryImpl>(),
+        tasksRepository: context.read<TasksRepository>(),
         editedTask: task,
       ),
       child: const TaskDetailScreenContent(),

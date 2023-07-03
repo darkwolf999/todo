@@ -11,16 +11,18 @@ import 'package:todo/helpers/device_info.dart';
 import 'package:todo/my_logger.dart';
 import 'package:todo/l10n/locale_keys.g.dart';
 
+import '../../repository/tasks_repository.dart';
+
 part 'task_detail_screen_event.dart';
 
 part 'task_detail_screen_state.dart';
 
 class TaskDetailScreenBloc
     extends Bloc<TaskDetailScreenEvent, TaskDetailScreenState> {
-  final TasksRepositoryImpl _tasksRepository;
+  final TasksRepository _tasksRepository;
 
   TaskDetailScreenBloc({
-    required TasksRepositoryImpl tasksRepository,
+    required TasksRepository tasksRepository,
     required TaskModel? editedTask,
   })  : _tasksRepository = tasksRepository,
         super(
@@ -75,7 +77,7 @@ class TaskDetailScreenBloc
     EditAcceptedEvent event,
     Emitter<TaskDetailScreenState> emit,
   ) async {
-    deviceModel = deviceModel; //todo убрать в di
+    deviceModel = deviceModel;
     int dateNowStamp = DateTime.now().millisecondsSinceEpoch;
     try {
       final taskToSave = (state.editedTask)?.copyWith(

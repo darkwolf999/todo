@@ -14,6 +14,7 @@ import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart'
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/presentation/widgets/something_went_wrong.dart';
 
+import '../../../domain/repository/tasks_repository.dart';
 import '../../../navigation/tasks_router_delegate.dart';
 
 class AllTasksScreen extends StatelessWidget {
@@ -24,10 +25,10 @@ class AllTasksScreen extends StatelessWidget {
     return MultiBlocProvider(providers: [
       BlocProvider<AllTasksScreenBloc>(
         create: (context) => AllTasksScreenBloc(
-          context.read<TasksRepositoryImpl>(),
+          context.read<TasksRepository>(),
         )..add(const SubscribeStreamEvent()),
       ),
-    ], child: const AllTasksScreenContent());
+    ], child: const AllTasksScreenContent(),);
   }
 }
 

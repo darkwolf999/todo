@@ -20,6 +20,7 @@ import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart
 import 'data/api/network_tasks_api.dart';
 import 'data/models/db/task_db.dart';
 import 'di/di.dart';
+import 'domain/repository/tasks_repository.dart';
 import 'navigation/parser.dart';
 import 'navigation/tasks_router_delegate.dart';
 
@@ -39,7 +40,7 @@ void main() async {
       path: 'lib/assets/translations',
       fallbackLocale: Locale('ru'),
       assetLoader: CodegenLoader(),
-      child: RepositoryProvider<TasksRepositoryImpl>(
+      child: RepositoryProvider<TasksRepository>(
         lazy: false,
         create: (context) => tasksRepository,
         child: const MyApp(),
@@ -77,7 +78,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<TasksRepositoryImpl> initRepo() async {
+Future<TasksRepository> initRepo() async {
   BaseOptions options = BaseOptions(
     connectTimeout: Duration(seconds: 10),
     receiveTimeout: Duration(seconds: 10),
@@ -109,7 +110,7 @@ Future<TasksRepositoryImpl> initRepo() async {
     isar: isar,
   );
 
-  final tasksRepository = TasksRepositoryImpl(
+  TasksRepository tasksRepository = TasksRepositoryImpl(
     prefs: prefs,
     networkTasksApi: networkTasksApi,
     databaseTasksApi: databaseTasksApi,
