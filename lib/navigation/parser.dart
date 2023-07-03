@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/domain/models/task_model.dart';
 
 import 'package:todo/navigation/paths.dart';
+import 'package:uuid/uuid.dart';
 import 'navigation_state_dto.dart';
 
 class TasksRouteInformationParser
@@ -19,9 +20,9 @@ class TasksRouteInformationParser
         return Future.value(NavigationStateDTO.allTasksPage());
       case Paths.task:
         return Future.value(
-          //NavigationStateDTO.task(uri.pathSegments[1]),
           NavigationStateDTO.task(
             TaskModel(
+              uuid: Uuid().v4(),
               title: '',
               isDone: false,
               priority: Priority.no,
@@ -41,6 +42,6 @@ class TasksRouteInformationParser
     if (configuration.allTasksPage) {
       return const RouteInformation(location: Paths.allTasksPage);
     }
-    return RouteInformation(location: '/${Paths.task}/${configuration.task?.uuid}');
+    return const RouteInformation(location: '/${Paths.task}');
   }
 }
