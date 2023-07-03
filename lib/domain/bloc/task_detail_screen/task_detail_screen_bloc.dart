@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
@@ -47,7 +48,7 @@ class TaskDetailScreenBloc
     on<DeleteTaskEvent>(_onDeleteTask);
   }
 
-  String deviceModel = '';
+  String deviceModel = GetIt.I.get(instanceName: 'deviceModel');
 
   void _onTitleChanged(
     TitleChangedEvent event,
@@ -74,7 +75,7 @@ class TaskDetailScreenBloc
     EditAcceptedEvent event,
     Emitter<TaskDetailScreenState> emit,
   ) async {
-    deviceModel = await DeviceInfo.getDeviceModel(); //todo убрать в di
+    deviceModel = deviceModel; //todo убрать в di
     int dateNowStamp = DateTime.now().millisecondsSinceEpoch;
     try {
       final taskToSave = (state.editedTask)?.copyWith(
