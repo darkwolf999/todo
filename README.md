@@ -47,16 +47,30 @@ ___
 ___
 ### Скриншоты
 
-<p float="center">
-  <img src="https://github.com/darkwolf999/todo/blob/home_work_2/screenshots/1.JPG" width="250" />
-  <img src="https://github.com/darkwolf999/todo/blob/home_work_2/screenshots/2.JPG" width="250" /> 
-  <img src="https://github.com/darkwolf999/todo/blob/home_work_2/screenshots/3.JPG" width="250" />
+<p align="left">
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_3/screenshots/1.JPG" width="250" />
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_3/screenshots/2.JPG" width="250" /> 
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_3/screenshots/3.JPG" width="250" />
 </p>
 
 ___
 ### Deeplink
 
-<p float="center">
-  https://darkwolf.com/todo
+Диплинк можно открыть, введя в браузер смартфона адрес:
+
+```darkwolf://todo/task```
+
+Также можно ввести команду в терминале:
+
+```adb shell am start -a android.intent.action.VIEW -c android.intent.category.DEFAULT -d darkwolf://todo/task```
+
+Если не работает adb, вот гайд по его настройке:
+https://medium.com/androiddevelopers/help-adb-is-not-found-93e9ed8a67ee
+
+Если лень заморачиваться, вот вам красивый большой QR, через который вы сразу откроете диплинк в приложение (лучше издалека камеру наводить):
+
+<p align="center">
+  <img src="https://github.com/darkwolf999/todo/blob/home_work_3/screenshots/qr-code-todo-task.png" width=" 500" />
 </p>
+
 
