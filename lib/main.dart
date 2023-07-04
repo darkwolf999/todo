@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -30,7 +31,6 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   await DepInj.inject();
-  final tasksRepository = await initRepo();
 
   MyLogger.infoLog('Starting application!');
 
@@ -42,7 +42,7 @@ void main() async {
       assetLoader: CodegenLoader(),
       child: RepositoryProvider<TasksRepository>(
         lazy: false,
-        create: (context) => tasksRepository,
+        create: (context) => GetIt.I.get(),
         child: const MyApp(),
       ),
     ),
@@ -76,45 +76,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<TasksRepository> initRepo() async {
-  BaseOptions options = BaseOptions(
-    connectTimeout: Duration(seconds: 10),
-    receiveTimeout: Duration(seconds: 10),
-  );
-
-  Dio dio = Dio(options);
-  dio.interceptors.addAll([
-    PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-    ),
-    DioInterceptor(),
-  ]);
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  final networkTasksApi = NetworkTasksApi(
-    dio: dio,
-    prefs: prefs,
-  );
-
-  final dir = await getApplicationDocumentsDirectory();
-  final isar = await Isar.open(
-    [DBTaskSchema],
-    directory: dir.path,
-  );
-
-  final databaseTasksApi = DatabaseTasksApi(
-    isar: isar,
-  );
-
-  TasksRepository tasksRepository = TasksRepositoryImpl(
-    prefs: prefs,
-    networkTasksApi: networkTasksApi,
-    databaseTasksApi: databaseTasksApi,
-  );
-
-  return tasksRepository;
 }
