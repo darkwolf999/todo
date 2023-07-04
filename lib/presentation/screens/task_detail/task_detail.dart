@@ -208,7 +208,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
-                                deadline != null
+                                isSwitchEnabled != false
                                     ? FormatDate.toDmmmmyyyy(
                                         deadline!,
                                         Localizations.localeOf(context)
@@ -230,10 +230,12 @@ class TaskDetailScreenContent extends StatelessWidget {
                           bloc.state.deadline != null
                               ? {
                                   deadline = null,
+                                  isSwitchEnabled = false,
                                   bloc.add(const DeadlineChangedEvent(null))
                                 }
                               : {
                                   deadline = await pickDeadlineDate(context),
+                                  isSwitchEnabled = true,
                                   bloc.add(DeadlineChangedEvent(deadline))
                                 };
                         },
