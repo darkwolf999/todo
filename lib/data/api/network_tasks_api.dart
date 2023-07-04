@@ -20,7 +20,7 @@ class NetworkTasksApi {
 
   Future<TasksListDto> fetchTasks() async {
     final Response<dynamic> response = await _dio.get<Map<String, dynamic>>(
-      '${ApiConstants.baseUrl}${ApiConstants.listEndpoint}',
+      ApiConstants.listEndpoint,
     );
 
     final tasksListDto = TasksListDto.fromJson(
@@ -41,11 +41,10 @@ class NetworkTasksApi {
     final taskJson = {'element': taskDto.toJson()};
 
     final Response<dynamic> response = await _dio.post<Map<String, dynamic>>(
-      '${ApiConstants.baseUrl}${ApiConstants.listEndpoint}',
+      ApiConstants.listEndpoint,
       options: Options(
         headers: {
           'X-Last-Known-Revision': _prefs.getInt('revision'),
-          //'Authorization': 'Bearer $_accessToken',
         },
       ),
       data: taskJson,
@@ -68,7 +67,7 @@ class NetworkTasksApi {
     final taskJson = {'element': taskDto.toJson()};
 
     final Response<dynamic> response = await _dio.put<Map<String, dynamic>>(
-      '${ApiConstants.baseUrl}${ApiConstants.listEndpoint}${taskDto.id}',
+      '${ApiConstants.listEndpoint}${taskDto.id}',
       options: Options(
         headers: {
           'X-Last-Known-Revision': _prefs.getInt('revision'),
@@ -93,7 +92,7 @@ class NetworkTasksApi {
   @override
   Future<TaskResponseDto> deleteTask(String uuid) async {
     final Response<dynamic> response = await _dio.delete<Map<String, dynamic>>(
-      '${ApiConstants.baseUrl}${ApiConstants.listEndpoint}$uuid',
+      '${ApiConstants.listEndpoint}$uuid',
       options: Options(
         headers: {
           'X-Last-Known-Revision': _prefs.getInt('revision'),
@@ -116,7 +115,7 @@ class NetworkTasksApi {
 
   Future<TaskResponseDto> fetchSingleTask(String uuid) async {
     final Response<dynamic> response = await _dio.get<Map<String, dynamic>>(
-      '${ApiConstants.baseUrl}${ApiConstants.listEndpoint}$uuid',
+      '${ApiConstants.listEndpoint}$uuid',
     );
 
     final tasksResponseDto = TaskResponseDto.fromJson(
@@ -136,7 +135,7 @@ class NetworkTasksApi {
     final tasksDtoJson = {'list': tasksDto};
 
     final Response<dynamic> response = await _dio.patch<Map<String, dynamic>>(
-      '${ApiConstants.baseUrl}${ApiConstants.listEndpoint}',
+      ApiConstants.listEndpoint,
       options: Options(
         headers: {
           'X-Last-Known-Revision': _prefs.getInt('revision'),
