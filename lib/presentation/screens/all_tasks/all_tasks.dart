@@ -11,7 +11,6 @@ import 'package:todo/presentation/screens/all_tasks/widgets/custom_sliver_appbar
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_adapter.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/language_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
-import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/presentation/widgets/something_went_wrong.dart';
 
 import '../../../domain/repository/tasks_repository.dart';
@@ -22,13 +21,16 @@ class AllTasksScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider<AllTasksScreenBloc>(
-        create: (context) => AllTasksScreenBloc(
-          context.read<TasksRepository>(),
-        )..add(const SubscribeStreamEvent()),
-      ),
-    ], child: const AllTasksScreenContent(),);
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AllTasksScreenBloc>(
+          create: (context) => AllTasksScreenBloc(
+            context.read<TasksRepository>(),
+          )..add(const SubscribeStreamEvent()),
+        ),
+      ],
+      child: const AllTasksScreenContent(),
+    );
   }
 }
 
