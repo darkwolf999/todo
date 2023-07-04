@@ -1,6 +1,7 @@
 ///Data
 const sharedPrefsTasksKey = 'allTasks';
 const shPrefsRevisionKey = 'revision';
+const defaultRevision = 0;
 
 ///Colors
 ///Light

@@ -14,6 +14,6 @@ abstract class TasksRepository {
 
   Future<void> fetchSingleTaskFromDB(String uuid);
 
-  Future<void> refreshNetworkTasks(List<TaskModel> tasks);
+  //Future<void> refreshNetworkTasks(List<TaskModel> tasks);
 
 }

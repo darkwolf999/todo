@@ -27,12 +27,12 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    _prefs.setInt(
-      Constants.shPrefsRevisionKey,
-      tasksListDto.revision,
-    );
+    // _prefs.setInt(
+    //   Constants.shPrefsRevisionKey,
+    //   tasksListDto.revision,
+    // );
 
-    MyLogger.log('revision = ${_prefs.getInt('revision')}');
+    //MyLogger.log('revision = ${_prefs.getInt('revision')}');
 
     return tasksListDto;
   }
@@ -54,11 +54,11 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    _prefs.setInt(
-      Constants.shPrefsRevisionKey,
-      tasksResponseDto.revision,
-    );
-    MyLogger.log('revision = ${_prefs.getInt('revision')}');
+    // _prefs.setInt(
+    //   Constants.shPrefsRevisionKey,
+    //   tasksResponseDto.revision,
+    // );
+    // MyLogger.log('revision = ${_prefs.getInt('revision')}');
 
     return tasksResponseDto;
   }
@@ -80,11 +80,11 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    _prefs.setInt(
-      Constants.shPrefsRevisionKey,
-      tasksResponseDto.revision,
-    );
-    MyLogger.log('revision = ${_prefs.getInt('revision')}');
+    // _prefs.setInt(
+    //   Constants.shPrefsRevisionKey,
+    //   tasksResponseDto.revision,
+    // );
+    //MyLogger.log('revision = ${_prefs.getInt('revision')}');
 
     return tasksResponseDto;
   }
@@ -104,11 +104,11 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    _prefs.setInt(
-      Constants.shPrefsRevisionKey,
-      tasksResponseDto.revision,
-    );
-    MyLogger.log('revision = ${_prefs.getInt('revision')}');
+    // _prefs.setInt(
+    //   Constants.shPrefsRevisionKey,
+    //   tasksResponseDto.revision,
+    // );
+    // MyLogger.log('revision = ${_prefs.getInt('revision')}');
 
     return tasksResponseDto;
   }
@@ -133,12 +133,13 @@ class NetworkTasksApi {
 
   Future<TasksListDto> refreshTasks(List<TaskDto> tasksDto) async {
     final tasksDtoJson = {'list': tasksDto};
+    final revision = _prefs.getInt('revision');
 
     final Response<dynamic> response = await _dio.patch<Map<String, dynamic>>(
       ApiConstants.listEndpoint,
       options: Options(
         headers: {
-          'X-Last-Known-Revision': _prefs.getInt('revision'),
+          'X-Last-Known-Revision': revision,
         },
       ),
       data: tasksDtoJson,
@@ -148,11 +149,11 @@ class NetworkTasksApi {
       response.data as Map<String, dynamic>,
     );
 
-    _prefs.setInt(
-      Constants.shPrefsRevisionKey,
-      tasksListDto.revision,
-    );
-    MyLogger.log('revision = ${_prefs.getInt('revision')}');
+    // _prefs.setInt(
+    //   Constants.shPrefsRevisionKey,
+    //   tasksListDto.revision,
+    // );
+    //MyLogger.log('revision = ${_prefs.getInt('revision')}');
 
     return tasksListDto;
   }
