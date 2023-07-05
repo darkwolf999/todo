@@ -6,14 +6,14 @@
 import 'dart:async' as _i5;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:todo/data/api/database_tasks_api.dart' as _i9;
-import 'package:todo/data/api/network_tasks_api.dart' as _i7;
-import 'package:todo/data/models/db/task_db.dart' as _i10;
-import 'package:todo/data/models/dto/task_dto.dart' as _i8;
+import 'package:todo/data/api/database_tasks_api.dart' as _i7;
+import 'package:todo/data/api/network_tasks_api.dart' as _i4;
+import 'package:todo/data/api/revision_provider.dart' as _i9;
+import 'package:todo/data/models/db/task_db.dart' as _i8;
+import 'package:todo/data/models/dto/task_dto.dart' as _i6;
 import 'package:todo/data/models/dto/task_response_dto.dart' as _i3;
 import 'package:todo/data/models/dto/tasks_list_dto.dart' as _i2;
-import 'package:todo/domain/models/task_model.dart' as _i6;
-import 'package:todo/domain/repository/tasks_repository.dart' as _i4;
+import 'package:todo/helpers/network_checker/network_checker.dart' as _i10;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -47,84 +47,10 @@ class _FakeTaskResponseDto_1 extends _i1.SmartFake
         );
 }
 
-/// A class which mocks [TasksRepository].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockTasksRepository extends _i1.Mock implements _i4.TasksRepository {
-  MockTasksRepository() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i5.Stream<List<_i6.TaskModel>> getTasks() => (super.noSuchMethod(
-        Invocation.method(
-          #getTasks,
-          [],
-        ),
-        returnValue: _i5.Stream<List<_i6.TaskModel>>.empty(),
-      ) as _i5.Stream<List<_i6.TaskModel>>);
-  @override
-  _i5.Future<void> fetchTasks() => (super.noSuchMethod(
-        Invocation.method(
-          #fetchTasks,
-          [],
-        ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
-  @override
-  _i5.Future<void> saveTask(_i6.TaskModel? task) => (super.noSuchMethod(
-        Invocation.method(
-          #saveTask,
-          [task],
-        ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
-  @override
-  _i5.Future<void> deleteTask(String? uuid) => (super.noSuchMethod(
-        Invocation.method(
-          #deleteTask,
-          [uuid],
-        ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
-  @override
-  _i5.Future<void> fetchSingleTaskFromNetwork(String? uuid) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #fetchSingleTaskFromNetwork,
-          [uuid],
-        ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
-  @override
-  _i5.Future<void> fetchSingleTaskFromDB(String? uuid) => (super.noSuchMethod(
-        Invocation.method(
-          #fetchSingleTaskFromDB,
-          [uuid],
-        ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
-  @override
-  _i5.Future<void> refreshNetworkTasks(List<_i6.TaskModel>? tasks) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #refreshNetworkTasks,
-          [tasks],
-        ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
-}
-
 /// A class which mocks [NetworkTasksApi].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNetworkTasksApi extends _i1.Mock implements _i7.NetworkTasksApi {
+class MockNetworkTasksApi extends _i1.Mock implements _i4.NetworkTasksApi {
   MockNetworkTasksApi() {
     _i1.throwOnMissingStub(this);
   }
@@ -144,7 +70,7 @@ class MockNetworkTasksApi extends _i1.Mock implements _i7.NetworkTasksApi {
         )),
       ) as _i5.Future<_i2.TasksListDto>);
   @override
-  _i5.Future<_i3.TaskResponseDto> addNewTask(_i8.TaskDto? taskDto) =>
+  _i5.Future<_i3.TaskResponseDto> addNewTask(_i6.TaskDto? taskDto) =>
       (super.noSuchMethod(
         Invocation.method(
           #addNewTask,
@@ -160,7 +86,7 @@ class MockNetworkTasksApi extends _i1.Mock implements _i7.NetworkTasksApi {
         )),
       ) as _i5.Future<_i3.TaskResponseDto>);
   @override
-  _i5.Future<_i3.TaskResponseDto> editTask(_i8.TaskDto? taskDto) =>
+  _i5.Future<_i3.TaskResponseDto> editTask(_i6.TaskDto? taskDto) =>
       (super.noSuchMethod(
         Invocation.method(
           #editTask,
@@ -208,7 +134,7 @@ class MockNetworkTasksApi extends _i1.Mock implements _i7.NetworkTasksApi {
         )),
       ) as _i5.Future<_i3.TaskResponseDto>);
   @override
-  _i5.Future<_i2.TasksListDto> refreshTasks(List<_i8.TaskDto>? tasksDto) =>
+  _i5.Future<_i2.TasksListDto> refreshTasks(List<_i6.TaskDto>? tasksDto) =>
       (super.noSuchMethod(
         Invocation.method(
           #refreshTasks,
@@ -227,29 +153,29 @@ class MockNetworkTasksApi extends _i1.Mock implements _i7.NetworkTasksApi {
 /// A class which mocks [DatabaseTasksApi].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDatabaseTasksApi extends _i1.Mock implements _i9.DatabaseTasksApi {
+class MockDatabaseTasksApi extends _i1.Mock implements _i7.DatabaseTasksApi {
   MockDatabaseTasksApi() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<List<_i10.DBTask>?> fetchTasks() => (super.noSuchMethod(
+  _i5.Future<List<_i8.DBTask>?> fetchTasks() => (super.noSuchMethod(
         Invocation.method(
           #fetchTasks,
           [],
         ),
-        returnValue: _i5.Future<List<_i10.DBTask>?>.value(),
-      ) as _i5.Future<List<_i10.DBTask>?>);
+        returnValue: _i5.Future<List<_i8.DBTask>?>.value(),
+      ) as _i5.Future<List<_i8.DBTask>?>);
   @override
-  _i5.Future<_i10.DBTask?> fetchSingleTask(String? uuid) => (super.noSuchMethod(
+  _i5.Future<_i8.DBTask?> fetchSingleTask(String? uuid) => (super.noSuchMethod(
         Invocation.method(
           #fetchSingleTask,
           [uuid],
         ),
-        returnValue: _i5.Future<_i10.DBTask?>.value(),
-      ) as _i5.Future<_i10.DBTask?>);
+        returnValue: _i5.Future<_i8.DBTask?>.value(),
+      ) as _i5.Future<_i8.DBTask?>);
   @override
-  _i5.Future<void> putTask(_i10.DBTask? task) => (super.noSuchMethod(
+  _i5.Future<void> putTask(_i8.DBTask? task) => (super.noSuchMethod(
         Invocation.method(
           #putTask,
           [task],
@@ -259,7 +185,7 @@ class MockDatabaseTasksApi extends _i1.Mock implements _i9.DatabaseTasksApi {
       ) as _i5.Future<void>);
   @override
   _i5.Future<void> refreshTasks(
-    List<_i10.DBTask>? tasks,
+    List<_i8.DBTask>? tasks,
     List<int>? isarIds,
   ) =>
       (super.noSuchMethod(
@@ -274,7 +200,7 @@ class MockDatabaseTasksApi extends _i1.Mock implements _i9.DatabaseTasksApi {
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
   @override
-  _i5.Future<void> putAllTasks(List<_i10.DBTask>? tasks) => (super.noSuchMethod(
+  _i5.Future<void> putAllTasks(List<_i8.DBTask>? tasks) => (super.noSuchMethod(
         Invocation.method(
           #putAllTasks,
           [tasks],
@@ -291,4 +217,49 @@ class MockDatabaseTasksApi extends _i1.Mock implements _i9.DatabaseTasksApi {
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
+}
+
+/// A class which mocks [RevisionProvider].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockRevisionProvider extends _i1.Mock implements _i9.RevisionProvider {
+  MockRevisionProvider() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  int getRevision() => (super.noSuchMethod(
+        Invocation.method(
+          #getRevision,
+          [],
+        ),
+        returnValue: 0,
+      ) as int);
+  @override
+  _i5.Future<void> updateRevision(int? revision) => (super.noSuchMethod(
+        Invocation.method(
+          #updateRevision,
+          [revision],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+}
+
+/// A class which mocks [NetworkChecker].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNetworkChecker extends _i1.Mock implements _i10.NetworkChecker {
+  MockNetworkChecker() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<bool> hasInternet() => (super.noSuchMethod(
+        Invocation.method(
+          #hasInternet,
+          [],
+        ),
+        returnValue: _i5.Future<bool>.value(false),
+      ) as _i5.Future<bool>);
 }

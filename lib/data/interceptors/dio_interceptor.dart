@@ -28,6 +28,7 @@ class DioInterceptor extends InterceptorsWrapper {
       err.response?.statusCode?.toString() ?? 'Unknown code',
       err.message ?? 'Unknown error',
     );
+    //rethrow;
 
     return handler.next(err);
   }

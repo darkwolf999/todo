@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'di/di.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/l10n/codegen_loader.g.dart';
 import 'package:todo/my_logger.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'data/api/network_tasks_api.dart';
+import 'data/api/network_tasks_api_impl.dart';
 import 'domain/bloc/error_bloc/error_bloc.dart';
 import 'domain/bloc/error_bloc/error_event.dart';
 import 'domain/repository/tasks_repository.dart';
@@ -39,9 +39,10 @@ void main() async {
         child: RepositoryProvider<TasksRepository>(
           lazy: false,
           create: (BuildContext context) => TasksRepositoryImpl(
-            prefs: GetIt.I.get(),
+            networkChecker: GetIt.I.get(),
+            revisionProvider: GetIt.I.get(),
             databaseTasksApi: GetIt.I.get(),
-            networkTasksApi: NetworkTasksApi(
+            networkTasksApi: NetworkTasksApiImpl(
               dio: GetIt.I.get(),
               prefs: GetIt.I.get(),
               onErrorHandler: (String code, String message) {

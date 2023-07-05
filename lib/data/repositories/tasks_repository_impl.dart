@@ -1,30 +1,33 @@
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo/data/api/revision_provider.dart';
 
-import 'package:todo/data/api/database_tasks_api.dart';
 import 'package:todo/data/mappers/db_dto_task_mapper.dart';
 import 'package:todo/data/mappers/domain_db_task_mapper.dart';
 import 'package:todo/data/mappers/domain_dto_task_mapper.dart';
 import 'package:todo/data/models/dto/task_response_dto.dart';
 import 'package:todo/domain/models/task_model.dart';
-import 'package:todo/data/api/network_tasks_api.dart';
 import 'package:todo/data/models/dto/task_dto.dart';
 import 'package:todo/domain/repository/tasks_repository.dart';
-import 'package:todo/helpers/network_checker.dart';
+import 'package:todo/helpers/network_checker/network_checker.dart';
 import 'package:todo/my_logger.dart';
 import 'package:todo/data/models/db/task_db.dart';
 import 'package:todo/constants.dart' as Constants;
+import 'package:todo/data/api/database_tasks_api.dart';
+import 'package:todo/data/api/network_tasks_api.dart';
 
 class TasksRepositoryImpl implements TasksRepository{
   TasksRepositoryImpl({
-    required SharedPreferences prefs,
+    required NetworkChecker networkChecker,
+    required RevisionProvider revisionProvider,
     required NetworkTasksApi networkTasksApi,
     required DatabaseTasksApi databaseTasksApi,
-  })  : _prefs = prefs,
+  })  : _networkChecker = networkChecker,
+        _revisionProvider = revisionProvider,
         _networkTasksApi = networkTasksApi,
         _databaseTasksApi = databaseTasksApi;
 
-  final SharedPreferences _prefs;
+  final NetworkChecker _networkChecker;
+  final RevisionProvider _revisionProvider;
   final NetworkTasksApi _networkTasksApi;
   final DatabaseTasksApi _databaseTasksApi;
 
@@ -36,17 +39,16 @@ class TasksRepositoryImpl implements TasksRepository{
 
   @override
   Future<void> fetchTasks() async {
-    bool hasInternet = await NetworkChecker.hasInternet();
-    int? localRevision = _prefs.getInt('revision') ?? Constants.defaultRevision; //todo подумать как тут быть
+    //bool hasInternet = await NetworkChecker.hasInternet();
+    bool hasInternet = await _networkChecker.hasInternet();
+    //int? localRevision = _prefs.getInt('revision') ?? Constants.defaultRevision; //todo подумать как тут быть
+    int localRevision = _revisionProvider.getRevision();
     MyLogger.infoLog('Local revision - $localRevision');
 
     if(hasInternet) {
 
       final dtoTasks = await _networkTasksApi.fetchTasks();
       final dBTasks = await _databaseTasksApi.fetchTasks();
-
-      //int? networkRevision = _prefs.getInt('revision');
-      //MyLogger.infoLog('Network revision - $networkRevision');
 
       final dBTasksFromDto = <DBTask>[];
 
@@ -68,10 +70,12 @@ class TasksRepositoryImpl implements TasksRepository{
 
         await _databaseTasksApi.refreshTasks(dBTasksFromDto, dBTasksToDeleteIds);
 
-        await _prefs.setInt(
-          Constants.shPrefsRevisionKey,
-          dtoTasks.revision,
-        );
+        // await _prefs.setInt(
+        //   Constants.shPrefsRevisionKey,
+        //   dtoTasks.revision,
+        // );
+        await _revisionProvider.updateRevision(dtoTasks.revision);
+
       } else if(localRevision > dtoTasks.revision) {
         final tasksDBtoDTO = await _databaseTasksApi.fetchTasks();
         final taskstoDTO = <TaskDto>[];
@@ -82,10 +86,11 @@ class TasksRepositoryImpl implements TasksRepository{
 
         final tasksResponse = await _networkTasksApi.refreshTasks(taskstoDTO);
 
-        await _prefs.setInt(
-          Constants.shPrefsRevisionKey,
-          tasksResponse.revision,
-        );
+        // await _prefs.setInt(
+        //   Constants.shPrefsRevisionKey,
+        //   tasksResponse.revision,
+        // );
+        await _revisionProvider.updateRevision(tasksResponse.revision);
       }
 
     } else {
@@ -109,7 +114,8 @@ class TasksRepositoryImpl implements TasksRepository{
   @override
   Future<void> saveTask(TaskModel task) async {
     //int? localRevision = _prefs.getInt('revision');
-    int? localRevision = _prefs.getInt('revision') ?? Constants.defaultRevision;
+    //int? localRevision = _prefs.getInt('revision') ?? Constants.defaultRevision;
+    int localRevision = _revisionProvider.getRevision();
     final taskDto = task.toDto();
     final taskDB = task.toDB();
     final tasks = [..._tasksStreamController.value];
@@ -125,7 +131,8 @@ class TasksRepositoryImpl implements TasksRepository{
       _tasksStreamController.add(tasks);
     }
 
-    bool hasInternet = await NetworkChecker.hasInternet();
+    //bool hasInternet = await NetworkChecker.hasInternet();
+    bool hasInternet = await _networkChecker.hasInternet();
 
     if(hasInternet) {
       final TaskResponseDto taskResponseDto;
@@ -134,16 +141,18 @@ class TasksRepositoryImpl implements TasksRepository{
       } else {
         taskResponseDto = await _networkTasksApi.addNewTask(taskDto);
       }
-      await _prefs.setInt(
-        Constants.shPrefsRevisionKey,
-        taskResponseDto.revision,
-      );
+      // await _prefs.setInt(
+      //   Constants.shPrefsRevisionKey,
+      //   taskResponseDto.revision,
+      // );
+      await _revisionProvider.updateRevision(taskResponseDto.revision);
     } else {
-      await _prefs.setInt(
-        Constants.shPrefsRevisionKey,
-        ++localRevision,
-        //localRevision = localRevision != null ? localRevision + 1 : 1,
-      );
+      // await _prefs.setInt(
+      //   Constants.shPrefsRevisionKey,
+      //   ++localRevision,
+      //   //localRevision = localRevision != null ? localRevision + 1 : 1,
+      // );
+      await _revisionProvider.updateRevision(++localRevision);
     }
     await _databaseTasksApi.putTask(taskDB);
   }
@@ -151,7 +160,8 @@ class TasksRepositoryImpl implements TasksRepository{
   @override
   Future<void> deleteTask(String uuid) async {
     //int? localRevision = _prefs.getInt('revision');
-    int? localRevision = _prefs.getInt('revision') ?? Constants.defaultRevision;
+    //int? localRevision = _prefs.getInt('revision') ?? Constants.defaultRevision;
+    int localRevision = _revisionProvider.getRevision();
     final tasks = [..._tasksStreamController.value];
     final taskIndex = tasks.indexWhere((t) => t.uuid == uuid);
     if (taskIndex == -1) {
@@ -161,21 +171,24 @@ class TasksRepositoryImpl implements TasksRepository{
       _tasksStreamController.add(tasks);
     }
 
-    bool hasInternet = await NetworkChecker.hasInternet();
+    //bool hasInternet = await NetworkChecker.hasInternet();
+    bool hasInternet = await _networkChecker.hasInternet();
 
     if(hasInternet) {
       final TaskResponseDto taskResponseDto;
       taskResponseDto = await _networkTasksApi.deleteTask(uuid);
-      await _prefs.setInt(
-        Constants.shPrefsRevisionKey,
-        taskResponseDto.revision,
-      );
+      // await _prefs.setInt(
+      //   Constants.shPrefsRevisionKey,
+      //   taskResponseDto.revision,
+      // );
+      await _revisionProvider.updateRevision(taskResponseDto.revision);
     } else {
-      await _prefs.setInt(
-        Constants.shPrefsRevisionKey,
-        ++localRevision,
-        //localRevision = localRevision != null ? localRevision + 1 : 1,
-      );
+      // await _prefs.setInt(
+      //   Constants.shPrefsRevisionKey,
+      //   ++localRevision,
+      //   //localRevision = localRevision != null ? localRevision + 1 : 1,
+      // );
+      await _revisionProvider.updateRevision(++localRevision);
     }
     await _databaseTasksApi.deleteTask(uuid);
   }

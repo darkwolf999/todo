@@ -2,16 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo/helpers/device_info.dart';
+import 'package:todo/data/api/revision_provider.dart';
+import 'package:todo/data/api/revision_provider_impl.dart';
 
-import '../data/api/database_tasks_api.dart';
-import '../data/api/network_tasks_api.dart';
-import '../data/interceptors/dio_interceptor.dart';
-import '../data/models/db/task_db.dart';
-import '../data/repositories/tasks_repository_impl.dart';
-import '../domain/repository/tasks_repository.dart';
+import 'package:todo/helpers/device_info.dart';
+import 'package:todo/data/api/database_tasks_api.dart';
+import 'package:todo/data/api/database_tasks_api_impl.dart';
+import 'package:todo/data/models/db/task_db.dart';
+import 'package:todo/helpers/network_checker/network_checker.dart';
+import 'package:todo/helpers/network_checker/network_checker_impl.dart';
 
 class DepInj {
   DepInj._();
@@ -21,23 +21,19 @@ class DepInj {
     GetIt.I.registerSingleton(deviceModel, instanceName: 'deviceModel');
 
     Dio dio = Dio();
-    // dio.interceptors.addAll([
-    //   PrettyDioLogger(
-    //     requestHeader: true,
-    //     requestBody: true,
-    //   ),
-    //   DioInterceptor(onErrorHandler),
-    // ]);
     GetIt.I.registerSingleton(dio);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     GetIt.I.registerSingleton(prefs);
 
-    // final networkTasksApi = NetworkTasksApi(
-    //   dio: GetIt.I.get(),
-    //   prefs: GetIt.I.get(),
-    // );
-    // GetIt.I.registerSingleton(networkTasksApi);
+    NetworkChecker networkChecker = NetworkCheckerImpl();
+    GetIt.I.registerSingleton(networkChecker);
+
+    GetIt.I.registerSingleton<RevisionProvider>(
+      RevisionProviderImpl(
+        prefs: GetIt.I.get(),
+      ),
+    );
 
     final dir = await getApplicationDocumentsDirectory();
 
@@ -47,17 +43,10 @@ class DepInj {
     );
     GetIt.I.registerSingleton(isar);
 
-    final databaseTasksApi = DatabaseTasksApi(
-      isar: GetIt.I.get(),
+    GetIt.I.registerSingleton<DatabaseTasksApi>(
+      DatabaseTasksApiImpl(
+        isar: GetIt.I.get(),
+      ),
     );
-    GetIt.I.registerSingleton(databaseTasksApi);
-
-    // GetIt.I.registerSingleton<TasksRepository>(
-    //   TasksRepositoryImpl(
-    //     prefs: GetIt.I.get(),
-    //     networkTasksApi: GetIt.I.get(),
-    //     databaseTasksApi: GetIt.I.get(),
-    //   ),
-    // );
   }
 }
