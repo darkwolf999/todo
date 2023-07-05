@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:todo/data/models/dto/task_response_dto.dart';
@@ -6,17 +7,29 @@ import 'package:todo/constants.dart' as Constants;
 import 'package:todo/my_logger.dart';
 import 'package:todo/data/models/dto/task_dto.dart';
 import 'package:todo/data/models/dto/tasks_list_dto.dart';
+import '../interceptors/dio_interceptor.dart';
 import 'constants/api_constants.dart';
 
 class NetworkTasksApi {
-  final Dio _dio;
+  final Function(String, String) onErrorHandler;
   final SharedPreferences _prefs;
+  final Dio _dio;
 
   NetworkTasksApi({
-    required Dio dio,
+    //required Function(String, String) onErrorHandler,
+    required this.onErrorHandler,
     required SharedPreferences prefs,
-  })  : _dio = dio,
-        _prefs = prefs;
+    required Dio dio,
+  })  : //_onErrorHandler = onErrorHandler,
+        _prefs = prefs,
+        _dio = dio
+          ..interceptors.addAll([
+            PrettyDioLogger(
+              requestHeader: true,
+              requestBody: true,
+            ),
+            DioInterceptor(onErrorHandler),
+          ]);
 
   Future<TasksListDto> fetchTasks() async {
     final Response<dynamic> response = await _dio.get<Map<String, dynamic>>(
@@ -26,7 +39,7 @@ class NetworkTasksApi {
     final tasksListDto = TasksListDto.fromJson(
       response.data as Map<String, dynamic>,
     );
-    
+
     return tasksListDto;
   }
 

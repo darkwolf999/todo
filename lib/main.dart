@@ -1,14 +1,17 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'di/di.dart';
+import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/l10n/codegen_loader.g.dart';
 import 'package:todo/my_logger.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'di/di.dart';
+import 'data/api/network_tasks_api.dart';
+import 'domain/bloc/error_bloc/error_bloc.dart';
+import 'domain/bloc/error_bloc/error_event.dart';
 import 'domain/repository/tasks_repository.dart';
 import 'navigation/parser.dart';
 import 'navigation/tasks_router_delegate.dart';
@@ -30,10 +33,29 @@ void main() async {
       path: 'lib/assets/translations',
       fallbackLocale: Locale('ru'),
       assetLoader: CodegenLoader(),
-      child: RepositoryProvider<TasksRepository>(
+      child: BlocProvider(
+        create: (_) => ErrorBloc(),
         lazy: false,
-        create: (context) => GetIt.I.get(),
-        child: const MyApp(),
+        child: RepositoryProvider<TasksRepository>(
+          lazy: false,
+          create: (BuildContext context) => TasksRepositoryImpl(
+            prefs: GetIt.I.get(),
+            databaseTasksApi: GetIt.I.get(),
+            networkTasksApi: NetworkTasksApi(
+              dio: GetIt.I.get(),
+              prefs: GetIt.I.get(),
+              onErrorHandler: (String code, String message) {
+                context.read<ErrorBloc>().add(
+                      OnErrorEvent(
+                        statusCode: code,
+                        message: message,
+                      ),
+                    );
+              },
+            ),
+          ),
+          child: const MyApp(),
+        ),
       ),
     ),
   );
@@ -41,6 +63,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     final routeObserver = RouteObserver();
@@ -48,7 +71,7 @@ class MyApp extends StatelessWidget {
       value: routeObserver,
       child: Builder(
         builder: (context) {
-          return  MaterialApp.router(
+          return MaterialApp.router(
             routerDelegate: TasksRouterDelegate(),
             routeInformationParser: TasksRouteInformationParser(),
             debugShowCheckedModeBanner: false,

@@ -17,6 +17,8 @@ import '../../../domain/repository/tasks_repository.dart';
 import '../../../navigation/tasks_router_delegate.dart';
 
 class AllTasksScreen extends StatelessWidget {
+  static final GlobalKey<State<StatefulWidget>> globalKey = GlobalKey();
+
   const AllTasksScreen({Key? key}) : super(key: key);
 
   @override

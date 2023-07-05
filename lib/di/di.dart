@@ -21,23 +21,23 @@ class DepInj {
     GetIt.I.registerSingleton(deviceModel, instanceName: 'deviceModel');
 
     Dio dio = Dio();
-    dio.interceptors.addAll([
-      PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-      ),
-      DioInterceptor(),
-    ]);
+    // dio.interceptors.addAll([
+    //   PrettyDioLogger(
+    //     requestHeader: true,
+    //     requestBody: true,
+    //   ),
+    //   DioInterceptor(onErrorHandler),
+    // ]);
     GetIt.I.registerSingleton(dio);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     GetIt.I.registerSingleton(prefs);
 
-    final networkTasksApi = NetworkTasksApi(
-      dio: GetIt.I.get(),
-      prefs: GetIt.I.get(),
-    );
-    GetIt.I.registerSingleton(networkTasksApi);
+    // final networkTasksApi = NetworkTasksApi(
+    //   dio: GetIt.I.get(),
+    //   prefs: GetIt.I.get(),
+    // );
+    // GetIt.I.registerSingleton(networkTasksApi);
 
     final dir = await getApplicationDocumentsDirectory();
 
@@ -52,12 +52,12 @@ class DepInj {
     );
     GetIt.I.registerSingleton(databaseTasksApi);
 
-    GetIt.I.registerSingleton<TasksRepository>(
-      TasksRepositoryImpl(
-        prefs: GetIt.I.get(),
-        networkTasksApi: GetIt.I.get(),
-        databaseTasksApi: GetIt.I.get(),
-      ),
-    );
+    // GetIt.I.registerSingleton<TasksRepository>(
+    //   TasksRepositoryImpl(
+    //     prefs: GetIt.I.get(),
+    //     networkTasksApi: GetIt.I.get(),
+    //     databaseTasksApi: GetIt.I.get(),
+    //   ),
+    // );
   }
 }

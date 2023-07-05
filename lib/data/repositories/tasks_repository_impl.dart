@@ -50,7 +50,7 @@ class TasksRepositoryImpl implements TasksRepository{
 
       final dBTasksFromDto = <DBTask>[];
 
-      if (localRevision < dtoTasks.revision) { //todo убрать форсанрап
+      if (localRevision < dtoTasks.revision) {
 
         for (final dto in dtoTasks.list) {
           dBTasksFromDto.add(dto.toDB());
@@ -68,7 +68,7 @@ class TasksRepositoryImpl implements TasksRepository{
 
         await _databaseTasksApi.refreshTasks(dBTasksFromDto, dBTasksToDeleteIds);
 
-        _prefs.setInt(
+        await _prefs.setInt(
           Constants.shPrefsRevisionKey,
           dtoTasks.revision,
         );
@@ -82,7 +82,7 @@ class TasksRepositoryImpl implements TasksRepository{
 
         final tasksResponse = await _networkTasksApi.refreshTasks(taskstoDTO);
 
-        _prefs.setInt(
+        await _prefs.setInt(
           Constants.shPrefsRevisionKey,
           tasksResponse.revision,
         );
@@ -104,12 +104,10 @@ class TasksRepositoryImpl implements TasksRepository{
     tasksToView.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     _tasksStreamController.add(tasksToView);
-
   }
 
   @override
   Future<void> saveTask(TaskModel task) async {
-    bool hasInternet = await NetworkChecker.hasInternet();
     //int? localRevision = _prefs.getInt('revision');
     int? localRevision = _prefs.getInt('revision') ?? Constants.defaultRevision;
     final taskDto = task.toDto();
@@ -126,6 +124,9 @@ class TasksRepositoryImpl implements TasksRepository{
       tasks.insert(0, task);
       _tasksStreamController.add(tasks);
     }
+
+    bool hasInternet = await NetworkChecker.hasInternet();
+
     if(hasInternet) {
       final TaskResponseDto taskResponseDto;
       if (taskIndex >= 0) {
@@ -133,12 +134,12 @@ class TasksRepositoryImpl implements TasksRepository{
       } else {
         taskResponseDto = await _networkTasksApi.addNewTask(taskDto);
       }
-      _prefs.setInt(
+      await _prefs.setInt(
         Constants.shPrefsRevisionKey,
         taskResponseDto.revision,
       );
     } else {
-      _prefs.setInt(
+      await _prefs.setInt(
         Constants.shPrefsRevisionKey,
         ++localRevision,
         //localRevision = localRevision != null ? localRevision + 1 : 1,
@@ -149,7 +150,6 @@ class TasksRepositoryImpl implements TasksRepository{
 
   @override
   Future<void> deleteTask(String uuid) async {
-    bool hasInternet = await NetworkChecker.hasInternet();
     //int? localRevision = _prefs.getInt('revision');
     int? localRevision = _prefs.getInt('revision') ?? Constants.defaultRevision;
     final tasks = [..._tasksStreamController.value];
@@ -160,15 +160,18 @@ class TasksRepositoryImpl implements TasksRepository{
       tasks.removeAt(taskIndex);
       _tasksStreamController.add(tasks);
     }
+
+    bool hasInternet = await NetworkChecker.hasInternet();
+
     if(hasInternet) {
       final TaskResponseDto taskResponseDto;
       taskResponseDto = await _networkTasksApi.deleteTask(uuid);
-      _prefs.setInt(
+      await _prefs.setInt(
         Constants.shPrefsRevisionKey,
         taskResponseDto.revision,
       );
     } else {
-      _prefs.setInt(
+      await _prefs.setInt(
         Constants.shPrefsRevisionKey,
         ++localRevision,
         //localRevision = localRevision != null ? localRevision + 1 : 1,
