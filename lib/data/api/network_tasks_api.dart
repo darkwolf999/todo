@@ -26,14 +26,7 @@ class NetworkTasksApi {
     final tasksListDto = TasksListDto.fromJson(
       response.data as Map<String, dynamic>,
     );
-
-    // _prefs.setInt(
-    //   Constants.shPrefsRevisionKey,
-    //   tasksListDto.revision,
-    // );
-
-    //MyLogger.log('revision = ${_prefs.getInt('revision')}');
-
+    
     return tasksListDto;
   }
 

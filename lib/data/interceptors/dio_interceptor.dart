@@ -5,6 +5,7 @@ import 'package:todo/my_logger.dart';
 class DioInterceptor extends InterceptorsWrapper {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    //options.headers['X-Generate-Fails'] = 100;
     options.baseUrl = dotenv.env['BASE_URL'].toString();
     options.headers['Authorization'] = 'Bearer ${dotenv.env['AUTH_TOKEN'].toString()}';
     MyLogger.log(
