@@ -44,6 +44,7 @@ dependencies:
   dio: ^5.2.1+1
   intl: ^0.18.0
   uuid: ^3.0.7
+  bloc_concurrency: ^0.2.2
   flutter_bloc: ^8.1.3
   rxdart: ^0.27.7
   shared_preferences: ^2.1.2

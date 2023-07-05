@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
@@ -21,8 +22,8 @@ class AllTasksScreenBloc
       : super(const AllTasksScreenState()) {
     on<SubscribeStreamEvent>(_onSubscribeStream);
     on<AddTaskEvent>(_onAddTask);
-    on<DeleteTaskEvent>(_onDeleteTask);
-    on<CompleteTaskEvent>(_onCompleteTask);
+    on<DeleteTaskEvent>(_onDeleteTask, transformer: sequential());
+    on<CompleteTaskEvent>(_onCompleteTask, transformer: sequential());
     on<ChangeFilterEvent>(_onChangeFilter);
   }
 
