@@ -31,6 +31,17 @@ ___
 + Локальная бд организована при помощи Isar https://pub.dev/packages/isar
 + Для ведения логов используется пакет logger https://pub.dev/packages/logger
 + Интернационализация Easy Localization https://pub.dev/packages/easy_localization  
+
+___
+### Сборка
+
+Если хотите тестировать приложение со своим токеном, нужно сделать сборку, т.к. релизный APK идет с моим токеном.
+1. Склонировать себе репозиторий, перейти в ветку **home_work_3**
+2. В корне проекта есть файл **template.env**. В нем есть поля **BASE_URL=""** - адрес бэка. И **AUTH_TOKEN=""** - твой личный токен. Нужно внутри кавычек прописать адрес бэка и свой токен. Адрес бэка прописывать вот в таком формате: ```https://****.******.ru/todobackend```
+3. Далее нужно открыть **pubdpec.yaml** и в разделе assets удалить строку: ```- url_token.env```
+4. Открыть **main.dart**, закомментировать строку: ```await dotenv.load(fileName: 'url_token.env');``` и раскомментировать находящуюся рядом строку ```//await dotenv.load(fileName: 'template.env');```
+5. Собрать проект и пользоваться
+
 ___
 ### APK
 :warning::warning::warning::warning::warning::warning::warning::warning::warning:
