@@ -44,7 +44,7 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
       },
       key: navigatorKey,
       pages: [
-          const MaterialPage(child: AllTasksScreen()),
+        const MaterialPage(child: AllTasksScreen()),
         if (!state.isAllTasksPage)
           //bloc.add(StartEditingTaskEvent()),
           MaterialPage(child: TaskDetailScreen(task: state.task)),

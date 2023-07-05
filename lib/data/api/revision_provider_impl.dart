@@ -7,7 +7,7 @@ class RevisionProviderImpl implements RevisionProvider {
 
   RevisionProviderImpl({
     required SharedPreferences prefs,
-  })  : _prefs = prefs;
+  }) : _prefs = prefs;
 
   @override
   int getRevision() {
@@ -21,5 +21,4 @@ class RevisionProviderImpl implements RevisionProvider {
       revision,
     );
   }
-
 }

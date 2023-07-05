@@ -2,12 +2,11 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:todo/domain/models/task_model.dart';
-import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
 import 'package:todo/my_logger.dart';
-
-import '../../repository/tasks_repository.dart';
+import 'package:todo/domain/repository/tasks_repository.dart';
 
 part 'all_tasks_screen_event.dart';
 

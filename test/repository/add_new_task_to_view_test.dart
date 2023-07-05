@@ -1,16 +1,16 @@
+import 'package:uuid/uuid.dart';
+import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:todo/data/api/database_tasks_api.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
 import 'package:todo/data/api/revision_provider.dart';
-import 'package:todo/data/models/db/task_db.dart';
 import 'package:todo/data/models/dto/task_dto.dart';
 import 'package:todo/data/models/dto/task_response_dto.dart';
 import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/domain/models/task_model.dart' as model;
 import 'package:todo/domain/repository/tasks_repository.dart';
 import 'package:todo/helpers/network_checker/network_checker.dart';
-import 'package:uuid/uuid.dart';
-import 'package:mockito/mockito.dart';
 import '../mocks/data/data_layer.mocks.dart';
 
 void main() async {
@@ -55,12 +55,13 @@ void main() async {
   setUp(() {
     when(networkChecker.hasInternet()).thenAnswer((_) async => false);
     when(revisionProvider.getRevision()).thenAnswer((_) => 1);
-    when(networkTasksApi.addNewTask(taskDto))
-        .thenAnswer((_) async => TaskResponseDto(
-              status: 'ok',
-              taskDto: taskDto,
-              revision: 2,
-            ));
+    when(networkTasksApi.addNewTask(taskDto)).thenAnswer(
+      (_) async => TaskResponseDto(
+        status: 'ok',
+        taskDto: taskDto,
+        revision: 2,
+      ),
+    );
   });
 
   test('', () async {

@@ -10,6 +10,5 @@ class NavigationStateDTO {
       : allTasksPage = true,
         task = null;
 
-  NavigationStateDTO.task(this.task)
-      : allTasksPage = false;
+  NavigationStateDTO.task(this.task) : allTasksPage = false;
 }

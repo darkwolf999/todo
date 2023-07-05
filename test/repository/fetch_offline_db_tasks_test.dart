@@ -1,4 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:uuid/uuid.dart';
+import 'package:mockito/mockito.dart';
+
 import 'package:todo/data/api/database_tasks_api.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
 import 'package:todo/data/api/revision_provider.dart';
@@ -7,8 +10,6 @@ import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/domain/models/task_model.dart' as model;
 import 'package:todo/domain/repository/tasks_repository.dart';
 import 'package:todo/helpers/network_checker/network_checker.dart';
-import 'package:uuid/uuid.dart';
-import 'package:mockito/mockito.dart';
 import '../mocks/data/data_layer.mocks.dart';
 
 void main() async {

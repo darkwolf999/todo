@@ -32,9 +32,9 @@ class AllTasksScreenState extends Equatable {
 
   @override
   List<Object> get props => [
-        status ?? '',
+        status,
         tasks ?? '',
-        completedTasksCount ?? '',
-        filter ?? '',
+        completedTasksCount,
+        filter,
       ];
 }

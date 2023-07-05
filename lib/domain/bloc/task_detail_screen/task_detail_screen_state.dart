@@ -42,7 +42,7 @@ class TaskDetailScreenState extends Equatable {
 
   @override
   List<Object> get props => [
-        status ?? '',
+        status,
         editedTask ?? '',
         title ?? '',
         priority ?? '',

@@ -12,7 +12,8 @@ class DioInterceptor extends InterceptorsWrapper {
     // 1-100% - вероятность получить ошибку с сервера
     //options.headers['X-Generate-Fails'] = 50;
     options.baseUrl = dotenv.env['BASE_URL'].toString();
-    options.headers['Authorization'] = 'Bearer ${dotenv.env['AUTH_TOKEN'].toString()}';
+    options.headers['Authorization'] =
+        'Bearer ${dotenv.env['AUTH_TOKEN'].toString()}';
     MyLogger.log(
       'BASE_URL: ${options.baseUrl} \nAuthorization: ${options.headers['Authorization']}',
     );
@@ -20,8 +21,7 @@ class DioInterceptor extends InterceptorsWrapper {
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler)  {
-
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     MyLogger.log('DioException $err');
 
     onErrorHandler(
@@ -29,8 +29,6 @@ class DioInterceptor extends InterceptorsWrapper {
       err.message ?? 'Unknown error',
     );
     //rethrow;
-
     return handler.next(err);
   }
-
 }

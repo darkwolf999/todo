@@ -1,4 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:uuid/uuid.dart';
+import 'package:mockito/mockito.dart';
+
 import 'package:todo/data/api/database_tasks_api.dart';
 import 'package:todo/data/api/network_tasks_api.dart';
 import 'package:todo/data/api/revision_provider.dart';
@@ -9,8 +12,6 @@ import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/domain/models/task_model.dart' as model;
 import 'package:todo/domain/repository/tasks_repository.dart';
 import 'package:todo/helpers/network_checker/network_checker.dart';
-import 'package:uuid/uuid.dart';
-import 'package:mockito/mockito.dart';
 import '../mocks/data/data_layer.mocks.dart';
 
 void main() async {
@@ -26,9 +27,7 @@ void main() async {
     databaseTasksApi: databaseTasksApi,
   );
 
-  final date = DateTime
-      .now()
-      .millisecondsSinceEpoch;
+  final date = DateTime.now().millisecondsSinceEpoch;
   final uuid = const Uuid().v4();
 
   List<model.TaskModel> expected = [
@@ -55,25 +54,27 @@ void main() async {
     priority: Priority.no,
   );
 
-  final dtoTasks = [TaskDto(
-    id: uuid,
-    text: 'test$uuid',
-    importance: Importance.basic,
-    done: false,
-    createdAt: 0,
-    changedAt: 0,
-    lastUpdatedBy: 'lastUpdatedBy',
-  )];
+  final dtoTasks = [
+    TaskDto(
+      id: uuid,
+      text: 'test$uuid',
+      importance: Importance.basic,
+      done: false,
+      createdAt: 0,
+      changedAt: 0,
+      lastUpdatedBy: 'lastUpdatedBy',
+    )
+  ];
   final TasksListDto tasksListDto = TasksListDto(
-      status: 'ok',
-      list: dtoTasks,
-      revision: 1
+    status: 'ok',
+    list: dtoTasks,
+    revision: 1,
   );
 
   setUp(() {
     when(networkChecker.hasInternet()).thenAnswer((_) async => true);
     when(revisionProvider.getRevision()).thenAnswer((_) => 1);
-    when(networkTasksApi.fetchTasks()).thenAnswer((_) async  => tasksListDto);
+    when(networkTasksApi.fetchTasks()).thenAnswer((_) async => tasksListDto);
     when(databaseTasksApi.fetchTasks()).thenAnswer((_) async => [dbTask]);
   });
 

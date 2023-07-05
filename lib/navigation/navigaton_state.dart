@@ -22,5 +22,5 @@ class NavigationState with ChangeNotifier {
   }
 
   @override
-  String toString() => "All Tasks: $_isAllTasksPage, task: $_task";
+  String toString() => 'All Tasks: $_isAllTasksPage, task: $_task';
 }

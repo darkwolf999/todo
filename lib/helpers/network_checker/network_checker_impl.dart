@@ -5,7 +5,6 @@ import 'package:todo/helpers/network_checker/network_checker.dart';
 import 'package:todo/my_logger.dart';
 
 class NetworkCheckerImpl implements NetworkChecker {
-
   @override
   Future<bool> hasInternet() async {
     try {
@@ -16,5 +15,4 @@ class NetworkCheckerImpl implements NetworkChecker {
       return false;
     }
   }
-
 }

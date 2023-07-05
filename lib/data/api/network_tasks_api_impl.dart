@@ -11,18 +11,16 @@ import 'package:todo/data/interceptors/dio_interceptor.dart';
 import 'constants/api_constants.dart';
 import 'network_tasks_api.dart';
 
-class NetworkTasksApiImpl implements NetworkTasksApi{
+class NetworkTasksApiImpl implements NetworkTasksApi {
   final Function(String, String) onErrorHandler;
   final SharedPreferences _prefs;
   final Dio _dio;
 
   NetworkTasksApiImpl({
-    //required Function(String, String) onErrorHandler,
     required this.onErrorHandler,
     required SharedPreferences prefs,
     required Dio dio,
-  })  : //_onErrorHandler = onErrorHandler,
-        _prefs = prefs,
+  })  : _prefs = prefs,
         _dio = dio
           ..interceptors.addAll([
             PrettyDioLogger(
@@ -63,12 +61,6 @@ class NetworkTasksApiImpl implements NetworkTasksApi{
       response.data as Map<String, dynamic>,
     );
 
-    // _prefs.setInt(
-    //   Constants.shPrefsRevisionKey,
-    //   tasksResponseDto.revision,
-    // );
-    // MyLogger.log('revision = ${_prefs.getInt('revision')}');
-
     return tasksResponseDto;
   }
 
@@ -90,12 +82,6 @@ class NetworkTasksApiImpl implements NetworkTasksApi{
       response.data as Map<String, dynamic>,
     );
 
-    // _prefs.setInt(
-    //   Constants.shPrefsRevisionKey,
-    //   tasksResponseDto.revision,
-    // );
-    //MyLogger.log('revision = ${_prefs.getInt('revision')}');
-
     return tasksResponseDto;
   }
 
@@ -113,12 +99,6 @@ class NetworkTasksApiImpl implements NetworkTasksApi{
     final tasksResponseDto = TaskResponseDto.fromJson(
       response.data as Map<String, dynamic>,
     );
-
-    // _prefs.setInt(
-    //   Constants.shPrefsRevisionKey,
-    //   tasksResponseDto.revision,
-    // );
-    // MyLogger.log('revision = ${_prefs.getInt('revision')}');
 
     return tasksResponseDto;
   }
@@ -160,12 +140,6 @@ class NetworkTasksApiImpl implements NetworkTasksApi{
     final tasksListDto = TasksListDto.fromJson(
       response.data as Map<String, dynamic>,
     );
-
-    // _prefs.setInt(
-    //   Constants.shPrefsRevisionKey,
-    //   tasksListDto.revision,
-    // );
-    //MyLogger.log('revision = ${_prefs.getInt('revision')}');
 
     return tasksListDto;
   }

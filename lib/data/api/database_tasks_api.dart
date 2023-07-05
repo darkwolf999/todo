@@ -1,7 +1,6 @@
 import 'package:todo/data/models/db/task_db.dart';
 
 abstract class DatabaseTasksApi {
-
   Future<List<DBTask>?> fetchTasks();
 
   Future<DBTask?> fetchSingleTask(String uuid);
@@ -13,5 +12,4 @@ abstract class DatabaseTasksApi {
   Future<void> putAllTasks(List<DBTask> tasks);
 
   Future<void> deleteTask(String uuid);
-
 }

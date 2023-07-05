@@ -83,8 +83,6 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: const [Locale('en'), Locale('ru')],
             locale: context.locale,
-            //home: const Navigation(),
-            //home: const AllTasksScreen(),
           );
         },
       ),

@@ -22,7 +22,7 @@ class TitleChangedEvent extends TaskDetailScreenEvent {
   const TitleChangedEvent(this.title);
 
   @override
-  List<Object> get props => [title ?? ''];
+  List<Object> get props => [title];
 }
 
 class PriorityChangedEvent extends TaskDetailScreenEvent {
@@ -31,7 +31,7 @@ class PriorityChangedEvent extends TaskDetailScreenEvent {
   const PriorityChangedEvent(this.priority);
 
   @override
-  List<Object> get props => [priority ?? ''];
+  List<Object> get props => [priority];
 }
 
 class DeadlineChangedEvent extends TaskDetailScreenEvent {
@@ -42,19 +42,6 @@ class DeadlineChangedEvent extends TaskDetailScreenEvent {
   @override
   List<Object> get props => [deadline ?? ''];
 }
-
-// class FinishEditingEvent extends TaskDetailScreenEvent {
-//   const FinishEditingEvent();
-// }
-
-// class EditAcceptedEvent extends TaskDetailScreenEvent {
-//   final TaskModel task;
-//
-//   const EditAcceptedEvent(this.task);
-//
-//   @override
-//   List<Object> get props => [task];
-// }
 
 class EditAcceptedEvent extends TaskDetailScreenEvent {
   const EditAcceptedEvent();
@@ -68,7 +55,3 @@ class DeleteTaskEvent extends TaskDetailScreenEvent {
   @override
   List<Object> get props => [uuid];
 }
-
-// class DeadlineSwitchedEvent extends TaskDetailScreenEvent {
-//   const DeadlineSwitchedEvent();
-// }

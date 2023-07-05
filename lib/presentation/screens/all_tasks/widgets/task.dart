@@ -6,8 +6,6 @@ import 'package:todo/constants.dart' as Constants;
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/helpers/format_date.dart';
-import 'package:todo/presentation/screens/task_detail/task_detail.dart';
-import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'package:todo/navigation/tasks_router_delegate.dart';
 import 'check_button.dart';
 

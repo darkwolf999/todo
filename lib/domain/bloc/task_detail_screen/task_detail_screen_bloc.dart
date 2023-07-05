@@ -6,12 +6,9 @@ import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:todo/domain/models/task_model.dart';
-import 'package:todo/data/repositories/tasks_repository_impl.dart';
-import 'package:todo/helpers/device_info.dart';
 import 'package:todo/my_logger.dart';
 import 'package:todo/l10n/locale_keys.g.dart';
-
-import '../../repository/tasks_repository.dart';
+import 'package:todo/domain/repository/tasks_repository.dart';
 
 part 'task_detail_screen_event.dart';
 
