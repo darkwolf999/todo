@@ -64,7 +64,7 @@ void main() async {
     );
   });
 
-  test('', () async {
+  test('should return tasks to view when save new task', () async {
     await repository.saveTask(task);
     final stream = repository.getTasks();
     final actual = await stream.first;
