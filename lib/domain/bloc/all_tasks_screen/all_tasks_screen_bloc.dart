@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:todo/data/models/task_model.dart';
-import 'package:todo/data/repositories/tasks_repository.dart';
+
+import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
 import 'package:todo/my_logger.dart';
+import 'package:todo/domain/repository/tasks_repository.dart';
 
 part 'all_tasks_screen_event.dart';
 
@@ -18,9 +20,9 @@ class AllTasksScreenBloc
   AllTasksScreenBloc(this._tasksRepository)
       : super(const AllTasksScreenState()) {
     on<SubscribeStreamEvent>(_onSubscribeStream);
-    on<AddTaskEvent>(_onAddTask);
-    on<DeleteTaskEvent>(_onDeleteTask);
-    on<CompleteTaskEvent>(_onCompleteTask);
+    //on<AddTaskEvent>(_onAddTask);
+    on<DeleteTaskEvent>(_onDeleteTask, transformer: sequential());
+    on<CompleteTaskEvent>(_onCompleteTask, transformer: sequential());
     on<ChangeFilterEvent>(_onChangeFilter);
   }
 
@@ -50,27 +52,33 @@ class AllTasksScreenBloc
     }
   }
 
-  Future<void> _onAddTask(
-    AddTaskEvent event,
-    Emitter<AllTasksScreenState> emit,
-  ) async {
-    emit(state.copyWith(status: AllTasksScreenStatus.initial));
-    try {
-      await _tasksRepository.saveTask(event.task);
-      emit(state.copyWith(status: AllTasksScreenStatus.success));
-      MyLogger.infoLog('task added');
-    } catch (e) {
-      MyLogger.errorLog('task add error', e);
-      emit(state.copyWith(status: AllTasksScreenStatus.failure));
-    }
-  }
+  // Future<void> _onAddTask(
+  //   AddTaskEvent event,
+  //   Emitter<AllTasksScreenState> emit,
+  // ) async {
+  //   emit(state.copyWith(status: AllTasksScreenStatus.initial));
+  //   try {
+  //     await _tasksRepository.saveTask(event.task);
+  //     emit(state.copyWith(status: AllTasksScreenStatus.success));
+  //     MyLogger.infoLog('task added');
+  //   } catch (e) {
+  //     MyLogger.errorLog('task add error', e);
+  //     emit(state.copyWith(status: AllTasksScreenStatus.failure));
+  //   }
+  // }
 
   Future<void> _onDeleteTask(
     DeleteTaskEvent event,
     Emitter<AllTasksScreenState> emit,
   ) async {
-    await _tasksRepository.deleteTask(event.uuid);
-    MyLogger.infoLog('task after deleting ${state.tasks}');
+    try{
+      await _tasksRepository.deleteTask(event.uuid);
+      MyLogger.infoLog('task after deleting ${state.tasks}');
+    }
+    catch (e) {
+      MyLogger.errorLog('task delete error', e);
+      emit(state.copyWith(status: AllTasksScreenStatus.failure));
+    }
   }
 
   Future<void> _onCompleteTask(

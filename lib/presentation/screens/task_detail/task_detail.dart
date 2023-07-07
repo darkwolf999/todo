@@ -5,14 +5,15 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/constants.dart' as Constants;
-import 'package:todo/data/models/task_model.dart';
-import 'package:todo/bloc/task_detail_screen/task_detail_screen_bloc.dart';
+import 'package:todo/domain/models/task_model.dart';
+import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'package:todo/helpers/format_date.dart';
 import 'package:todo/presentation/screens/task_detail/widgets/material_textfield.dart';
 import 'package:todo/presentation/screens/task_detail/widgets/delete_button/delete_button.dart';
 import 'package:todo/presentation/screens/task_detail//widgets/delete_button/inkwell_delete_button.dart';
 import 'package:todo/presentation/widgets/svg.dart';
-import 'package:todo/data/repositories/tasks_repository.dart';
+import 'package:todo/navigation/tasks_router_delegate.dart';
+import 'package:todo/domain/repository/tasks_repository.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final TaskModel? task;
@@ -26,10 +27,12 @@ class TaskDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<TaskDetailScreenBloc>(
       create: (context) => TaskDetailScreenBloc(
-        context.read<TasksRepository>(),
+        tasksRepository: context.read<TasksRepository>(),
+        editedTask: task,
       ),
-      child: TaskDetailScreenContent(task: task),
+      child: const TaskDetailScreenContent(),
     );
+    //return TaskDetailScreenContent(task: task);
   }
 }
 
@@ -44,13 +47,11 @@ class TaskDetailScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<TaskDetailScreenBloc>();
+    final router = Router.of(context).routerDelegate as TasksRouterDelegate;
 
-    final TextEditingController textController = TextEditingController();
-    textController.text = task?.title ?? '';
-    Priority priority = task?.priority ?? Priority.no;
-    DateTime? pickedDate = task?.deadline;
-    int? createdAt = task?.createdAt;
-    bool isSwitchEnabled = task?.deadline != null;
+    Priority? priority = bloc.state.priority;
+    DateTime? deadline = bloc.state.deadline;
+    bool isSwitchEnabled = bloc.state.deadline != null;
 
     return Scaffold(
       backgroundColor: const Color(Constants.lightBackPrimary),
@@ -61,7 +62,7 @@ class TaskDetailScreenContent extends StatelessWidget {
         leading: IconButton(
           splashRadius: 24.0,
           onPressed: () {
-            Navigator.pop(context, false);
+            router.pop(true);
           },
           icon: const SVG(
             imagePath: Constants.close,
@@ -73,25 +74,9 @@ class TaskDetailScreenContent extends StatelessWidget {
             padding: const EdgeInsets.only(right: 8.0),
             child: Center(
               child: TextButton(
-                onPressed: () async {
-                  int dateNowStamp = DateTime.now().millisecondsSinceEpoch;
-                  bloc.add(
-                    EditAcceptedEvent(
-                      TaskModel(
-                        uuid: task?.uuid,
-                        title: textController.text.isNotEmpty
-                            ? textController.text
-                            : LocaleKeys.emptyTask.tr(),
-                        isDone: false,
-                        priority: priority,
-                        deadline: isSwitchEnabled ? pickedDate : null,
-                        createdAt: createdAt ?? dateNowStamp,
-                        changedAt: dateNowStamp,
-                        lastUpdatedBy: await getDeviceModel(),
-                      ),
-                    ),
-                  );
-                  Navigator.pop(context, true);
+                onPressed: () {
+                  bloc.add(const EditAcceptedEvent());
+                  router.pop(true);
                 },
                 child: Text(
                   //СОХРАНИТЬ
@@ -117,7 +102,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                 const SizedBox(height: 8.0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: MaterialTextfield(textController: textController),
+                  child: MaterialTextfield(),
                 ),
                 const SizedBox(height: 12.0),
                 Padding(
@@ -126,12 +111,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                     child: DropdownButtonFormField(
                       value: priority,
                       onChanged: (newPriority) {
-                        if (newPriority != Priority.no) {
-                          priority = newPriority;
-                        } else {
-                          //priority = null;
-                          priority = Priority.no; //todo переделать
-                        }
+                        bloc.add(PriorityChangedEvent(newPriority));
                       },
                       style: const TextStyle(
                         fontSize: Constants.buttonFontSize,
@@ -226,9 +206,9 @@ class TaskDetailScreenContent extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
-                                pickedDate != null
+                                isSwitchEnabled != false
                                     ? FormatDate.toDmmmmyyyy(
-                                        pickedDate!,
+                                        deadline!,
                                         Localizations.localeOf(context)
                                             .toString(),
                                       )
@@ -243,15 +223,19 @@ class TaskDetailScreenContent extends StatelessWidget {
                         ],
                       ),
                       Switch(
-                        value: isSwitchEnabled != false,
+                        value: bloc.state.deadline != null,
                         onChanged: (bool value) async {
-                          isSwitchEnabled != false
-                              ? null
-                              : pickedDate = await pickDeadlineDate(context);
-                          if (pickedDate != null) {
-                            isSwitchEnabled = !isSwitchEnabled;
-                            bloc.add(const DeadlineSwitchedEvent());
-                          }
+                          bloc.state.deadline != null
+                              ? {
+                                  deadline = null,
+                                  isSwitchEnabled = false,
+                                  bloc.add(const DeadlineChangedEvent(null))
+                                }
+                              : {
+                                  deadline = await pickDeadlineDate(context),
+                                  isSwitchEnabled = true,
+                                  bloc.add(DeadlineChangedEvent(deadline))
+                                };
                         },
                       )
                     ],
@@ -266,18 +250,20 @@ class TaskDetailScreenContent extends StatelessWidget {
                 const SizedBox(height: 8.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
-                  child: task != null
-                      ? InkWellDeleteButton(
+                  child: bloc.state.isNewTask ?? false
+                      ? const DeleteButton(
+                          icon: Constants.deleteDisabled,
+                          textColor: Constants.lightLabelDisable,
+                        )
+                      : InkWellDeleteButton(
                           icon: Constants.delete,
                           textColor: Constants.lightColorRed,
                           onTap: () {
-                            bloc.add(DeleteTaskEvent(task!.uuid));
-                            Navigator.pop(context);
+                            bloc.add(
+                              DeleteTaskEvent(bloc.state.editedTask!.uuid),
+                            );
+                            router.pop(true);
                           },
-                        )
-                      : const DeleteButton(
-                          icon: Constants.deleteDisabled,
-                          textColor: Constants.lightLabelDisable,
                         ),
                 ),
                 const SizedBox(height: 12.0),

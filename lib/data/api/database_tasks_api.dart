@@ -1,60 +1,15 @@
-import 'package:isar/isar.dart';
+import 'package:todo/data/models/db/task_db.dart';
 
-import 'package:todo/helpers/fast_hash.dart';
-import 'package:todo/data/db/task_db.dart';
+abstract class DatabaseTasksApi {
+  Future<List<DBTask>?> fetchTasks();
 
-class DatabaseTasksApi {
-  final Isar _isar;
+  Future<DBTask?> fetchSingleTask(String uuid);
 
-  DatabaseTasksApi({
-    required Isar isar,
-  }) : _isar = isar;
+  Future<void> putTask(DBTask task);
 
-  Future<List<DBTask>?> fetchTasks() async {
-    List<DBTask>? tasksDB;
+  Future<void> refreshTasks(List<DBTask> tasks, List<int> isarIds);
 
-    await _isar.txn(() async {
-      tasksDB = await _isar.dBTasks.where().findAll();
-    });
+  Future<void> putAllTasks(List<DBTask> tasks);
 
-    return tasksDB;
-  }
-
-  Future<DBTask?> fetchSingleTask(String uuid) async {
-    int isarId = FastHash.generate(uuid);
-    final taskDB = await _isar.dBTasks.get(isarId);
-    return taskDB;
-  }
-
-  Future<void> putTask(DBTask task) async {
-    await _isar.writeTxn(
-      () async {
-        await _isar.dBTasks.put(task);
-      },
-    );
-  }
-
-  Future<void> refreshTasks(List<DBTask> tasks, List<int> isarIds) async {
-    await _isar.writeTxn(
-      () async {
-        await _isar.dBTasks.putAll(tasks);
-        await _isar.dBTasks.deleteAll(isarIds);
-      },
-    );
-  }
-
-  Future<void> putAllTasks(List<DBTask> tasks) async {
-    await _isar.writeTxn(
-      () async {
-        await _isar.dBTasks.putAll(tasks);
-      },
-    );
-  }
-
-  Future<void> deleteTask(String uuid) async {
-    int isarId = FastHash.generate(uuid);
-    await _isar.writeTxn(() async {
-      await _isar.dBTasks.delete(isarId);
-    });
-  }
+  Future<void> deleteTask(String uuid);
 }

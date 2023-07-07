@@ -3,26 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
-import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
+import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
+import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_sliver_appbar.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_adapter.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/language_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
-import 'package:todo/presentation/screens/task_detail/task_detail.dart';
-import 'package:todo/data/repositories/tasks_repository.dart';
 import 'package:todo/presentation/widgets/something_went_wrong.dart';
 
+import 'package:todo/domain/repository/tasks_repository.dart';
+import 'package:todo/navigation/tasks_router_delegate.dart';
+
 class AllTasksScreen extends StatelessWidget {
+  static final GlobalKey<State<StatefulWidget>> globalKey = GlobalKey();
+
   const AllTasksScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AllTasksScreenBloc>(
-      create: (context) => AllTasksScreenBloc(
-        context.read<TasksRepository>(),
-      )..add(const SubscribeStreamEvent()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AllTasksScreenBloc>(
+          create: (context) => AllTasksScreenBloc(
+            context.read<TasksRepository>(),
+          )..add(const SubscribeStreamEvent()),
+        ),
+      ],
       child: const AllTasksScreenContent(),
     );
   }
@@ -34,6 +42,7 @@ class AllTasksScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AllTasksScreenBloc>();
+    final router = Router.of(context).routerDelegate as TasksRouterDelegate;
     ScrollController scrollController = ScrollController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -87,7 +96,7 @@ class AllTasksScreenContent extends StatelessWidget {
                                   TasksListview(),
                                   AddNewTaskButton(
                                     onTap: () {
-                                      addNewTask(scrollController, context);
+                                      addNewTask(scrollController, router);
                                     },
                                   ),
                                 ],
@@ -119,7 +128,7 @@ class AllTasksScreenContent extends StatelessWidget {
           const SizedBox(width: 8),
           FloatingActionButton(
             onPressed: () {
-              addNewTask(scrollController, context);
+              addNewTask(scrollController, router);
             },
             backgroundColor: const Color(Constants.lightColorBlue),
             tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
@@ -133,14 +142,12 @@ class AllTasksScreenContent extends StatelessWidget {
 
   void addNewTask(
     ScrollController scrollController,
-    BuildContext context,
+    TasksRouterDelegate router,
   ) async {
-    final animateScrollTop = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const TaskDetailScreen(),
-      ),
-    );
+    const animateScrollTop = true;
+
+    router.gotoTask(null);
+
     if (animateScrollTop) {
       scrollController.animateTo(
         0,

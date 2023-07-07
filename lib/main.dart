@@ -1,27 +1,29 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isar/isar.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo/data/api/database_tasks_api.dart';
-import 'package:todo/data/interceptors/dio_interceptor.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+import 'di/di.dart';
+import 'package:todo/data/repositories/tasks_repository_impl.dart';
 import 'package:todo/l10n/codegen_loader.g.dart';
 import 'package:todo/my_logger.dart';
-import 'package:todo/presentation/screens/all_tasks/all_tasks.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:todo/data/repositories/tasks_repository.dart';
-import 'data/api/network_tasks_api.dart';
-import 'data/db/task_db.dart';
+import 'data/api/network_tasks_api_impl.dart';
+import 'domain/bloc/error_bloc/error_bloc.dart';
+import 'domain/bloc/error_bloc/error_event.dart';
+import 'domain/repository/tasks_repository.dart';
+import 'navigation/parser.dart';
+import 'navigation/tasks_router_delegate.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await EasyLocalization.ensureInitialized();
 
-  final tasksRepository = await initRepo();
+  await dotenv.load(fileName: 'url_token.env');
+  //await dotenv.load(fileName: 'template.env');
+
+  await DepInj.inject();
 
   MyLogger.infoLog('Starting application!');
 
@@ -31,10 +33,30 @@ void main() async {
       path: 'lib/assets/translations',
       fallbackLocale: Locale('ru'),
       assetLoader: CodegenLoader(),
-      child: RepositoryProvider<TasksRepository>(
+      child: BlocProvider(
+        create: (_) => ErrorBloc(),
         lazy: false,
-        create: (context) => tasksRepository,
-        child: const MyApp(),
+        child: RepositoryProvider<TasksRepository>(
+          lazy: false,
+          create: (BuildContext context) => TasksRepositoryImpl(
+            networkChecker: GetIt.I.get(),
+            revisionProvider: GetIt.I.get(),
+            databaseTasksApi: GetIt.I.get(),
+            networkTasksApi: NetworkTasksApiImpl(
+              dio: GetIt.I.get(),
+              prefs: GetIt.I.get(),
+              onErrorHandler: (String code, String message) {
+                context.read<ErrorBloc>().add(
+                      OnErrorEvent(
+                        statusCode: code,
+                        message: message,
+                      ),
+                    );
+              },
+            ),
+          ),
+          child: const MyApp(),
+        ),
       ),
     ),
   );
@@ -45,57 +67,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'To-Do!',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    final routeObserver = RouteObserver();
+    return Provider<RouteObserver>.value(
+      value: routeObserver,
+      child: Builder(
+        builder: (context) {
+          return MaterialApp.router(
+            routerDelegate: TasksRouterDelegate(),
+            routeInformationParser: TasksRouteInformationParser(),
+            debugShowCheckedModeBanner: false,
+            title: 'To-Do!',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: const [Locale('en'), Locale('ru')],
+            locale: context.locale,
+          );
+        },
       ),
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: const [Locale('en'), Locale('ru')],
-      locale: context.locale,
-      home: const AllTasksScreen(),
     );
   }
-}
-
-Future<TasksRepository> initRepo() async {
-  BaseOptions options = BaseOptions(
-    connectTimeout: Duration(seconds: 10),
-    receiveTimeout: Duration(seconds: 10),
-  );
-
-  Dio dio = Dio(options);
-  dio.interceptors.addAll([
-    PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-    ),
-    DioInterceptor(),
-  ]);
-
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  final networkTasksApi = NetworkTasksApi(
-    dio: dio,
-    prefs: prefs,
-  );
-
-  final dir = await getApplicationDocumentsDirectory();
-  final isar = await Isar.open(
-    [DBTaskSchema],
-    directory: dir.path,
-  );
-
-  final databaseTasksApi = DatabaseTasksApi(
-    isar: isar,
-  );
-
-  final tasksRepository = TasksRepository(
-    prefs: prefs,
-    networkTasksApi: networkTasksApi,
-    databaseTasksApi: databaseTasksApi,
-  );
-
-  return tasksRepository;
 }

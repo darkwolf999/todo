@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:todo/data/dto/task_dto.dart';
+import 'package:todo/data/models/dto/task_dto.dart';
 
 part 'task_response_dto.g.dart';
 

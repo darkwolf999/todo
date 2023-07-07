@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:todo/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
+import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
-import 'package:todo/data/models/task_model.dart';
+import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/helpers/format_date.dart';
-import 'package:todo/presentation/screens/task_detail/task_detail.dart';
+import 'package:todo/navigation/tasks_router_delegate.dart';
 import 'check_button.dart';
 
 class Task extends StatelessWidget {
@@ -20,6 +20,7 @@ class Task extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AllTasksScreenBloc>();
+    final router = Router.of(context).routerDelegate as TasksRouterDelegate;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -114,12 +115,7 @@ class Task extends StatelessWidget {
         const SizedBox(width: 12.0),
         IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TaskDetailScreen(task: task),
-              ),
-            );
+            router.gotoTask(task);
           },
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),

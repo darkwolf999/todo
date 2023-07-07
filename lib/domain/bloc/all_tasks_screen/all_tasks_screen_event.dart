@@ -11,14 +11,14 @@ class SubscribeStreamEvent extends AllTasksScreenEvent {
   const SubscribeStreamEvent();
 }
 
-class AddTaskEvent extends AllTasksScreenEvent {
-  final TaskModel task;
-
-  const AddTaskEvent(this.task);
-
-  @override
-  List<Object> get props => [task];
-}
+// class AddTaskEvent extends AllTasksScreenEvent {
+//   final TaskModel task;
+//
+//   const AddTaskEvent(this.task);
+//
+//   @override
+//   List<Object> get props => [task];
+// }
 
 class DeleteTaskEvent extends AllTasksScreenEvent {
   final String uuid;
