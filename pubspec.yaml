@@ -31,6 +31,8 @@ environment:
 isar_version: &isar_version ^3.1.0+1
 
 dependencies:
+  firebase_crashlytics: ^3.3.3
+  firebase_core: ^2.14.0
   flutter_dotenv: ^5.1.0
   get_it: ^7.6.0
   mockito: ^5.4.2
