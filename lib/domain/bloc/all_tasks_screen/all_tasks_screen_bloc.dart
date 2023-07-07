@@ -20,7 +20,7 @@ class AllTasksScreenBloc
   AllTasksScreenBloc(this._tasksRepository)
       : super(const AllTasksScreenState()) {
     on<SubscribeStreamEvent>(_onSubscribeStream);
-    on<AddTaskEvent>(_onAddTask);
+    //on<AddTaskEvent>(_onAddTask);
     on<DeleteTaskEvent>(_onDeleteTask, transformer: sequential());
     on<CompleteTaskEvent>(_onCompleteTask, transformer: sequential());
     on<ChangeFilterEvent>(_onChangeFilter);
@@ -52,27 +52,33 @@ class AllTasksScreenBloc
     }
   }
 
-  Future<void> _onAddTask(
-    AddTaskEvent event,
-    Emitter<AllTasksScreenState> emit,
-  ) async {
-    emit(state.copyWith(status: AllTasksScreenStatus.initial));
-    try {
-      await _tasksRepository.saveTask(event.task);
-      emit(state.copyWith(status: AllTasksScreenStatus.success));
-      MyLogger.infoLog('task added');
-    } catch (e) {
-      MyLogger.errorLog('task add error', e);
-      emit(state.copyWith(status: AllTasksScreenStatus.failure));
-    }
-  }
+  // Future<void> _onAddTask(
+  //   AddTaskEvent event,
+  //   Emitter<AllTasksScreenState> emit,
+  // ) async {
+  //   emit(state.copyWith(status: AllTasksScreenStatus.initial));
+  //   try {
+  //     await _tasksRepository.saveTask(event.task);
+  //     emit(state.copyWith(status: AllTasksScreenStatus.success));
+  //     MyLogger.infoLog('task added');
+  //   } catch (e) {
+  //     MyLogger.errorLog('task add error', e);
+  //     emit(state.copyWith(status: AllTasksScreenStatus.failure));
+  //   }
+  // }
 
   Future<void> _onDeleteTask(
     DeleteTaskEvent event,
     Emitter<AllTasksScreenState> emit,
   ) async {
-    await _tasksRepository.deleteTask(event.uuid);
-    MyLogger.infoLog('task after deleting ${state.tasks}');
+    try{
+      await _tasksRepository.deleteTask(event.uuid);
+      MyLogger.infoLog('task after deleting ${state.tasks}');
+    }
+    catch (e) {
+      MyLogger.errorLog('task delete error', e);
+      emit(state.copyWith(status: AllTasksScreenStatus.failure));
+    }
   }
 
   Future<void> _onCompleteTask(
