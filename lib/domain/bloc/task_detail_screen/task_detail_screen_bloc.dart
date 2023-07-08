@@ -17,11 +17,14 @@ part 'task_detail_screen_state.dart';
 class TaskDetailScreenBloc
     extends Bloc<TaskDetailScreenEvent, TaskDetailScreenState> {
   final TasksRepository _tasksRepository;
+  final String _deviceModel;
 
   TaskDetailScreenBloc({
     required TasksRepository tasksRepository,
+    required String deviceModel,
     required TaskModel? editedTask,
   })  : _tasksRepository = tasksRepository,
+        _deviceModel = deviceModel,
         super(
           TaskDetailScreenState(
             editedTask: editedTask ??
@@ -46,8 +49,6 @@ class TaskDetailScreenBloc
     on<EditAcceptedEvent>(_onEditAccepted);
     on<DeleteTaskEvent>(_onDeleteTask);
   }
-
-  String deviceModel = GetIt.I.get(instanceName: 'deviceModel');
 
   void _onTitleChanged(
     TitleChangedEvent event,
@@ -74,7 +75,6 @@ class TaskDetailScreenBloc
     EditAcceptedEvent event,
     Emitter<TaskDetailScreenState> emit,
   ) async {
-    deviceModel = deviceModel;
     int dateNowStamp = DateTime.now().millisecondsSinceEpoch;
     try {
       final taskToSave = (state.editedTask)?.copyWith(
@@ -83,7 +83,7 @@ class TaskDetailScreenBloc
         deadline: () => state.deadline,
         createdAt: state.createdAt ?? dateNowStamp,
         changedAt: dateNowStamp,
-        lastUpdatedBy: deviceModel,
+        lastUpdatedBy: _deviceModel,
       );
       await _tasksRepository.saveTask(taskToSave!);
       emit(state.copyWith(status: TaskDetailScreenStatus.success));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/constants.dart' as Constants;
@@ -28,6 +29,7 @@ class TaskDetailScreen extends StatelessWidget {
     return BlocProvider<TaskDetailScreenBloc>(
       create: (context) => TaskDetailScreenBloc(
         tasksRepository: context.read<TasksRepository>(),
+        deviceModel: GetIt.I.get(instanceName: 'deviceModel'),
         editedTask: task,
       ),
       child: const TaskDetailScreenContent(),
