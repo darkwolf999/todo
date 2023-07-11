@@ -6,8 +6,8 @@ part of 'task_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => TaskModel(
-      uuid: json['uuid'] as String?,
+_$_TaskModel _$$_TaskModelFromJson(Map<String, dynamic> json) => _$_TaskModel(
+      uuid: json['uuid'] as String,
       title: json['title'] as String,
       isDone: json['isDone'] as bool,
       priority: $enumDecode(_$PriorityEnumMap, json['priority']),
@@ -20,7 +20,8 @@ TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => TaskModel(
       lastUpdatedBy: json['lastUpdatedBy'] as String,
     );
 
-Map<String, dynamic> _$TaskModelToJson(TaskModel instance) => <String, dynamic>{
+Map<String, dynamic> _$$_TaskModelToJson(_$_TaskModel instance) =>
+    <String, dynamic>{
       'uuid': instance.uuid,
       'title': instance.title,
       'isDone': instance.isDone,

@@ -31,6 +31,7 @@ environment:
 isar_version: &isar_version ^3.1.0+1
 
 dependencies:
+  freezed_annotation: ^2.2.0
   firebase_crashlytics: ^3.3.3
   firebase_core: ^2.14.0
   flutter_dotenv: ^5.1.0
@@ -63,6 +64,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  freezed: ^2.3.5
   isar_generator: *isar_version
   build_runner: ^2.3.3
   json_serializable: ^6.6.2

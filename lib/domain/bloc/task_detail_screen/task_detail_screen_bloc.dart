@@ -9,6 +9,7 @@ import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/my_logger.dart';
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/domain/repository/tasks_repository.dart';
+import 'package:uuid/uuid.dart';
 
 part 'task_detail_screen_event.dart';
 
@@ -29,6 +30,7 @@ class TaskDetailScreenBloc
           TaskDetailScreenState(
             editedTask: editedTask ??
                 TaskModel(
+                  uuid: const Uuid().v4(),
                   title: LocaleKeys.emptyTask.tr(),
                   isDone: false,
                   priority: Priority.no,
@@ -78,9 +80,9 @@ class TaskDetailScreenBloc
     int dateNowStamp = DateTime.now().millisecondsSinceEpoch;
     try {
       final taskToSave = (state.editedTask)?.copyWith(
-        title: state.title,
-        priority: state.priority,
-        deadline: () => state.deadline,
+        title: state.title ?? LocaleKeys.emptyTask.tr(),
+        priority: state.priority ?? Priority.no,
+        deadline: state.deadline,
         createdAt: state.createdAt ?? dateNowStamp,
         changedAt: dateNowStamp,
         lastUpdatedBy: _deviceModel,
