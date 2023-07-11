@@ -33,7 +33,10 @@ class SomethingWentWrong extends StatelessWidget {
           const SizedBox(height: 8),
           BlocBuilder<AllTasksScreenBloc, AllTasksScreenState>(
             builder: (context, state) {
-              return Text(errBloc.state.errorMsg ?? 'Неизвестная ошибкка');
+              return Text(
+                errBloc.state.errorMsg ?? 'Неизвестная ошибка',
+                textAlign: TextAlign.center,
+              );
             },
           ),
           TextButton(
