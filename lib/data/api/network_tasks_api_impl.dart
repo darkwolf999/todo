@@ -22,6 +22,9 @@ class NetworkTasksApiImpl implements NetworkTasksApi {
     required Dio dio,
   })  : _prefs = prefs,
         _dio = dio
+          ..options.connectTimeout = const Duration(
+            seconds: ApiConstants.connectTimeout,
+          )
           ..interceptors.addAll([
             PrettyDioLogger(
               requestHeader: true,
