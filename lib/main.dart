@@ -83,25 +83,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final routeObserver = RouteObserver();
-    return Provider<RouteObserver>.value(
-      value: routeObserver,
-      child: Builder(
-        builder: (context) {
-          return MaterialApp.router(
-            routerDelegate: TasksRouterDelegate(),
-            routeInformationParser: TasksRouteInformationParser(),
-            debugShowCheckedModeBanner: false,
-            title: 'To-Do!',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: const [Locale('en'), Locale('ru')],
-            locale: context.locale,
-          );
-        },
+    return MaterialApp.router(
+      routerDelegate: GetIt.I.get(),
+      routeInformationParser: TasksRouteInformationParser(),
+      debugShowCheckedModeBanner: false,
+      title: 'To-Do!',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: const [Locale('en'), Locale('ru')],
+      locale: context.locale,
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,11 +13,14 @@ import 'package:todo/data/api/database_tasks_api_impl.dart';
 import 'package:todo/data/models/db/task_db.dart';
 import 'package:todo/helpers/network_checker/network_checker.dart';
 import 'package:todo/helpers/network_checker/network_checker_impl.dart';
+import 'package:todo/navigation/tasks_router_delegate.dart';
 
 class DepInj {
   DepInj._();
 
   static Future<void> inject() async {
+    GetIt.I.registerSingleton<RouterDelegate<Object>>(TasksRouterDelegate());
+
     final deviceModel = await DeviceInfo.getDeviceModel();
     GetIt.I.registerSingleton(deviceModel, instanceName: 'deviceModel');
 
