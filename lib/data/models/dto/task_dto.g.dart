@@ -6,7 +6,7 @@ part of 'task_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TaskDto _$TaskDtoFromJson(Map<String, dynamic> json) => TaskDto(
+_$_TaskDto _$$_TaskDtoFromJson(Map<String, dynamic> json) => _$_TaskDto(
       id: json['id'] as String,
       text: json['text'] as String,
       importance: $enumDecode(_$ImportanceEnumMap, json['importance']),
@@ -18,7 +18,8 @@ TaskDto _$TaskDtoFromJson(Map<String, dynamic> json) => TaskDto(
       lastUpdatedBy: json['last_updated_by'] as String,
     );
 
-Map<String, dynamic> _$TaskDtoToJson(TaskDto instance) => <String, dynamic>{
+Map<String, dynamic> _$$_TaskDtoToJson(_$_TaskDto instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'text': instance.text,
       'importance': _$ImportanceEnumMap[instance.importance]!,

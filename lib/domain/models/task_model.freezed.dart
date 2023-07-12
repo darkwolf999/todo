@@ -20,7 +20,7 @@ TaskModel _$TaskModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TaskModel {
-  String get uuid => throw _privateConstructorUsedError; //String? uuid,
+  String get uuid => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   bool get isDone => throw _privateConstructorUsedError;
   Priority get priority => throw _privateConstructorUsedError;
@@ -217,7 +217,6 @@ class _$_TaskModel implements _TaskModel {
 
   @override
   final String uuid;
-//String? uuid,
   @override
   final String title;
   @override
@@ -297,7 +296,7 @@ abstract class _TaskModel implements TaskModel {
 
   @override
   String get uuid;
-  @override //String? uuid,
+  @override
   String get title;
   @override
   bool get isDone;
