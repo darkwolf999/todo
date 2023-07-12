@@ -6,7 +6,8 @@ part of 'tasks_list_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-TasksListDto _$TasksListDtoFromJson(Map<String, dynamic> json) => TasksListDto(
+_$_TasksListDto _$$_TasksListDtoFromJson(Map<String, dynamic> json) =>
+    _$_TasksListDto(
       status: json['status'] as String,
       list: (json['list'] as List<dynamic>)
           .map((e) => TaskDto.fromJson(e as Map<String, dynamic>))
@@ -14,7 +15,7 @@ TasksListDto _$TasksListDtoFromJson(Map<String, dynamic> json) => TasksListDto(
       revision: json['revision'] as int,
     );
 
-Map<String, dynamic> _$TasksListDtoToJson(TasksListDto instance) =>
+Map<String, dynamic> _$$_TasksListDtoToJson(_$_TasksListDto instance) =>
     <String, dynamic>{
       'status': instance.status,
       'list': instance.list,
