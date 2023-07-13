@@ -3,6 +3,9 @@ const sharedPrefsTasksKey = 'allTasks';
 const shPrefsRevisionKey = 'revision';
 const defaultRevision = 0;
 
+///Size
+const double maxWidth = 1000;
+
 ///Colors
 ///Light
 const int lightSupportSeparator = 0x33000000;

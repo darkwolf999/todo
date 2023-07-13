@@ -69,49 +69,58 @@ class AllTasksScreenContent extends StatelessWidget {
                   bloc.add(const SubscribeStreamEvent());
                   rConfigBloc.add(InitConfigEvent());
                 },
-                child: CustomScrollView(
-                  controller: scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),
-                  ),
-                  slivers: <Widget>[
-                    CustomSliverAppbar(),
-                    CustomSliverToBoxAdapter(),
-                    SliverPadding(
-                      padding: const EdgeInsets.only(
-                        left: 4.0,
-                        right: 4.0,
-                        bottom: 3.0,
-                      ),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            return Card(
-                              color: const Color(Constants.lightBackSecondary),
-                              semanticContainer: false,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
-                                ),
-                              ),
-                              elevation: 4.0,
-                              child: Column(
-                                children: [
-                                  TasksListview(),
-                                  AddNewTaskButton(
-                                    onTap: () {
-                                      addNewTask(scrollController, router);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          childCount: 1,
-                        ),
-                      ),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: Constants.maxWidth,
                     ),
-                  ],
+                    child: CustomScrollView(
+                      controller: scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(
+                        parent: BouncingScrollPhysics(),
+                      ),
+                      slivers: <Widget>[
+                        CustomSliverAppbar(),
+                        CustomSliverToBoxAdapter(),
+                        SliverPadding(
+                          padding: const EdgeInsets.only(
+                            left: 4.0,
+                            right: 4.0,
+                            bottom: 3.0,
+                          ),
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                return Card(
+                                  color:
+                                      const Color(Constants.lightBackSecondary),
+                                  semanticContainer: false,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.0),
+                                    ),
+                                  ),
+                                  elevation: 4.0,
+                                  child: Column(
+                                    children: [
+                                      TasksListview(),
+                                      AddNewTaskButton(
+                                        onTap: () {
+                                          addNewTask(scrollController, router);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              childCount: 1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               );
             default:

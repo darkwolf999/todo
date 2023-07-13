@@ -98,187 +98,195 @@ class TaskDetailScreenContent extends StatelessWidget {
       ),
       body: BlocBuilder<TaskDetailScreenBloc, TaskDetailScreenState>(
         builder: (context, state) {
-          return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8.0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: MaterialTextfield(),
-                ),
-                const SizedBox(height: 12.0),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: ButtonTheme(
-                    child: DropdownButtonFormField(
-                      value: priority,
-                      onChanged: (newPriority) {
-                        bloc.add(PriorityChangedEvent(newPriority));
-                      },
-                      style: const TextStyle(
-                        fontSize: Constants.buttonFontSize,
-                        height: Constants.buttonFontHeight,
-                        color: Color(Constants.lightLabelTertiary),
-                      ),
-                      decoration: InputDecoration(
-                        enabled: false,
-                        disabledBorder: const UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Color(Constants.lightSupportSeparator),
-                            width: 0.5,
-                            style: BorderStyle.solid,
+          return Align(
+            alignment: Alignment.topCenter,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: Constants.maxWidth,
+              ),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: MaterialTextfield(),
+                    ),
+                    const SizedBox(height: 12.0),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                      child: ButtonTheme(
+                        child: DropdownButtonFormField(
+                          value: priority,
+                          onChanged: (newPriority) {
+                            bloc.add(PriorityChangedEvent(newPriority));
+                          },
+                          style: const TextStyle(
+                            fontSize: Constants.buttonFontSize,
+                            height: Constants.buttonFontHeight,
+                            color: Color(Constants.lightLabelTertiary),
                           ),
-                        ),
-                        contentPadding:
-                            const EdgeInsets.only(bottom: 16.0, top: 16.0),
-                        //Важность
-                        labelText: LocaleKeys.importance.tr(),
-                        labelStyle: const TextStyle(
-                          fontSize: 22.0,
-                          color: Color(Constants.lightLabelPrimary),
-                        ),
-                      ),
-                      iconSize: 0,
-                      hint: Text(
-                        //Нет
-                        LocaleKeys.no.tr(),
-                        style: const TextStyle(
-                          fontSize: Constants.buttonFontSize,
-                          height: Constants.buttonFontHeight,
-                          color: Color(Constants.lightLabelTertiary),
-                        ),
-                      ),
-                      items: <DropdownMenuItem>[
-                        DropdownMenuItem(
-                          value: Priority.no,
-                          child: Text(
+                          decoration: InputDecoration(
+                            enabled: false,
+                            disabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(Constants.lightSupportSeparator),
+                                width: 0.5,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                            contentPadding:
+                                const EdgeInsets.only(bottom: 16.0, top: 16.0),
+                            //Важность
+                            labelText: LocaleKeys.importance.tr(),
+                            labelStyle: const TextStyle(
+                              fontSize: 22.0,
+                              color: Color(Constants.lightLabelPrimary),
+                            ),
+                          ),
+                          iconSize: 0,
+                          hint: Text(
                             //Нет
                             LocaleKeys.no.tr(),
                             style: const TextStyle(
-                              fontSize: Constants.bodyFontSize,
-                              color: Color(Constants.lightLabelPrimary),
+                              fontSize: Constants.buttonFontSize,
+                              height: Constants.buttonFontHeight,
+                              color: Color(Constants.lightLabelTertiary),
                             ),
                           ),
-                        ),
-                        DropdownMenuItem(
-                          value: Priority.low,
-                          child: Text(
-                            //Низкий
-                            LocaleKeys.low.tr(),
-                            style: const TextStyle(
-                              fontSize: Constants.bodyFontSize,
-                              color: Color(Constants.lightLabelPrimary),
-                            ),
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: Priority.high,
-                          child:
-                              BlocBuilder<RemoteConfigBloc, RemoteConfigState>(
-                            builder: (context, state) {
-                              return Text(
-                                //!! Высокий
-                                '!! ${LocaleKeys.high.tr()}',
-                                style: TextStyle(
-                                  fontSize: Constants.bodyFontSize,
-                                  //color: Color(Constants.lightColorRed),
-                                  color: Color(state.highPriorityColor ??
-                                      Constants.lightColorRed),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            //Сделать до
-                            LocaleKeys.deadline.tr(),
-                            style: const TextStyle(
-                              fontSize: Constants.bodyFontSize,
-                              height: Constants.bodyFontHeight,
-                              color: Color(Constants.lightLabelPrimary),
-                            ),
-                          ),
-                          Visibility(
-                            visible: isSwitchEnabled != false,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
+                          items: <DropdownMenuItem>[
+                            DropdownMenuItem(
+                              value: Priority.no,
                               child: Text(
-                                isSwitchEnabled != false
-                                    ? FormatDate.toDmmmmyyyy(
-                                        deadline!,
-                                        Localizations.localeOf(context)
-                                            .toString(),
-                                      )
-                                    : '',
+                                //Нет
+                                LocaleKeys.no.tr(),
                                 style: const TextStyle(
-                                  fontSize: Constants.buttonFontSize,
-                                  color: Color(Constants.lightColorBlue),
+                                  fontSize: Constants.bodyFontSize,
+                                  color: Color(Constants.lightLabelPrimary),
                                 ),
                               ),
                             ),
+                            DropdownMenuItem(
+                              value: Priority.low,
+                              child: Text(
+                                //Низкий
+                                LocaleKeys.low.tr(),
+                                style: const TextStyle(
+                                  fontSize: Constants.bodyFontSize,
+                                  color: Color(Constants.lightLabelPrimary),
+                                ),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: Priority.high,
+                              child:
+                                  BlocBuilder<RemoteConfigBloc, RemoteConfigState>(
+                                builder: (context, state) {
+                                  return Text(
+                                    //!! Высокий
+                                    '!! ${LocaleKeys.high.tr()}',
+                                    style: TextStyle(
+                                      fontSize: Constants.bodyFontSize,
+                                      //color: Color(Constants.lightColorRed),
+                                      color: Color(state.highPriorityColor ??
+                                          Constants.lightColorRed),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                //Сделать до
+                                LocaleKeys.deadline.tr(),
+                                style: const TextStyle(
+                                  fontSize: Constants.bodyFontSize,
+                                  height: Constants.bodyFontHeight,
+                                  color: Color(Constants.lightLabelPrimary),
+                                ),
+                              ),
+                              Visibility(
+                                visible: isSwitchEnabled != false,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Text(
+                                    isSwitchEnabled != false
+                                        ? FormatDate.toDmmmmyyyy(
+                                            deadline!,
+                                            Localizations.localeOf(context)
+                                                .toString(),
+                                          )
+                                        : '',
+                                    style: const TextStyle(
+                                      fontSize: Constants.buttonFontSize,
+                                      color: Color(Constants.lightColorBlue),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+                          Switch(
+                            value: bloc.state.deadline != null,
+                            onChanged: (bool value) async {
+                              bloc.state.deadline != null
+                                  ? {
+                                      deadline = null,
+                                      isSwitchEnabled = false,
+                                      bloc.add(const DeadlineChangedEvent(null))
+                                    }
+                                  : {
+                                      deadline = await pickDeadlineDate(context),
+                                      isSwitchEnabled = true,
+                                      bloc.add(DeadlineChangedEvent(deadline))
+                                    };
+                            },
+                          )
                         ],
                       ),
-                      Switch(
-                        value: bloc.state.deadline != null,
-                        onChanged: (bool value) async {
-                          bloc.state.deadline != null
-                              ? {
-                                  deadline = null,
-                                  isSwitchEnabled = false,
-                                  bloc.add(const DeadlineChangedEvent(null))
-                                }
-                              : {
-                                  deadline = await pickDeadlineDate(context),
-                                  isSwitchEnabled = true,
-                                  bloc.add(DeadlineChangedEvent(deadline))
-                                };
-                        },
-                      )
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 24.0),
+                    const Divider(
+                      height: 0,
+                      thickness: 0.5,
+                      color: Color(Constants.lightSupportSeparator),
+                    ),
+                    const SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: bloc.state.isNewTask ?? false
+                          ? const DeleteButton(
+                              icon: Constants.deleteDisabled,
+                              textColor: Constants.lightLabelDisable,
+                            )
+                          : InkWellDeleteButton(
+                              icon: Constants.delete,
+                              textColor: Constants.lightColorRed,
+                              onTap: () {
+                                bloc.add(
+                                  DeleteTaskEvent(bloc.state.editedTask!.uuid),
+                                );
+                                router.pop(true);
+                              },
+                            ),
+                    ),
+                    const SizedBox(height: 12.0),
+                  ],
                 ),
-                const SizedBox(height: 24.0),
-                const Divider(
-                  height: 0,
-                  thickness: 0.5,
-                  color: Color(Constants.lightSupportSeparator),
-                ),
-                const SizedBox(height: 8.0),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: bloc.state.isNewTask ?? false
-                      ? const DeleteButton(
-                          icon: Constants.deleteDisabled,
-                          textColor: Constants.lightLabelDisable,
-                        )
-                      : InkWellDeleteButton(
-                          icon: Constants.delete,
-                          textColor: Constants.lightColorRed,
-                          onTap: () {
-                            bloc.add(
-                              DeleteTaskEvent(bloc.state.editedTask!.uuid),
-                            );
-                            router.pop(true);
-                          },
-                        ),
-                ),
-                const SizedBox(height: 12.0),
-              ],
+              ),
             ),
           );
         },
