@@ -12,9 +12,9 @@ import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_a
 import 'package:todo/presentation/screens/all_tasks/widgets/language_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 import 'package:todo/presentation/widgets/something_went_wrong.dart';
-
 import 'package:todo/domain/repository/tasks_repository.dart';
 import 'package:todo/navigation/tasks_router_delegate.dart';
+import 'package:todo/domain/bloc/firebase/remote_config/remote_config_bloc.dart';
 
 class AllTasksScreen extends StatelessWidget {
   static final GlobalKey<State<StatefulWidget>> globalKey = GlobalKey();
@@ -42,6 +42,7 @@ class AllTasksScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AllTasksScreenBloc>();
+    final rConfigBloc = context.read<RemoteConfigBloc>();
     final router = Router.of(context).routerDelegate as TasksRouterDelegate;
     ScrollController scrollController = ScrollController();
     return Scaffold(
@@ -64,6 +65,7 @@ class AllTasksScreenContent extends StatelessWidget {
                 edgeOffset: 150,
                 onRefresh: () async {
                   bloc.add(const SubscribeStreamEvent());
+                  rConfigBloc.add(InitConfigEvent());
                 },
                 child: CustomScrollView(
                   controller: scrollController,

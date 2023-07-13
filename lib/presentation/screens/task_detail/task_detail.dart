@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
+import 'package:todo/domain/bloc/firebase/remote_config/remote_config_bloc.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/constants.dart' as Constants;
@@ -173,13 +174,20 @@ class TaskDetailScreenContent extends StatelessWidget {
                         ),
                         DropdownMenuItem(
                           value: Priority.high,
-                          child: Text(
-                            //!! Высокий
-                            '!! ${LocaleKeys.high.tr()}',
-                            style: const TextStyle(
-                              fontSize: Constants.bodyFontSize,
-                              color: Color(Constants.lightColorRed),
-                            ),
+                          child:
+                              BlocBuilder<RemoteConfigBloc, RemoteConfigState>(
+                            builder: (context, state) {
+                              return Text(
+                                //!! Высокий
+                                '!! ${LocaleKeys.high.tr()}',
+                                style: TextStyle(
+                                  fontSize: Constants.bodyFontSize,
+                                  //color: Color(Constants.lightColorRed),
+                                  color: Color(state.highPriorityColor ??
+                                      Constants.lightColorRed),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],

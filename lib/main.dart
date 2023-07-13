@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:todo/data/repositories/firebase/remote_config_repository_impl.dart';
 import 'config/firebase/firebase_options.dart';
 
 import 'di/di.dart';
@@ -17,8 +19,10 @@ import 'package:todo/my_logger.dart';
 import 'data/api/network_tasks_api_impl.dart';
 import 'domain/bloc/error_bloc/error_bloc.dart';
 import 'domain/bloc/error_bloc/error_event.dart';
+import 'domain/bloc/firebase/remote_config/remote_config_bloc.dart';
 import 'domain/repository/tasks_repository.dart';
 import 'navigation/parser.dart';
+import 'package:todo/constants.dart' as Constants;
 import 'navigation/tasks_router_delegate.dart';
 
 void main() async {
@@ -49,9 +53,20 @@ void main() async {
       path: 'lib/assets/translations',
       fallbackLocale: Locale('ru'),
       assetLoader: CodegenLoader(),
-      child: BlocProvider(
-        create: (_) => ErrorBloc(),
-        lazy: false,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => RemoteConfigBloc(GetIt.I.get())
+              ..add(
+                const InitConfigEvent(),
+              ),
+            lazy: false,
+          ),
+          BlocProvider(
+            create: (_) => ErrorBloc(),
+            lazy: false,
+          ),
+        ],
         child: RepositoryProvider<TasksRepository>(
           lazy: false,
           create: (BuildContext context) => TasksRepositoryImpl(

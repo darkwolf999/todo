@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
+import 'package:todo/domain/bloc/firebase/remote_config/remote_config_bloc.dart';
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/helpers/format_date.dart';
@@ -33,10 +34,15 @@ class Task extends StatelessWidget {
           ),
         ] else ...[
           if (task.priority == Priority.high) ...[
-            CheckButton(
-              imagePath: Constants.checkboxUncheckedHigh,
-              onTap: () {
-                bloc.add(CompleteTaskEvent(task));
+            BlocBuilder<RemoteConfigBloc, RemoteConfigState>(
+              builder: (context, state) {
+                return CheckButton(
+                  imagePath: Constants.checkboxUncheckedHigh,
+                  color: state.highPriorityColor,
+                  onTap: () {
+                    bloc.add(CompleteTaskEvent(task));
+                  },
+                );
               },
             ),
           ] else ...[
@@ -55,9 +61,13 @@ class Task extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(right: 3.0),
             child: task.priority == Priority.high
-                ? const SVG(
-                    imagePath: Constants.priorityHigh,
-                    color: Constants.lightColorRed,
+                ? BlocBuilder<RemoteConfigBloc, RemoteConfigState>(
+                    builder: (context, state) {
+                      return SVG(
+                        imagePath: Constants.priorityHigh,
+                        color: state.highPriorityColor,
+                      );
+                    },
                   )
                 : const SVG(
                     imagePath: Constants.priorityLow,
