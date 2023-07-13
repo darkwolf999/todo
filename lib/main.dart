@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:todo/data/repositories/firebase/remote_config_repository_impl.dart';
+import 'package:todo/todo_app.dart';
 import 'config/firebase/firebase_options.dart';
 
 import 'di/di.dart';
@@ -32,16 +34,7 @@ void main() async {
   await dotenv.load(fileName: 'url_token.env');
   //await dotenv.load(fileName: 'template.env');
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  FlutterError.onError = (errorDetails) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-  };
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  await firebaseInit();
 
   await DepInj.inject();
 
@@ -86,29 +79,22 @@ void main() async {
               },
             ),
           ),
-          child: const MyApp(),
+          child: const ToDoApp(),
         ),
       ),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerDelegate: GetIt.I.get(),
-      routeInformationParser: TasksRouteInformationParser(),
-      debugShowCheckedModeBanner: false,
-      title: 'To-Do!',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: const [Locale('en'), Locale('ru')],
-      locale: context.locale,
-    );
-  }
+Future<void> firebaseInit() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 }

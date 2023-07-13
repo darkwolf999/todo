@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:todo/data/api/constants/api_constants.dart';
 
 import 'package:todo/presentation/screens/all_tasks/all_tasks.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/domain/models/task_model.dart';
+import 'package:todo/data/api/analytics_provider.dart';
 import 'navigation_state_dto.dart';
 import 'navigaton_state.dart';
 
 class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<NavigationStateDTO> {
+  final AnalyticsProvider _analyticsProvider;
+
+  TasksRouterDelegate({
+    required AnalyticsProvider analyticsProvider,
+  }) : _analyticsProvider = analyticsProvider;
+
   NavigationState state = NavigationState(true, null);
 
   bool get isAllTasksPage => state.isAllTasksPage;
@@ -17,12 +25,14 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
   void gotoTasks() {
     state.isAllTasksPage = true;
     notifyListeners();
+    _analyticsProvider.logScreenView(ApiConstants.allTasksScreen);
   }
 
   void gotoTask(TaskModel? task) {
     state.isAllTasksPage = false;
     state.task = task;
     notifyListeners();
+    _analyticsProvider.logScreenView(ApiConstants.taskDetailScreen);
   }
 
   void pop([Object? result]) {

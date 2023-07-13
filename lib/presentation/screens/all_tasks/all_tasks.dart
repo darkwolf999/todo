@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
@@ -28,6 +29,7 @@ class AllTasksScreen extends StatelessWidget {
         BlocProvider<AllTasksScreenBloc>(
           create: (context) => AllTasksScreenBloc(
             context.read<TasksRepository>(),
+            GetIt.I.get(),
           )..add(const SubscribeStreamEvent()),
         ),
       ],

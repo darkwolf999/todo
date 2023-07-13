@@ -30,6 +30,7 @@ class TaskDetailScreen extends StatelessWidget {
     return BlocProvider<TaskDetailScreenBloc>(
       create: (context) => TaskDetailScreenBloc(
         tasksRepository: context.read<TasksRepository>(),
+        analyticsProvider: GetIt.I.get(),
         deviceModel: GetIt.I.get(instanceName: 'deviceModel'),
         editedTask: task,
       ),
