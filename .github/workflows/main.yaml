@@ -36,7 +36,10 @@ jobs:
         run: dart format --set-exit-if-changed .
 
       - name: Codegen
-        run: dart run build_runner build --delete-conflicting-outputs
+        run: |
+          dart run build_runner build --delete-conflicting-outputs
+          dart run easy_localization:generate -f keys -o locale_keys.g.dart -O "lib/l10n" -S "assets/translations"
+          dart run easy_localization:generate -S "assets/translations" -O "lib/l10n"
 
       - name: Analyze
         run: flutter analyze --no-fatal-infos
