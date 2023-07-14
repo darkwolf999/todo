@@ -24,15 +24,10 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: 'Set env'
-        run: |
-          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
-          echo "AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}" >> $GITHUB_ENV
-
       - name: 'Pub get'
         run: flutter pub get
 
-      - name: Formatting
+      - name: 'Formatting'
         run: dart format --set-exit-if-changed .
 
       - name: 'Codegen'
