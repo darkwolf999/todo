@@ -22,7 +22,7 @@ class RemoteConfigState extends Equatable {
 
   @override
   List<Object> get props => [
-    status,
-    highPriorityColor ?? '',
-  ];
+        status,
+        highPriorityColor ?? '',
+      ];
 }

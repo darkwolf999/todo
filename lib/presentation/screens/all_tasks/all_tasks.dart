@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
-import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';

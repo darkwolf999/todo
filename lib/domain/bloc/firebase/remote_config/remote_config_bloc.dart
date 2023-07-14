@@ -30,6 +30,8 @@ class RemoteConfigBloc extends Bloc<RemoteConfigEvent, RemoteConfigState> {
       ),
     );
 
-    MyLogger.log('remote config high prioirty color is ${state.highPriorityColor}');
+    MyLogger.log(
+      'remote config high prioirty color is ${state.highPriorityColor}',
+    );
   }
 }

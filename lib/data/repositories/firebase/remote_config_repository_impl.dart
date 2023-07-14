@@ -25,12 +25,11 @@ class RemoteConfigRepositoryImpl {
       _ConfigFields.highPriorityColor: Constants.lightColorRed.toString(),
     });
 
-    try{
+    try {
       await _remoteConfig.fetchAndActivate();
-    } catch(e){
+    } catch (e) {
       MyLogger.log('cant fetch remote configs from firebase server');
     }
-
   }
 }
 

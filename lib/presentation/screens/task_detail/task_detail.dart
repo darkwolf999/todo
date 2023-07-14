@@ -181,8 +181,8 @@ class TaskDetailScreenContent extends StatelessWidget {
                             ),
                             DropdownMenuItem(
                               value: Priority.high,
-                              child:
-                                  BlocBuilder<RemoteConfigBloc, RemoteConfigState>(
+                              child: BlocBuilder<RemoteConfigBloc,
+                                  RemoteConfigState>(
                                 builder: (context, state) {
                                   return Text(
                                     //!! Высокий
@@ -249,7 +249,8 @@ class TaskDetailScreenContent extends StatelessWidget {
                                       bloc.add(const DeadlineChangedEvent(null))
                                     }
                                   : {
-                                      deadline = await pickDeadlineDate(context),
+                                      deadline =
+                                          await pickDeadlineDate(context),
                                       isSwitchEnabled = true,
                                       bloc.add(DeadlineChangedEvent(deadline))
                                     };
