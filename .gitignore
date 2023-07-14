@@ -132,3 +132,7 @@ app.*.symbols
 google-services.json
 GoogleService-Info.plist
 firebase_app_id_file.json
+
+#Codegen
+*.g.dart
+*.freezed.dart
