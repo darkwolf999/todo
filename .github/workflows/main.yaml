@@ -100,7 +100,15 @@ jobs:
           dart run build_runner build --delete-conflicting-outputs
           dart run easy_localization:generate -f keys -o locale_keys.g.dart -O "lib/l10n" -S "assets/translations"
           dart run easy_localization:generate -S "assets/translations" -O "lib/l10n"
-          
+         
+      - name: 'Create google-services.json empty file'
+        run: cat /home/runner/work/todo/todo/android/app/google-services.json | base64
+
+      - name: 'Put data into google-services.json from Github secrets'
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA > /home/runner/work/todo/todo/android/app/google-services.json
+
       - name: 'Build APK'
         run: flutter build apk --release
 
