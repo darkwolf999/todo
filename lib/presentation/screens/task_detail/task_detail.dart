@@ -268,7 +268,7 @@ class TaskDetailScreenContent extends StatelessWidget {
                     const SizedBox(height: 8.0),
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0),
-                      child: bloc.state.isNewTask ?? false
+                      child: bloc.state.isNewTask
                           ? const DeleteButton(
                               icon: Constants.deleteDisabled,
                               textColor: Constants.lightLabelDisable,

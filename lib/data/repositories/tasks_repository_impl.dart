@@ -154,12 +154,12 @@ class TasksRepositoryImpl implements TasksRepository {
   //На будущее
   @override
   Future<void> fetchSingleTaskFromNetwork(String uuid) async {
-    final taskResponseDto = await _networkTasksApi.fetchSingleTask(uuid);
+    //final taskResponseDto = await _networkTasksApi.fetchSingleTask(uuid);
   }
 
   //На будущее
   @override
   Future<void> fetchSingleTaskFromDB(String uuid) async {
-    final taskResponseDto = await _databaseTasksApi.fetchSingleTask(uuid);
+    //final taskResponseDto = await _databaseTasksApi.fetchSingleTask(uuid);
   }
 }
