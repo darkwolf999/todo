@@ -1,0 +1,43 @@
+name: home_work_4 workflow. analyze, testing, build, deploy.
+
+on:
+  push:
+    branches:
+      - main
+      - '*'
+
+  pull_request:
+    branches:
+      -main
+
+jobs:
+  -analyze:
+    timeout-minutes: 10
+    name: 'analyze app'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Set env
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
+          echo "AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Formatting
+        run: dart format --set-exit-if-changed .
+
+      - name: Codegen
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos
+
