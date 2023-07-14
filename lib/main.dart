@@ -25,8 +25,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  await dotenv.load(fileName: 'url_token.env');
-  //await dotenv.load(fileName: 'template.env');
+  await dotenv.load(fileName: '.env');
 
   await firebaseInit();
 
