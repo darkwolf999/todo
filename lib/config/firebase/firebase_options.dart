@@ -61,7 +61,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID_IOS'] ?? '',
     projectId: dotenv.env['FIREBASE_PROJECT_ID_IOS'] ?? '',
     storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET_IOS'],
-    iosClientId: dotenv.env['IOS_CLIENT_ID_IOS'],
-    iosBundleId: dotenv.env['IOS_BUNDLE_ID_IOS'],
+    iosClientId: dotenv.env['FIREBASE_IOS_CLIENT_ID_IOS'],
+    iosBundleId: dotenv.env['FIREBASE_IOS_BUNDLE_ID_IOS'],
   );
 }
