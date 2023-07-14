@@ -11,7 +11,7 @@ on:
       -main
 
 jobs:
-  -analyze:
+  analyze:
     timeout-minutes: 10
     name: 'analyze app'
     runs-on: ubuntu-latest
