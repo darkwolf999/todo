@@ -85,6 +85,13 @@ jobs:
       - test
 
     steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Setup Flutter'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      
       - name: 'Set env'
         run: |
           echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
