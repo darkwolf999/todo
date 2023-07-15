@@ -141,7 +141,6 @@ class AllTasksScreenContent extends StatelessWidget {
           FloatingActionButton(
             onPressed: () {
               addNewTask(scrollController, router);
-              throw Exception();
             },
             backgroundColor: const Color(Constants.lightColorBlue),
             tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
