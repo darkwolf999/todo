@@ -186,7 +186,7 @@ jobs:
         run: echo $DATA > /home/runner/work/todo/todo/android/app/google-services.json
 
       - name: 'Build APK'
-        run: flutter build apk --release
+        run: flutter build apk --flavor prod -t lib/main_prod.dart
 
       - name: 'Deploy APK to GitHub'
         uses: actions/upload-artifact@v3
@@ -200,4 +200,4 @@ jobs:
           appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: build/app/outputs/flutter-apk/app-release.apk
+          file: build/app/outputs/flutter-apk/app-prod-release.apk

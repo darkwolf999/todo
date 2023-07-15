@@ -8,7 +8,7 @@ import 'package:todo/presentation/screens/all_tasks/widgets/task.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 import 'package:todo/presentation/screens/task_detail/widgets/material_textfield.dart';
 import 'package:uuid/uuid.dart';
-import 'package:todo/main.dart' as app;
+import 'package:todo/main_dev.dart' as app;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
