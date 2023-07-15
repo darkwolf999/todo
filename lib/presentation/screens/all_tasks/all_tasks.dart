@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
+import 'package:todo/navigation/manager/tasks_navigation.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/add_new_task_button.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_sliver_appbar.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/custom_slivertobox_adapter.dart';
@@ -13,7 +14,6 @@ import 'package:todo/presentation/screens/all_tasks/widgets/language_button.dart
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 import 'package:todo/presentation/widgets/something_went_wrong.dart';
 import 'package:todo/domain/repository/tasks_repository.dart';
-import 'package:todo/navigation/tasks_router_delegate.dart';
 import 'package:todo/domain/bloc/firebase/remote_config/remote_config_bloc.dart';
 
 class AllTasksScreen extends StatelessWidget {
@@ -44,7 +44,9 @@ class AllTasksScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<AllTasksScreenBloc>();
     final rConfigBloc = context.read<RemoteConfigBloc>();
-    final router = Router.of(context).routerDelegate as TasksRouterDelegate;
+    //final router = Router.of(context).routerDelegate as TasksRouterDelegate;
+    //final router =  GetIt.I.get<TasksNavigation>();
+    final router = context.read<TasksNavigation>();
     ScrollController scrollController = ScrollController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -154,7 +156,7 @@ class AllTasksScreenContent extends StatelessWidget {
 
   void addNewTask(
     ScrollController scrollController,
-    TasksRouterDelegate router,
+    TasksNavigation router,
   ) async {
     const animateScrollTop = true;
 

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,6 +17,8 @@ import 'package:todo/data/api/database_tasks_api_impl.dart';
 import 'package:todo/data/models/db/task_db.dart';
 import 'package:todo/helpers/network_checker/network_checker.dart';
 import 'package:todo/helpers/network_checker/network_checker_impl.dart';
+import 'package:todo/navigation/manager/tasks_navigation.dart';
+import 'package:todo/navigation/manager/tasks_navigation_impl.dart';
 import 'package:todo/navigation/tasks_router_delegate.dart';
 
 class DepInj {
@@ -42,9 +43,15 @@ class DepInj {
       ),
     );
 
-    GetIt.I.registerSingleton<RouterDelegate<Object>>(
+    GetIt.I.registerSingleton<TasksRouterDelegate>(
       TasksRouterDelegate(
         analyticsProvider: GetIt.I.get(),
+      ),
+    );
+
+    GetIt.I.registerSingleton<TasksNavigation>(
+      TasksNavigationImpl(
+        tasksRouterDelegate: GetIt.I.get(),
       ),
     );
 

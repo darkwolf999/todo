@@ -14,8 +14,8 @@ import 'package:todo/presentation/screens/task_detail/widgets/material_textfield
 import 'package:todo/presentation/screens/task_detail/widgets/delete_button/delete_button.dart';
 import 'package:todo/presentation/screens/task_detail//widgets/delete_button/inkwell_delete_button.dart';
 import 'package:todo/presentation/widgets/svg.dart';
-import 'package:todo/navigation/tasks_router_delegate.dart';
 import 'package:todo/domain/repository/tasks_repository.dart';
+import 'package:todo/navigation/manager/tasks_navigation.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final TaskModel? task;
@@ -51,7 +51,8 @@ class TaskDetailScreenContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<TaskDetailScreenBloc>();
-    final router = Router.of(context).routerDelegate as TasksRouterDelegate;
+    //final router = Router.of(context).routerDelegate as TasksRouterDelegate;
+    final router = context.read<TasksNavigation>();
 
     Priority? priority = bloc.state.priority;
     DateTime? deadline = bloc.state.deadline;

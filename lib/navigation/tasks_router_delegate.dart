@@ -41,7 +41,6 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
 
   @override
   Widget build(BuildContext context) {
-    //final bloc = context.read<TaskDetailScreenBloc>();
     return Navigator(
       onPopPage: (route, result) {
         if (!route.didPop(result)) {

@@ -19,6 +19,7 @@ import 'domain/bloc/error_bloc/error_event.dart';
 import 'domain/bloc/firebase/remote_config/remote_config_bloc.dart';
 import 'domain/repository/tasks_repository.dart';
 import 'config/firebase/firebase_options.dart';
+import 'navigation/manager/tasks_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,40 +37,43 @@ void main() async {
       path: 'lib/assets/translations',
       fallbackLocale: Locale('ru'),
       assetLoader: CodegenLoader(),
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => RemoteConfigBloc(GetIt.I.get())
-              ..add(
-                const InitConfigEvent(),
-              ),
-            lazy: false,
-          ),
-          BlocProvider(
-            create: (_) => ErrorBloc(),
-            lazy: false,
-          ),
-        ],
-        child: RepositoryProvider<TasksRepository>(
-          lazy: false,
-          create: (BuildContext context) => TasksRepositoryImpl(
-            networkChecker: GetIt.I.get(),
-            revisionProvider: GetIt.I.get(),
-            databaseTasksApi: GetIt.I.get(),
-            networkTasksApi: NetworkTasksApiImpl(
-              dio: GetIt.I.get(),
-              prefs: GetIt.I.get(),
-              onErrorHandler: (String code, String message) {
-                context.read<ErrorBloc>().add(
-                      OnErrorEvent(
-                        statusCode: code,
-                        message: message,
-                      ),
-                    );
-              },
+      child: Provider(
+        create: (_) => GetIt.I.get<TasksNavigation>(),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => RemoteConfigBloc(GetIt.I.get())
+                ..add(
+                  const InitConfigEvent(),
+                ),
+              lazy: false,
             ),
+            BlocProvider(
+              create: (_) => ErrorBloc(),
+              lazy: false,
+            ),
+          ],
+          child: RepositoryProvider<TasksRepository>(
+            lazy: false,
+            create: (BuildContext context) => TasksRepositoryImpl(
+              networkChecker: GetIt.I.get(),
+              revisionProvider: GetIt.I.get(),
+              databaseTasksApi: GetIt.I.get(),
+              networkTasksApi: NetworkTasksApiImpl(
+                dio: GetIt.I.get(),
+                prefs: GetIt.I.get(),
+                onErrorHandler: (String code, String message) {
+                  context.read<ErrorBloc>().add(
+                        OnErrorEvent(
+                          statusCode: code,
+                          message: message,
+                        ),
+                      );
+                },
+              ),
+            ),
+            child: const ToDoApp(),
           ),
-          child: const ToDoApp(),
         ),
       ),
     ),

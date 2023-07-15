@@ -7,7 +7,7 @@ import 'package:todo/domain/bloc/firebase/remote_config/remote_config_bloc.dart'
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/helpers/format_date.dart';
-import 'package:todo/navigation/tasks_router_delegate.dart';
+import 'package:todo/navigation/manager/tasks_navigation.dart';
 import 'check_button.dart';
 
 class Task extends StatelessWidget {
@@ -21,7 +21,8 @@ class Task extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<AllTasksScreenBloc>();
-    final router = Router.of(context).routerDelegate as TasksRouterDelegate;
+    //final router = Router.of(context).routerDelegate as TasksRouterDelegate;
+    final router = context.read<TasksNavigation>();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
