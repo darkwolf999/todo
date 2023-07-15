@@ -188,8 +188,16 @@ jobs:
       - name: 'Build APK'
         run: flutter build apk --release
 
-      - name: Deploy APK
+      - name: 'Deploy APK to GitHub'
         uses: actions/upload-artifact@v3
         with:
-          name: ToDo-Release
+          name: 'ToDo-Release'
           path: build/app/outputs/flutter-apk/
+
+      - name: 'Deploy APK to Firebase App Distribution'
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-release.apk
