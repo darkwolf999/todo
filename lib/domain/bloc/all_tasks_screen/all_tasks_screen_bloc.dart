@@ -79,7 +79,7 @@ class AllTasksScreenBloc
     try {
       await _tasksRepository.deleteTask(event.uuid);
       MyLogger.infoLog('tasks after deleting ${state.tasks}');
-      _analyticsProvider.logEvent(
+      await _analyticsProvider.logEvent(
         ApiConstants.taskDeleted,
         {'task_uuid': event.uuid},
       );
@@ -98,14 +98,14 @@ class AllTasksScreenBloc
     MyLogger.infoLog('task after completion: ${state.tasks}');
     MyLogger.infoLog('completed count: ${state.completedTasksCount}');
     completedTask.isDone == true
-        ? _analyticsProvider.logEvent(
+        ? await _analyticsProvider.logEvent(
             ApiConstants.taskCompleted,
             {
               'task_uuid': event.task.uuid,
               'task_title': event.task.title,
             },
           )
-        : _analyticsProvider.logEvent(
+        : await _analyticsProvider.logEvent(
             ApiConstants.taskUncompleted,
             {
               'task_uuid': event.task.uuid,

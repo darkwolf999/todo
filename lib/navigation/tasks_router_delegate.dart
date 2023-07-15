@@ -22,17 +22,17 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
 
   bool get isTaskDetails => !state.isAllTasksPage && state.task != null;
 
-  void gotoTasks() {
+  void gotoTasks() async {
     state.isAllTasksPage = true;
     notifyListeners();
-    _analyticsProvider.logScreenView(ApiConstants.allTasksScreen);
+    await _analyticsProvider.logScreenView(ApiConstants.allTasksScreen);
   }
 
-  void gotoTask(TaskModel? task) {
+  void gotoTask(TaskModel? task) async {
     state.isAllTasksPage = false;
     state.task = task;
     notifyListeners();
-    _analyticsProvider.logScreenView(ApiConstants.taskDetailScreen);
+    await _analyticsProvider.logScreenView(ApiConstants.taskDetailScreen);
   }
 
   void pop([Object? result]) {

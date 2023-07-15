@@ -95,14 +95,14 @@ class TaskDetailScreenBloc
       emit(state.copyWith(status: TaskDetailScreenStatus.success));
       MyLogger.infoLog('edit accepted');
       state.isNewTask
-          ? _analyticsProvider.logEvent(
+          ? await _analyticsProvider.logEvent(
               ApiConstants.taskAdded,
               {
                 'task_uuid': taskToSave.uuid,
                 'task_text': taskToSave.title,
               },
             )
-          : _analyticsProvider.logEvent(
+          : await _analyticsProvider.logEvent(
               ApiConstants.taskChanged,
               {
                 'task_uuid': taskToSave.uuid,
@@ -121,7 +121,7 @@ class TaskDetailScreenBloc
   ) async {
     await _tasksRepository.deleteTask(event.uuid);
     MyLogger.infoLog('task deleted');
-    _analyticsProvider.logEvent(
+    await _analyticsProvider.logEvent(
       ApiConstants.taskDeleted,
       {'task_uuid': event.uuid},
     );
