@@ -15,8 +15,8 @@ class TasksNavigationImpl implements TasksNavigation {
   }
 
   @override
-  void gotoTask(TaskModel? task) {
-    _tasksRouterDelegate.gotoTask(task);
+  void gotoTask(TaskModel? task, int? taskIndex) {
+    _tasksRouterDelegate.gotoTask(task, taskIndex);
   }
 
   @override

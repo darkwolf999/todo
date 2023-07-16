@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
+import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
 
@@ -15,13 +16,43 @@ class VisibilityButton extends StatelessWidget {
     return IconButton(
       splashRadius: 24.0,
       onPressed: () {
-        bloc.add(
-          ChangeFilterEvent(
-            bloc.state.filter == TasksFilter.showAll
-                ? TasksFilter.showOnlyActive
-                : TasksFilter.showAll,
-          ),
-        );
+        List<int> indexes = [];
+        for (int i = 0; i < bloc.state.tasks!.length; i++) {
+          if (bloc.state.tasks?[i].isDone == true) {
+            indexes.add(i);
+          }
+        }
+
+        Iterable<int> revIndexes = indexes.reversed;
+
+        bloc.state.filter == TasksFilter.showAll
+            ? {
+                bloc.add(
+                  const ChangeFilterEvent(
+                    TasksFilter.showOnlyActive,
+                  ),
+                ),
+                for (var task in revIndexes)
+                  {
+                    listKey.currentState?.removeItem(
+                      task,
+                      (context, animation) {
+                        return Container();
+                      },
+                    ),
+                  },
+              }
+            : {
+                bloc.add(
+                  const ChangeFilterEvent(
+                    TasksFilter.showAll,
+                  ),
+                ),
+                for (var task in indexes)
+                  {
+                    listKey.currentState?.insertItem(task),
+                  },
+              };
       },
       icon: SVG(
         imagePath: bloc.state.filter != TasksFilter.showAll

@@ -16,6 +16,7 @@ import 'package:todo/presentation/screens/task_detail//widgets/delete_button/ink
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/domain/repository/tasks_repository.dart';
 import 'package:todo/navigation/manager/tasks_navigation.dart';
+import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 
 class TaskDetailScreen extends StatelessWidget {
   final TaskModel? task;
@@ -42,10 +43,12 @@ class TaskDetailScreen extends StatelessWidget {
 
 class TaskDetailScreenContent extends StatelessWidget {
   final TaskModel? task;
+  final int? taskIndex;
 
   const TaskDetailScreenContent({
     Key? key,
     this.task,
+    this.taskIndex,
   }) : super(key: key);
 
   @override
@@ -81,6 +84,12 @@ class TaskDetailScreenContent extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   bloc.add(const EditAcceptedEvent());
+                  if (bloc.state.isNewTask) {
+                    listKey.currentState?.insertItem(
+                      0,
+                      duration: const Duration(milliseconds: 500),
+                    );
+                  }
                   router.pop(true);
                 },
                 child: Text(
@@ -191,8 +200,10 @@ class TaskDetailScreenContent extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: Constants.bodyFontSize,
                                       //color: Color(Constants.lightColorRed),
-                                      color: Color(state.highPriorityColor ??
-                                          Constants.lightColorRed),
+                                      color: Color(
+                                        state.highPriorityColor ??
+                                            Constants.lightColorRed,
+                                      ),
                                     ),
                                   );
                                 },
@@ -281,6 +292,10 @@ class TaskDetailScreenContent extends StatelessWidget {
                                 bloc.add(
                                   DeleteTaskEvent(bloc.state.editedTask!.uuid),
                                 );
+                                listKey.currentState?.removeItem(taskIndex ?? 0,
+                                    (context, animation) {
+                                  return Container();
+                                });
                                 router.pop(true);
                               },
                             ),

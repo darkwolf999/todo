@@ -16,11 +16,12 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
     required AnalyticsProvider analyticsProvider,
   }) : _analyticsProvider = analyticsProvider;
 
-  NavigationState state = NavigationState(true, null);
+  NavigationState state = NavigationState(true, null, null);
 
   bool get isAllTasksPage => state.isAllTasksPage;
 
-  bool get isTaskDetails => !state.isAllTasksPage && state.task != null;
+  bool get isTaskDetails =>
+      !state.isAllTasksPage && state.task != null && state.taskIndex != null;
 
   void gotoTasks() async {
     state.isAllTasksPage = true;
@@ -28,9 +29,10 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
     await _analyticsProvider.logScreenView(ApiConstants.allTasksScreen);
   }
 
-  void gotoTask(TaskModel? task) async {
+  void gotoTask(TaskModel? task, int? taskIndex) async {
     state.isAllTasksPage = false;
     state.task = task;
+    state.taskIndex = taskIndex;
     notifyListeners();
     await _analyticsProvider.logScreenView(ApiConstants.taskDetailScreen);
   }
@@ -63,7 +65,11 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
 
   @override
   NavigationStateDTO? get currentConfiguration {
-    return NavigationStateDTO(state.isAllTasksPage, state.task);
+    return NavigationStateDTO(
+      state.isAllTasksPage,
+      state.task,
+      state.taskIndex,
+    );
   }
 
   @override
@@ -72,6 +78,7 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
   @override
   Future<void> setNewRoutePath(NavigationStateDTO configuration) {
     state.task = configuration.task;
+    state.taskIndex = configuration.taskIndex;
     state.isAllTasksPage = configuration.allTasksPage;
     return Future.value();
   }

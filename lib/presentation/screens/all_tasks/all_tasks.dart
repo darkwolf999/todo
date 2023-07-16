@@ -68,7 +68,7 @@ class AllTasksScreenContent extends StatelessWidget {
                 edgeOffset: 150,
                 onRefresh: () async {
                   bloc.add(const SubscribeStreamEvent());
-                  rConfigBloc.add(InitConfigEvent());
+                  rConfigBloc.add(const InitConfigEvent());
                 },
                 child: Align(
                   alignment: Alignment.topCenter,
@@ -160,7 +160,7 @@ class AllTasksScreenContent extends StatelessWidget {
   ) async {
     const animateScrollTop = true;
 
-    router.gotoTask(null);
+    router.gotoTask(null, null);
 
     if (animateScrollTop) {
       scrollController.animateTo(

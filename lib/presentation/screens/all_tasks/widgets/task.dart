@@ -5,6 +5,8 @@ import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
 import 'package:todo/constants.dart' as Constants;
 import 'package:todo/domain/bloc/firebase/remote_config/remote_config_bloc.dart';
 import 'package:todo/domain/models/task_model.dart';
+import 'package:todo/presentation/models/tasks_filter.dart';
+import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
 import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/helpers/format_date.dart';
 import 'package:todo/navigation/manager/tasks_navigation.dart';
@@ -42,6 +44,14 @@ class Task extends StatelessWidget {
                   color: state.highPriorityColor,
                   onTap: () {
                     bloc.add(CompleteTaskEvent(task));
+                    if (bloc.state.filter == TasksFilter.showOnlyActive) {
+                      final taskIndex = bloc.state.filteredTasks
+                          .indexWhere((t) => t.uuid == task.uuid);
+                      listKey.currentState?.removeItem(taskIndex,
+                          (context, animation) {
+                        return Container();
+                      });
+                    }
                   },
                 );
               },
@@ -51,6 +61,14 @@ class Task extends StatelessWidget {
               imagePath: Constants.checkboxUncheckedNormal,
               onTap: () {
                 bloc.add(CompleteTaskEvent(task));
+                if (bloc.state.filter == TasksFilter.showOnlyActive) {
+                  final taskIndex = bloc.state.filteredTasks
+                      .indexWhere((t) => t.uuid == task.uuid);
+                  listKey.currentState?.removeItem(taskIndex,
+                      (context, animation) {
+                    return Container();
+                  });
+                }
               },
             ),
           ]
@@ -126,7 +144,9 @@ class Task extends StatelessWidget {
         const SizedBox(width: 12.0),
         IconButton(
           onPressed: () {
-            router.gotoTask(task);
+            final taskIndex =
+                bloc.state.filteredTasks.indexWhere((t) => t.uuid == task.uuid);
+            router.gotoTask(task, taskIndex);
           },
           padding: EdgeInsets.zero,
           constraints: const BoxConstraints(),
