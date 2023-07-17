@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/data/repositories/firebase/remote_config_repository_impl.dart';
 import 'package:todo/my_logger.dart';

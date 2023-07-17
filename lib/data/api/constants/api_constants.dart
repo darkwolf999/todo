@@ -4,6 +4,11 @@ class ApiConstants {
   static const String listEndpoint = '/list/';
   static const int connectTimeout = 10;
 
+  //sprefs
+  static const sharedPrefsTasksKey = 'allTasks';
+  static const shPrefsRevisionKey = 'revision';
+  static const defaultRevision = 0;
+
   //firebase analytics
   static const String taskAdded = 'task_added';
   static const String taskChanged = 'task_changed';

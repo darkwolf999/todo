@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
-import 'package:todo/constants.dart' as Constants;
+import 'package:todo/extensions/build_context_ext.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/task.dart';
-import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
 
 final listKey = GlobalKey<AnimatedListState>();
@@ -47,31 +46,29 @@ class TasksListview extends StatelessWidget {
                 });
               },
               background: Container(
-                color: Color(
-                  (bloc.state.filteredTasks[index].isDone)
-                      ? Constants.lightColorGrayLight
-                      : Constants.lightColorGreen,
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 24.0),
+                color: (bloc.state.filteredTasks[index].isDone)
+                    ? context.colors.grayLight
+                    : context.colors.green,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 24.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: SVG(
-                      imagePath: Constants.check,
-                      color: Constants.lightColorWhite,
+                    child: Icon(
+                      Icons.check,
+                      color: context.colors.white,
                     ),
                   ),
                 ),
               ),
               secondaryBackground: Container(
-                color: const Color(Constants.lightColorRed),
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 24.0),
+                color: context.colors.red,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 24.0),
                   child: Align(
                     alignment: Alignment.centerRight,
-                    child: SVG(
-                      imagePath: Constants.delete,
-                      color: Constants.lightColorWhite,
+                    child: Icon(
+                      Icons.delete,
+                      color: context.colors.white,
                     ),
                   ),
                 ),

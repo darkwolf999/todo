@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:todo/constants.dart' as Constants;
+import 'package:todo/extensions/build_context_ext.dart';
 
 class LanguageButton extends StatelessWidget {
   final VoidCallback onTap;
@@ -12,7 +12,7 @@ class LanguageButton extends StatelessWidget {
     return IconButton(
       splashRadius: 24.0,
       onPressed: onTap,
-      icon: const Icon(Icons.language, color: Color(Constants.lightColorBlue)),
+      icon: Icon(Icons.language, color: context.colors.blue),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:todo/extensions/build_context_ext.dart';
 
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
@@ -17,8 +18,6 @@ import 'package:todo/domain/repository/tasks_repository.dart';
 import 'package:todo/domain/bloc/firebase/remote_config/remote_config_bloc.dart';
 
 class AllTasksScreen extends StatelessWidget {
-  static final GlobalKey<State<StatefulWidget>> globalKey = GlobalKey();
-
   const AllTasksScreen({Key? key}) : super(key: key);
 
   @override
@@ -44,13 +43,10 @@ class AllTasksScreenContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<AllTasksScreenBloc>();
     final rConfigBloc = context.read<RemoteConfigBloc>();
-    //final router = Router.of(context).routerDelegate as TasksRouterDelegate;
-    //final router =  GetIt.I.get<TasksNavigation>();
     final router = context.read<TasksNavigation>();
     ScrollController scrollController = ScrollController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color(Constants.lightBackPrimary),
       body: BlocBuilder<AllTasksScreenBloc, AllTasksScreenState>(
         builder: (context, state) {
           switch (state.status) {
@@ -63,63 +59,67 @@ class AllTasksScreenContent extends StatelessWidget {
                 },
               );
             case AllTasksScreenStatus.success:
-              return RefreshIndicator(
-                color: const Color(Constants.lightColorBlue),
-                edgeOffset: 150,
-                onRefresh: () async {
-                  bloc.add(const SubscribeStreamEvent());
-                  rConfigBloc.add(const InitConfigEvent());
-                },
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: Constants.maxWidth,
-                    ),
-                    child: CustomScrollView(
-                      controller: scrollController,
-                      physics: const AlwaysScrollableScrollPhysics(
-                        parent: BouncingScrollPhysics(),
+              return SafeArea(
+                child: RefreshIndicator(
+                  color: context.colors.blue,
+                  edgeOffset: 150,
+                  onRefresh: () async {
+                    bloc.add(const SubscribeStreamEvent());
+                    rConfigBloc.add(const InitConfigEvent());
+                  },
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: Constants.maxWidth,
                       ),
-                      slivers: <Widget>[
-                        CustomSliverAppbar(),
-                        CustomSliverToBoxAdapter(),
-                        SliverPadding(
-                          padding: const EdgeInsets.only(
-                            left: 4.0,
-                            right: 4.0,
-                            bottom: 3.0,
-                          ),
-                          sliver: SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Card(
-                                  color:
-                                      const Color(Constants.lightBackSecondary),
-                                  semanticContainer: false,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8.0),
-                                    ),
-                                  ),
-                                  elevation: 4.0,
-                                  child: Column(
-                                    children: [
-                                      TasksListview(),
-                                      AddNewTaskButton(
-                                        onTap: () {
-                                          addNewTask(scrollController, router);
-                                        },
+                      child: CustomScrollView(
+                        controller: scrollController,
+                        physics: const AlwaysScrollableScrollPhysics(
+                          parent: BouncingScrollPhysics(),
+                        ),
+                        slivers: <Widget>[
+                          CustomSliverAppbar(),
+                          CustomSliverToBoxAdapter(),
+                          SliverPadding(
+                            padding: const EdgeInsets.only(
+                              left: 4.0,
+                              right: 4.0,
+                              bottom: 3.0,
+                            ),
+                            sliver: SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  return Card(
+                                    color: context.colors.backSecondary,
+                                    semanticContainer: false,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(8.0),
                                       ),
-                                    ],
-                                  ),
-                                );
-                              },
-                              childCount: 1,
+                                    ),
+                                    elevation: 4.0,
+                                    child: Column(
+                                      children: [
+                                        TasksListview(),
+                                        AddNewTaskButton(
+                                          onTap: () {
+                                            addNewTask(
+                                              scrollController,
+                                              router,
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                childCount: 1,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -144,7 +144,7 @@ class AllTasksScreenContent extends StatelessWidget {
             onPressed: () {
               addNewTask(scrollController, router);
             },
-            backgroundColor: const Color(Constants.lightColorBlue),
+            backgroundColor: context.colors.blue,
             tooltip: LocaleKeys.addTask.tr(), //'Добавить дело',
             child: const Icon(Icons.add),
           ),

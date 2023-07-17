@@ -3,7 +3,6 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:todo/data/models/dto/task_response_dto.dart';
-import 'package:todo/constants.dart' as Constants;
 import 'package:todo/my_logger.dart';
 import 'package:todo/data/models/dto/task_dto.dart';
 import 'package:todo/data/models/dto/tasks_list_dto.dart';
@@ -117,7 +116,7 @@ class NetworkTasksApiImpl implements NetworkTasksApi {
     );
 
     _prefs.setInt(
-      Constants.shPrefsRevisionKey,
+      ApiConstants.shPrefsRevisionKey,
       tasksResponseDto.revision,
     );
     MyLogger.log('revision = ${_prefs.getInt('revision')}');

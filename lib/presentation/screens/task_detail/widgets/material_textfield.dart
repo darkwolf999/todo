@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:todo/extensions/build_context_ext.dart';
 import 'package:todo/l10n/locale_keys.g.dart';
-import 'package:todo/constants.dart' as Constants;
-
 import 'package:todo/domain/bloc/task_detail_screen/task_detail_screen_bloc.dart';
 
 class MaterialTextfield extends StatelessWidget {
@@ -32,22 +31,19 @@ class MaterialTextfield extends StatelessWidget {
           //Что надо сделать…
           labelText: LocaleKeys.whatToDo.tr(),
           alignLabelWithHint: true,
-          labelStyle: const TextStyle(
-            fontSize: Constants.bodyFontSize,
-            height: 18.0 / Constants.bodyFontSize,
-            color: Color(Constants.lightLabelTertiary),
+          labelStyle: context.textStyles.body.copyWith(
+            color: context.colors.labelTertiary,
           ),
           filled: true,
-          fillColor: const Color(Constants.lightBackSecondary),
+          fillColor: context.colors.backSecondary,
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(8.0),
           ),
         ),
-        style: const TextStyle(
-          fontSize: Constants.bodyFontSize,
-          height: 18.0 / Constants.bodyFontSize,
-          color: Color(Constants.lightLabelPrimary),
+        style: context.textStyles.body.copyWith(
+          color: context.colors.labelPrimary,
+          height: 18.0 / 16.0,
         ),
         maxLines: null,
         minLines: 5,

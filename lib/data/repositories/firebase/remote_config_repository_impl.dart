@@ -1,7 +1,6 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 import 'package:todo/my_logger.dart';
-import 'package:todo/constants.dart' as Constants;
 
 class RemoteConfigRepositoryImpl {
   RemoteConfigRepositoryImpl({
@@ -22,7 +21,7 @@ class RemoteConfigRepositoryImpl {
     );
 
     await _remoteConfig.setDefaults({
-      _ConfigFields.highPriorityColor: Constants.lightColorRed.toString(),
+      _ConfigFields.highPriorityColor: 0xFFFF3B30.toString(), //red color
     });
 
     try {

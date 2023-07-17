@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todo/domain/bloc/all_tasks_screen/all_tasks_screen_bloc.dart';
-import 'package:todo/constants.dart' as Constants;
+import 'package:todo/extensions/build_context_ext.dart';
 import 'package:todo/presentation/screens/all_tasks/widgets/tasks_listview.dart';
-import 'package:todo/presentation/widgets/svg.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
 
 class VisibilityButton extends StatelessWidget {
@@ -54,11 +53,13 @@ class VisibilityButton extends StatelessWidget {
                   },
               };
       },
-      icon: SVG(
-        imagePath: bloc.state.filter != TasksFilter.showAll
-            ? Constants.visibilityOff
-            : Constants.visibility,
+      icon: Icon(
+        bloc.state.filter != TasksFilter.showAll
+            ? Icons.visibility_off
+            : Icons.visibility,
+        color: context.colors.blue,
       ),
+      //color: context.colors.blue,
     );
   }
 }
