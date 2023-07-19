@@ -8,4 +8,7 @@ extension BuildContextExt on BuildContext {
   ColorsPalette get colors => Theme.of(this).extension<ThemeStyle>()!.colors;
 
   TextStyles get textStyles => Theme.of(this).extension<ThemeStyle>()!.styles;
+
+  Brightness get brightness =>
+      Theme.of(this).extension<ThemeStyle>()!.brightness;
 }

@@ -13,6 +13,7 @@ class AppTheme {
           ThemeStyle(
             colors: lightPalette,
             styles: textStyles,
+            brightness: Brightness.dark,
           ),
         ],
       );
@@ -25,6 +26,7 @@ class AppTheme {
           ThemeStyle(
             colors: darkPalette,
             styles: textStyles,
+            brightness: Brightness.light,
           ),
         ],
       );

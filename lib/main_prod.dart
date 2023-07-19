@@ -24,7 +24,7 @@ import 'navigation/manager/tasks_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  settingUpSystemUIOverlay();
+  //settingUpSystemUIOverlay();
 
   await EasyLocalization.ensureInitialized();
 
@@ -96,13 +96,13 @@ Future<void> firebaseInit() async {
   };
 }
 
-void settingUpSystemUIOverlay() {
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: false,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent,
-    ),
-  );
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-}
+//void settingUpSystemUIOverlay() {
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   const SystemUiOverlayStyle(
+  //     systemStatusBarContrastEnforced: false,
+  //     systemNavigationBarColor: Colors.transparent,
+  //     systemNavigationBarDividerColor: Colors.transparent,
+  //   ),
+  // );
+  //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+//}

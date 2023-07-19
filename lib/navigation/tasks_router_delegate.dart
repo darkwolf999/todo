@@ -5,6 +5,7 @@ import 'package:todo/presentation/screens/all_tasks/all_tasks.dart';
 import 'package:todo/presentation/screens/task_detail/task_detail.dart';
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/data/api/analytics_provider.dart';
+import 'package:todo/presentation/widgets/custom_system_overlay_style.dart';
 import 'navigation_state_dto.dart';
 import 'navigaton_state.dart';
 
@@ -43,23 +44,25 @@ class TasksRouterDelegate extends RouterDelegate<NavigationStateDTO>
 
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      onPopPage: (route, result) {
-        if (!route.didPop(result)) {
-          return false;
-        }
-        if (!state.isAllTasksPage) {
-          gotoTasks();
-        }
-        return true;
-      },
-      key: navigatorKey,
-      pages: [
-        const MaterialPage(child: AllTasksScreen()),
-        if (!state.isAllTasksPage)
-          //bloc.add(StartEditingTaskEvent()),
-          MaterialPage(child: TaskDetailScreen(task: state.task)),
-      ],
+    //Прокидываем динамический цвет кнопок андроида по всему дереву экранов
+    return CustomSysUiOverlayStyle(
+      child: Navigator(
+        onPopPage: (route, result) {
+          if (!route.didPop(result)) {
+            return false;
+          }
+          if (!state.isAllTasksPage) {
+            gotoTasks();
+          }
+          return true;
+        },
+        key: navigatorKey,
+        pages: [
+          const MaterialPage(child: AllTasksScreen()),
+          if (!state.isAllTasksPage)
+            MaterialPage(child: TaskDetailScreen(task: state.task)),
+        ],
+      ),
     );
   }
 
