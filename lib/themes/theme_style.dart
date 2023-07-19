@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'app_theme.dart';
 import 'colors_palette.dart';
 import 'text_styles.dart';
 
