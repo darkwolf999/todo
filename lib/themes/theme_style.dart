@@ -7,10 +7,12 @@ class ThemeStyle extends ThemeExtension<ThemeStyle> {
   ThemeStyle({
     required this.colors,
     required this.styles,
+    required this.brightness,
   });
 
   final ColorsPalette colors;
   final TextStyles styles;
+  final Brightness brightness;
 
   @override
   ThemeExtension<ThemeStyle> copyWith() => this;

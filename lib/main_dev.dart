@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +23,6 @@ import 'navigation/manager/tasks_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  settingUpSystemUIOverlay();
 
   await EasyLocalization.ensureInitialized();
 
@@ -94,15 +92,4 @@ Future<void> firebaseInit() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
-}
-
-void settingUpSystemUIOverlay() {
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      systemStatusBarContrastEnforced: false,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent,
-    ),
-  );
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 }
