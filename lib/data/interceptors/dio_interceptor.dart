@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:todo/my_logger.dart';
+import 'package:todo/env/env.dart';
 
 class DioInterceptor extends InterceptorsWrapper {
   final Function(String, String) onErrorHandler;
@@ -11,9 +12,8 @@ class DioInterceptor extends InterceptorsWrapper {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // 1-100% - вероятность получить ошибку с сервера
     //options.headers['X-Generate-Fails'] = 50;
-    options.baseUrl = dotenv.env['BASE_URL'].toString();
-    options.headers['Authorization'] =
-        'Bearer ${dotenv.env['AUTH_TOKEN'].toString()}';
+    options.baseUrl = Env.baseUrl;
+    options.headers['Authorization'] = 'Bearer ${Env.authToken}';
     MyLogger.log(
       'BASE_URL: ${options.baseUrl} \nAuthorization: ${options.headers['Authorization']}',
     );

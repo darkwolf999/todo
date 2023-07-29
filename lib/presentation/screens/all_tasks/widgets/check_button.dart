@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:todo/presentation/widgets/svg.dart';
+import 'package:todo/presentation/widgets/color_svg.dart';
 
 class CheckButton extends StatelessWidget {
   final String imagePath;
-  final int? color;
+  final Color? color;
   final VoidCallback onTap;
 
   const CheckButton({
@@ -21,7 +21,7 @@ class CheckButton extends StatelessWidget {
       constraints: const BoxConstraints(),
       splashRadius: 18.0,
       onPressed: onTap,
-      icon: SVG(
+      icon: ColorSVG(
         imagePath: imagePath,
         color: color,
       ),

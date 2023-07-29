@@ -1,0 +1,203 @@
+name: home_work_4 workflow. analyze, testing, build, deploy.
+
+on:
+  push:
+    branches:
+      - main
+      - '*'
+
+  pull_request:
+    branches:
+      -main
+
+jobs:
+  analyze:
+    timeout-minutes: 10
+    name: 'analyze app'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Setup Flutter'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: 'Set env'
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
+          echo "AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}" >> $GITHUB_ENV
+
+          echo "FIREBASE_API_KEY_WEB=${{ secrets.FIREBASE_API_KEY_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID_WEB=${{ secrets.FIREBASE_APP_ID_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID_WEB=${{ secrets.FIREBASE_MESSAGING_SENDER_ID_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID_WEB=${{ secrets.FIREBASE_PROJECT_ID_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_AUTH_DOMAIN_WEB=${{ secrets.FIREBASE_AUTH_DOMAIN_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET_WEB=${{ secrets.FIREBASE_STORAGE_BUCKET_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_MEASUREMENT_ID_WEB=${{ secrets.FIREBASE_MEASUREMENT_ID_WEB }}" >> $GITHUB_ENV
+
+          echo "FIREBASE_API_KEY_ANDROID=${{ secrets.FIREBASE_API_KEY_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID_ANDROID=${{ secrets.FIREBASE_APP_ID_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID_ANDROID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID_ANDROID=${{ secrets.FIREBASE_PROJECT_ID_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET_ANDROID=${{ secrets.FIREBASE_STORAGE_BUCKET_ANDROID }}" >> $GITHUB_ENV
+
+          echo "FIREBASE_API_KEY_IOS=${{ secrets.FIREBASE_API_KEY_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID_IOS=${{ secrets.FIREBASE_APP_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID_IOS=${{ secrets.FIREBASE_MESSAGING_SENDER_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID_IOS=${{ secrets.FIREBASE_PROJECT_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET_IOS=${{ secrets.FIREBASE_STORAGE_BUCKET_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_IOS_CLIENT_ID_IOS=${{ secrets.FIREBASE_IOS_CLIENT_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_IOS_BUNDLE_ID_IOS=${{ secrets.FIREBASE_IOS_BUNDLE_ID_IOS }}" >> $GITHUB_ENV
+
+      - name: 'Pub get'
+        run: flutter pub get
+
+      - name: 'Formatting'
+        run: dart format --set-exit-if-changed .
+
+      - name: 'Codegen'
+        run: |
+          dart run build_runner build --delete-conflicting-outputs
+          dart run easy_localization:generate -f keys -o locale_keys.g.dart -O "lib/l10n" -S "assets/translations"
+          dart run easy_localization:generate -S "assets/translations" -O "lib/l10n"
+
+      - name: 'Analyze'
+        run: flutter analyze --no-fatal-infos
+
+  test:
+    timeout-minutes: 10
+    name: 'test app'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Setup java'
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '12.x'
+          cache: gradle
+
+      - name: 'Setup Flutter'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: 'Set env'
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
+          echo "AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}" >> $GITHUB_ENV
+
+          echo "FIREBASE_API_KEY_WEB=${{ secrets.FIREBASE_API_KEY_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID_WEB=${{ secrets.FIREBASE_APP_ID_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID_WEB=${{ secrets.FIREBASE_MESSAGING_SENDER_ID_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID_WEB=${{ secrets.FIREBASE_PROJECT_ID_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_AUTH_DOMAIN_WEB=${{ secrets.FIREBASE_AUTH_DOMAIN_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET_WEB=${{ secrets.FIREBASE_STORAGE_BUCKET_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_MEASUREMENT_ID_WEB=${{ secrets.FIREBASE_MEASUREMENT_ID_WEB }}" >> $GITHUB_ENV
+
+          echo "FIREBASE_API_KEY_ANDROID=${{ secrets.FIREBASE_API_KEY_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID_ANDROID=${{ secrets.FIREBASE_APP_ID_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID_ANDROID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID_ANDROID=${{ secrets.FIREBASE_PROJECT_ID_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET_ANDROID=${{ secrets.FIREBASE_STORAGE_BUCKET_ANDROID }}" >> $GITHUB_ENV
+
+          echo "FIREBASE_API_KEY_IOS=${{ secrets.FIREBASE_API_KEY_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID_IOS=${{ secrets.FIREBASE_APP_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID_IOS=${{ secrets.FIREBASE_MESSAGING_SENDER_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID_IOS=${{ secrets.FIREBASE_PROJECT_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET_IOS=${{ secrets.FIREBASE_STORAGE_BUCKET_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_IOS_CLIENT_ID_IOS=${{ secrets.FIREBASE_IOS_CLIENT_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_IOS_BUNDLE_ID_IOS=${{ secrets.FIREBASE_IOS_BUNDLE_ID_IOS }}" >> $GITHUB_ENV
+
+      - name: 'Pub get'
+        run: flutter pub get
+
+      - name: 'Codegen'
+        run: |
+          dart run build_runner build --delete-conflicting-outputs
+          dart run easy_localization:generate -f keys -o locale_keys.g.dart -O "lib/l10n" -S "assets/translations"
+          dart run easy_localization:generate -S "assets/translations" -O "lib/l10n"
+
+      - name: 'Test'
+        run: flutter test
+
+  build:
+    timeout-minutes: 20
+    name: 'build Android app and deploy it'
+    runs-on: ubuntu-latest
+    needs:
+      - analyze
+      - test
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Setup Flutter'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: 'Set env'
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> $GITHUB_ENV
+          echo "AUTH_TOKEN=${{ secrets.AUTH_TOKEN }}" >> $GITHUB_ENV
+          
+          echo "FIREBASE_API_KEY_WEB=${{ secrets.FIREBASE_API_KEY_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID_WEB=${{ secrets.FIREBASE_APP_ID_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID_WEB=${{ secrets.FIREBASE_MESSAGING_SENDER_ID_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID_WEB=${{ secrets.FIREBASE_PROJECT_ID_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_AUTH_DOMAIN_WEB=${{ secrets.FIREBASE_AUTH_DOMAIN_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET_WEB=${{ secrets.FIREBASE_STORAGE_BUCKET_WEB }}" >> $GITHUB_ENV
+          echo "FIREBASE_MEASUREMENT_ID_WEB=${{ secrets.FIREBASE_MEASUREMENT_ID_WEB }}" >> $GITHUB_ENV
+          
+          echo "FIREBASE_API_KEY_ANDROID=${{ secrets.FIREBASE_API_KEY_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID_ANDROID=${{ secrets.FIREBASE_APP_ID_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID_ANDROID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID_ANDROID=${{ secrets.FIREBASE_PROJECT_ID_ANDROID }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET_ANDROID=${{ secrets.FIREBASE_STORAGE_BUCKET_ANDROID }}" >> $GITHUB_ENV
+          
+          echo "FIREBASE_API_KEY_IOS=${{ secrets.FIREBASE_API_KEY_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID_IOS=${{ secrets.FIREBASE_APP_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_MESSAGING_SENDER_ID_IOS=${{ secrets.FIREBASE_MESSAGING_SENDER_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_PROJECT_ID_IOS=${{ secrets.FIREBASE_PROJECT_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_STORAGE_BUCKET_IOS=${{ secrets.FIREBASE_STORAGE_BUCKET_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_IOS_CLIENT_ID_IOS=${{ secrets.FIREBASE_IOS_CLIENT_ID_IOS }}" >> $GITHUB_ENV
+          echo "FIREBASE_IOS_BUNDLE_ID_IOS=${{ secrets.FIREBASE_IOS_BUNDLE_ID_IOS }}" >> $GITHUB_ENV
+
+      - name: 'Pub get'
+        run: flutter pub get
+
+      - name: 'Codegen'
+        run: |
+          dart run build_runner build --delete-conflicting-outputs
+          dart run easy_localization:generate -f keys -o locale_keys.g.dart -O "lib/l10n" -S "assets/translations"
+          dart run easy_localization:generate -S "assets/translations" -O "lib/l10n"
+         
+      - name: 'Create google-services.json empty file'
+        run: cat /home/runner/work/todo/todo/android/app/google-services.json | base64
+
+      - name: 'Put data into google-services.json from Github secrets'
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $DATA > /home/runner/work/todo/todo/android/app/google-services.json
+
+      - name: 'Build APK'
+        run: flutter build apk --flavor prod -t lib/main_prod.dart
+
+      - name: 'Deploy APK to GitHub'
+        uses: actions/upload-artifact@v3
+        with:
+          name: 'ToDo-Release'
+          path: build/app/outputs/flutter-apk/
+
+      - name: 'Deploy APK to Firebase App Distribution'
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID_ANDROID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: build/app/outputs/flutter-apk/app-prod-release.apk

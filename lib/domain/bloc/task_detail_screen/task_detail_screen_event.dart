@@ -7,15 +7,6 @@ abstract class TaskDetailScreenEvent extends Equatable {
   List<Object> get props => [];
 }
 
-// class StartEditingTaskEvent extends TaskDetailScreenEvent {
-//   final TaskModel? task;
-//
-//   const StartEditingTaskEvent({this.task});
-//
-//   @override
-//   List<Object> get props => [task ?? ''];
-// }
-
 class TitleChangedEvent extends TaskDetailScreenEvent {
   final String title;
 

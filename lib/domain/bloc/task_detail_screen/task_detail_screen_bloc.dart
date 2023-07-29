@@ -3,12 +3,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
+import 'package:todo/data/api/analytics_provider.dart';
 
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/my_logger.dart';
 import 'package:todo/l10n/locale_keys.g.dart';
 import 'package:todo/domain/repository/tasks_repository.dart';
+import 'package:uuid/uuid.dart';
+import 'package:todo/data/api/constants/api_constants.dart';
 
 part 'task_detail_screen_event.dart';
 
@@ -17,15 +19,22 @@ part 'task_detail_screen_state.dart';
 class TaskDetailScreenBloc
     extends Bloc<TaskDetailScreenEvent, TaskDetailScreenState> {
   final TasksRepository _tasksRepository;
+  final AnalyticsProvider _analyticsProvider;
+  final String _deviceModel;
 
   TaskDetailScreenBloc({
     required TasksRepository tasksRepository,
+    required AnalyticsProvider analyticsProvider,
+    required String deviceModel,
     required TaskModel? editedTask,
   })  : _tasksRepository = tasksRepository,
+        _analyticsProvider = analyticsProvider,
+        _deviceModel = deviceModel,
         super(
           TaskDetailScreenState(
             editedTask: editedTask ??
                 TaskModel(
+                  uuid: const Uuid().v4(),
                   title: LocaleKeys.emptyTask.tr(),
                   isDone: false,
                   priority: Priority.no,
@@ -46,8 +55,6 @@ class TaskDetailScreenBloc
     on<EditAcceptedEvent>(_onEditAccepted);
     on<DeleteTaskEvent>(_onDeleteTask);
   }
-
-  String deviceModel = GetIt.I.get(instanceName: 'deviceModel');
 
   void _onTitleChanged(
     TitleChangedEvent event,
@@ -74,20 +81,34 @@ class TaskDetailScreenBloc
     EditAcceptedEvent event,
     Emitter<TaskDetailScreenState> emit,
   ) async {
-    deviceModel = deviceModel;
     int dateNowStamp = DateTime.now().millisecondsSinceEpoch;
     try {
       final taskToSave = (state.editedTask)?.copyWith(
-        title: state.title,
-        priority: state.priority,
-        deadline: () => state.deadline,
+        title: state.title ?? LocaleKeys.emptyTask.tr(),
+        priority: state.priority ?? Priority.no,
+        deadline: state.deadline,
         createdAt: state.createdAt ?? dateNowStamp,
         changedAt: dateNowStamp,
-        lastUpdatedBy: deviceModel,
+        lastUpdatedBy: _deviceModel,
       );
       await _tasksRepository.saveTask(taskToSave!);
       emit(state.copyWith(status: TaskDetailScreenStatus.success));
       MyLogger.infoLog('edit accepted');
+      state.isNewTask
+          ? await _analyticsProvider.logEvent(
+              ApiConstants.taskAdded,
+              {
+                'task_uuid': taskToSave.uuid,
+                'task_text': taskToSave.title,
+              },
+            )
+          : await _analyticsProvider.logEvent(
+              ApiConstants.taskChanged,
+              {
+                'task_uuid': taskToSave.uuid,
+                'task_text': taskToSave.title,
+              },
+            );
     } catch (e) {
       emit(state.copyWith(status: TaskDetailScreenStatus.failure));
       MyLogger.errorLog('edit error', e);
@@ -100,5 +121,9 @@ class TaskDetailScreenBloc
   ) async {
     await _tasksRepository.deleteTask(event.uuid);
     MyLogger.infoLog('task deleted');
+    await _analyticsProvider.logEvent(
+      ApiConstants.taskDeleted,
+      {'task_uuid': event.uuid},
+    );
   }
 }

@@ -18,7 +18,7 @@ class TasksRouteInformationParser
         return Future.value(NavigationStateDTO.allTasksPage());
       case Paths.task:
         return Future.value(
-          NavigationStateDTO.task(null),
+          NavigationStateDTO.task(null, null),
         );
       default:
         return Future.value(NavigationStateDTO.allTasksPage());

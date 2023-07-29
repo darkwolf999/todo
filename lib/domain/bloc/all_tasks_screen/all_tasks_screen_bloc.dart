@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
+import 'package:todo/data/api/analytics_provider.dart';
+import 'package:todo/data/api/constants/api_constants.dart';
 
 import 'package:todo/domain/models/task_model.dart';
 import 'package:todo/presentation/models/tasks_filter.dart';
@@ -15,10 +17,13 @@ part 'all_tasks_screen_state.dart';
 class AllTasksScreenBloc
     extends Bloc<AllTasksScreenEvent, AllTasksScreenState> {
   final TasksRepository _tasksRepository;
+  final AnalyticsProvider _analyticsProvider;
   bool isCompletedTasksShown = false;
 
-  AllTasksScreenBloc(this._tasksRepository)
-      : super(const AllTasksScreenState()) {
+  AllTasksScreenBloc(
+    this._tasksRepository,
+    this._analyticsProvider,
+  ) : super(const AllTasksScreenState()) {
     on<SubscribeStreamEvent>(_onSubscribeStream);
     //on<AddTaskEvent>(_onAddTask);
     on<DeleteTaskEvent>(_onDeleteTask, transformer: sequential());
@@ -71,11 +76,14 @@ class AllTasksScreenBloc
     DeleteTaskEvent event,
     Emitter<AllTasksScreenState> emit,
   ) async {
-    try{
+    try {
       await _tasksRepository.deleteTask(event.uuid);
-      MyLogger.infoLog('task after deleting ${state.tasks}');
-    }
-    catch (e) {
+      MyLogger.infoLog('tasks after deleting ${state.tasks}');
+      await _analyticsProvider.logEvent(
+        ApiConstants.taskDeleted,
+        {'task_uuid': event.uuid},
+      );
+    } catch (e) {
       MyLogger.errorLog('task delete error', e);
       emit(state.copyWith(status: AllTasksScreenStatus.failure));
     }
@@ -89,6 +97,21 @@ class AllTasksScreenBloc
     await _tasksRepository.saveTask(completedTask);
     MyLogger.infoLog('task after completion: ${state.tasks}');
     MyLogger.infoLog('completed count: ${state.completedTasksCount}');
+    completedTask.isDone == true
+        ? await _analyticsProvider.logEvent(
+            ApiConstants.taskCompleted,
+            {
+              'task_uuid': event.task.uuid,
+              'task_title': event.task.title,
+            },
+          )
+        : await _analyticsProvider.logEvent(
+            ApiConstants.taskUncompleted,
+            {
+              'task_uuid': event.task.uuid,
+              'task_title': event.task.title,
+            },
+          );
   }
 
   void _onChangeFilter(

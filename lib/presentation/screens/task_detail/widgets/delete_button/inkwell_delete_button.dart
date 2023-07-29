@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todo/presentation/screens/task_detail/widgets/delete_button/delete_button.dart';
 
 class InkWellDeleteButton extends StatelessWidget {
-  final String icon;
-  final int textColor;
+  final IconData icon;
+  final Color textColor;
   final VoidCallback onTap;
 
   const InkWellDeleteButton({
@@ -16,6 +16,7 @@ class InkWellDeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(8.0),
       onTap: onTap,
       child: DeleteButton(icon: icon, textColor: textColor),
     );

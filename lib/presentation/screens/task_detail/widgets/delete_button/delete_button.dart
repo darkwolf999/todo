@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'package:todo/extensions/build_context_ext.dart';
 import 'package:todo/l10n/locale_keys.g.dart';
-import 'package:todo/constants.dart' as Constants;
-import 'package:todo/presentation/widgets/svg.dart';
 
 class DeleteButton extends StatelessWidget {
-  final String icon;
-  final int textColor;
+  final IconData icon;
+  final Color textColor;
 
   const DeleteButton({
     Key? key,
@@ -22,15 +21,13 @@ class DeleteButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SVG(imagePath: icon),
+          Icon(icon, color: textColor),
           const SizedBox(width: 12.0),
           Text(
             //Удалить
             LocaleKeys.delete.tr(),
-            style: TextStyle(
-              fontSize: Constants.bodyFontSize,
-              height: Constants.bodyFontHeight,
-              color: Color(textColor),
+            style: context.textStyles.body.copyWith(
+              color: textColor,
             ),
           ),
         ],
